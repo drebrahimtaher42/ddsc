@@ -116,14 +116,14 @@ export function LiveBanner({
       />
 
       <div className="relative z-10">
-        {/* Top Row: Status Pill + Cairo Clock / Preview Toggle */}
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5">
+        {/* Unified Single-Row Top Bar: Status + Compact Live Toggle */}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-2">
+            <span className="relative flex h-2.5 w-2.5 shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3AB498] opacity-75" />
               <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#3AB498]" />
             </span>
-            <span className="font-display text-[11px] font-bold uppercase tracking-widest text-[#8CE9D2]">
+            <span className="truncate font-display text-[11px] font-bold uppercase tracking-widest text-[#8CE9D2]">
               {isPreview
                 ? 'Live Mode Preview'
                 : phase === 'live'
@@ -135,7 +135,7 @@ export function LiveBanner({
                 : 'DDSC 2026 Concluded'}
             </span>
             {showLiveContent && (
-              <span className="hidden sm:inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/80">
+              <span className="hidden sm:inline-flex shrink-0 items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/80">
                 <Clock className="h-3 w-3 text-[#3AB498]" />
                 {formatCairoClock(nowMs)} Cairo
               </span>
@@ -147,21 +147,22 @@ export function LiveBanner({
               type="button"
               whileTap={{ scale: 0.96 }}
               onClick={onTogglePreview}
-              className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 font-display text-[11px] font-semibold transition-colors duration-200 ${
+              aria-label={isPreview ? 'Exit Live Preview' : 'Preview Live Mode'}
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 font-display text-[11px] font-semibold transition-colors ${
                 isPreview
                   ? 'bg-white text-[#0D224C] hover:bg-white/90'
-                  : 'border border-white/25 bg-white/10 text-white hover:bg-white/20'
+                  : 'bg-white/10 border border-white/15 text-white hover:bg-white/20'
               }`}
             >
               {isPreview ? (
                 <>
-                  <EyeOff className="h-3.5 w-3.5" />
-                  <span>Exit Preview</span>
+                  <EyeOff className="h-3 w-3" />
+                  <span>Exit</span>
                 </>
               ) : (
                 <>
-                  <Eye className="h-3.5 w-3.5 text-[#3AB498]" />
-                  <span>Preview Live Mode</span>
+                  <Eye className="h-3 w-3 text-[#3AB498]" />
+                  <span>Live</span>
                 </>
               )}
             </motion.button>
@@ -213,34 +214,26 @@ export function LiveBanner({
           >
             {/* STATE 1: Pre-Conference Countdown */}
             {!showLiveContent && phase === 'before' && (
-              <div className="mt-4 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-                <div className="flex items-center gap-2.5">
-                  <img
-                    src={logoWhite}
-                    alt="DDSC White Logo"
-                    className="h-9 w-auto shrink-0 opacity-95"
-                  />
-                  <div>
-                    <h1 className="font-display text-lg sm:text-xl font-bold tracking-tight text-white">
-                      {conference.fullName}
-                    </h1>
-                    {conference.tagline && (
-                      <p className="mt-0.5 font-display text-xs font-semibold text-[#8CE9D2]">
-                        {conference.tagline}
-                      </p>
-                    )}
-                    <p className="mt-1 text-xs sm:text-[13px] text-white/75">
-                      Opening Ceremony · Thu, 26 Nov at 9:30 AM
-                    </p>
-                    <p className="mt-0.5 inline-flex items-center gap-1.5 text-xs sm:text-[13px] font-medium text-white/85">
-                      <MapPin className="h-[13px] w-[13px] shrink-0 text-[#3AB498]" />
-                      <span>{conference.venue.name}</span>
-                    </p>
-                  </div>
+              <div className="mt-4">
+                <h1 className="font-display text-lg sm:text-xl font-bold tracking-tight text-white">
+                  {conference.fullName}
+                </h1>
+                {conference.tagline && (
+                  <p className="mt-1 font-display text-xs sm:text-[13px] font-semibold text-[#8CE9D2]">
+                    {conference.tagline}
+                  </p>
+                )}
+
+                <div className="mt-2.5 space-y-1 text-xs sm:text-sm text-slate-200/90">
+                  <p>Opening Ceremony · Thu, 26 Nov at 9:30 AM</p>
+                  <p className="inline-flex items-center gap-1.5 font-medium text-white/90">
+                    <MapPin className="h-[13px] w-[13px] shrink-0 text-[#3AB498]" />
+                    <span>{conference.venue.name}</span>
+                  </p>
                 </div>
 
                 <div
-                  className="grid grid-cols-4 gap-2 sm:gap-2.5 shrink-0"
+                  className="mt-5 grid grid-cols-4 gap-2 sm:gap-3"
                   aria-label="Countdown timer"
                 >
                   {[
@@ -251,7 +244,7 @@ export function LiveBanner({
                   ].map((unit) => (
                     <div
                       key={unit.label}
-                      className="flex flex-col items-center justify-center rounded-xl border border-white/15 bg-white/10 backdrop-blur-sm px-2.5 py-2 min-w-[58px] sm:min-w-[64px]"
+                      className="flex flex-col items-center justify-center rounded-xl border border-white/15 bg-white/10 backdrop-blur-sm px-2 py-2.5"
                     >
                       <span className="font-display text-lg sm:text-xl font-bold tabular-nums leading-none text-white">
                         {String(unit.value).padStart(2, '0')}
