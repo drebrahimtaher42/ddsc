@@ -203,7 +203,13 @@ export function HomeView({
     <div>
       {/* 1. IMMERSIVE FULL-BLEED LUXURY HERO */}
       <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#07142E] via-[#091A3C] to-[#0D224C] text-white">
-        {/* Soft Radial Ambient Emerald / Mint Mesh Glows (15–20% opacity) */}
+        {/* Centered top radial spotlight glow */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(58,180,152,0.22)_0%,_transparent_65%)]"
+        />
+
+        {/* Soft Radial Ambient Emerald / Mint Mesh Glows */}
         <motion.div
           aria-hidden="true"
           animate={{
@@ -214,7 +220,7 @@ export function HomeView({
           className="pointer-events-none absolute -top-28 right-[8%] h-[28rem] w-[28rem] rounded-full blur-3xl"
           style={{
             background:
-              'radial-gradient(circle, rgba(58,180,152,0.18) 0%, rgba(8,105,88,0.14) 45%, transparent 72%)',
+              'radial-gradient(circle, rgba(58,180,152,0.16) 0%, rgba(8,105,88,0.12) 45%, transparent 72%)',
           }}
         />
         <div
@@ -222,17 +228,21 @@ export function HomeView({
           className="pointer-events-none absolute -bottom-32 -left-24 h-[26rem] w-[26rem] rounded-full blur-3xl"
           style={{
             background:
-              'radial-gradient(circle, rgba(8,105,88,0.20) 0%, rgba(58,180,152,0.10) 45%, transparent 72%)',
+              'radial-gradient(circle, rgba(8,105,88,0.18) 0%, rgba(58,180,152,0.08) 45%, transparent 72%)',
           }}
         />
-        {/* Subtle fine architectural grid texture */}
+        {/* Subtle fine architectural dot-grid texture fading out toward edges */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.035]"
+          className="pointer-events-none absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage:
-              'radial-gradient(rgba(255,255,255,0.6) 1px, transparent 1px)',
-            backgroundSize: '28px 28px',
+              'radial-gradient(rgba(255,255,255,0.75) 1px, transparent 1px)',
+            backgroundSize: '26px 26px',
+            maskImage:
+              'radial-gradient(ellipse at center, black 35%, transparent 80%)',
+            WebkitMaskImage:
+              'radial-gradient(ellipse at center, black 35%, transparent 80%)',
           }}
         />
         {/* Very faint, large architectural DDSC watermark on far right */}
@@ -243,18 +253,26 @@ export function HomeView({
           className="pointer-events-none select-none absolute -right-10 sm:right-[4%] top-1/2 -translate-y-1/2 h-[20rem] sm:h-[27rem] w-auto opacity-[0.04]"
         />
 
-        {/* Editorial Content Container */}
+        {/* Centered Editorial Content Container */}
         <motion.div
           variants={staggerListVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 mx-auto max-w-5xl px-4 pt-14 pb-24 sm:px-6 sm:pt-20 sm:pb-28"
+          className="relative z-10 mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20 sm:pb-28"
         >
-          <div className="max-w-3xl">
+          <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
+            {/* Borderless Tracked-Out Top Eyebrow */}
+            <motion.p
+              variants={cardItemVariants}
+              className="font-display text-[10.5px] font-semibold tracking-[0.28em] uppercase text-[#5EEAD4]/90 mb-4"
+            >
+              MEET • SHARE • CONNECT
+            </motion.p>
+
             {/* High-Contrast Display Headline */}
             <motion.h1
               variants={cardItemVariants}
-              className="font-display text-[1.65rem] min-[390px]:text-[1.9rem] sm:text-5xl md:text-6xl font-bold whitespace-nowrap tracking-tight leading-[1.12] bg-gradient-to-r from-white via-white to-[#6EE7B7] bg-clip-text text-transparent"
+              className="font-display text-[1.65rem] min-[390px]:text-[1.9rem] sm:text-5xl md:text-6xl font-bold whitespace-nowrap tracking-tight leading-[1.12] bg-gradient-to-b from-white via-white to-[#A7F3D0] bg-clip-text text-transparent"
             >
               A New Era of Dentistry
             </motion.h1>
@@ -262,41 +280,43 @@ export function HomeView({
             {/* Refined Conference Subtitle */}
             <motion.p
               variants={cardItemVariants}
-              className="mt-3 font-display text-[13px] min-[390px]:text-[14.5px] sm:text-xl font-semibold whitespace-nowrap tracking-tight text-white/90"
+              className="mt-2.5 font-display text-[13px] min-[390px]:text-[14.5px] sm:text-xl font-medium whitespace-nowrap tracking-tight text-slate-200/95"
             >
               Damietta Dental Syndicate Conference 2026
             </motion.p>
 
-            {/* Lead Paragraph & Official Campaign Pillars */}
+            {/* Balanced 2-Line Lead Copy */}
             <motion.p
               variants={cardItemVariants}
-              className="mt-5 text-sm sm:text-base text-slate-300/90 text-balance max-w-sm sm:max-w-lg leading-relaxed"
+              className="mt-4 text-sm sm:text-base text-slate-300/80 max-w-xs sm:max-w-md text-balance leading-relaxed"
             >
               Uniting 27+ scientific keynotes, hands-on labs, and a dental community growing since 1995.
             </motion.p>
 
-            <motion.div variants={cardItemVariants} className="mt-6">
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 font-display text-[10px] sm:text-[11px] font-bold tracking-[0.22em] uppercase text-[#8CE9D2]">
-                MEET · SHARE · CONNECT
-              </span>
-            </motion.div>
-
-            {/* Single Primary Hero CTA */}
+            {/* Primary CTA Button */}
             <motion.div
               variants={cardItemVariants}
-              className="mt-8 flex items-center"
+              className="mt-7 flex justify-center"
             >
               <motion.button
                 type="button"
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onNavigate('schedule')}
-                className="inline-flex items-center justify-center gap-2 rounded-full bg-[#3AB498] hover:bg-[#4EC5A9] px-6 py-3.5 font-display text-sm font-semibold text-[#07142E] shadow-[0_8px_24px_rgba(58,180,152,0.3)] transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(58,180,152,0.5)] hover:brightness-105 transition-all"
               >
                 <span>Explore Schedule</span>
                 <ArrowRight className="h-4 w-4" />
               </motion.button>
             </motion.div>
+
+            {/* Minimal Metadata Anchor */}
+            <motion.p
+              variants={cardItemVariants}
+              className="mt-4 text-[11.5px] text-slate-400 tracking-wide"
+            >
+              26–27 Nov 2026 &nbsp;·&nbsp; Steigenberger El Lessan
+            </motion.p>
           </div>
         </motion.div>
 
@@ -322,7 +342,7 @@ export function HomeView({
         <motion.section
           variants={cardItemVariants}
           aria-label="Conference Highlights"
-          className="-mt-10 sm:-mt-12 mb-10 relative z-10 bg-white rounded-2xl shadow-lg border border-slate-100 grid grid-cols-3 divide-x divide-slate-100 py-4 px-2"
+          className="-mt-10 sm:-mt-12 mb-10 relative z-10 bg-white rounded-2xl shadow-xl shadow-[#0A2540]/10 ring-1 ring-slate-200/70 grid grid-cols-3 divide-x divide-slate-100 py-4 px-2"
         >
           {highlights.map((stat) => {
             const Icon = stat.icon;
