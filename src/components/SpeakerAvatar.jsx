@@ -48,7 +48,7 @@ export function SpeakerAvatar({
               alt={name}
               loading="lazy"
               onError={() => setImgError(true)}
-              className={`h-full w-full object-cover ${
+              className={`h-full w-full object-cover object-top ${
                 zoomOnHover
                   ? 'transition-transform duration-300 ease-out group-hover:scale-110'
                   : ''

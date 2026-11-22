@@ -1,13 +1,46 @@
-import { useState, useMemo } from 'react';
-import { motion, LayoutGroup } from 'framer-motion';
-import { Calendar, Clock, ChevronRight } from 'lucide-react';
-import { SpeakerAvatar } from './SpeakerAvatar';
+import { useState, useMemo, useEffect } from 'react';
+import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
+import { Calendar, Clock, ChevronRight, X, Info } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
 import { formatTime12h } from '../utils/time';
 import { specialtyPillStyle, getSpecialtyColor } from '../utils/specialty';
-import { staggerListVariants, cardItemVariants, EASE_OUT } from '../utils/motion';
+import { staggerListVariants, cardItemVariants, lightboxZoomVariants, EASE_OUT } from '../utils/motion';
 
 const PILL_SPRING = { type: 'spring', stiffness: 460, damping: 36 };
+
+function SpeakerPortrait({ src, name, initials, avatarTone = 'navy' }) {
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    setFailed(false);
+  }, [src]);
+
+  const showImg = Boolean(src) && !failed;
+  const fallbackGradient =
+    avatarTone === 'emerald'
+      ? 'bg-gradient-to-br from-[#086958] to-[#3AB498]'
+      : 'bg-gradient-to-br from-[#0D224C] to-[#1D3E78]';
+
+  return (
+    <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-2xl overflow-hidden shrink-0 border border-slate-200/80 shadow-sm bg-slate-100">
+      {showImg ? (
+        <img
+          src={src}
+          alt={name}
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="object-cover object-top w-full h-full transition-transform duration-300 ease-out group-hover:scale-105"
+        />
+      ) : (
+        <div
+          className={`flex h-full w-full items-center justify-center font-display text-base font-bold text-white ${fallbackGradient}`}
+        >
+          {initials}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function SpeakersView({
   speakers,
@@ -16,6 +49,30 @@ export function SpeakersView({
   onSelectSpeaker,
 }) {
   const [selectedSpecialty, setSelectedSpecialty] = useState('All');
+  const [activePosterSpeaker, setActivePosterSpeaker] = useState(null);
+
+  useEffect(() => {
+    if (!activePosterSpeaker) return undefined;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setActivePosterSpeaker(null);
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activePosterSpeaker]);
+
+  const handleCardActivate = (speaker) => {
+    if (speaker?.poster) {
+      setActivePosterSpeaker(speaker);
+    } else {
+      onSelectSpeaker(speaker);
+    }
+  };
 
   const specialties = useMemo(
     () => ['All', ...new Set(speakers.map((s) => s.specialty).filter(Boolean))],
@@ -101,26 +158,24 @@ export function SpeakersView({
               whileHover={{ y: -3 }}
               whileTap={{ scale: 0.99 }}
               transition={{ duration: 0.2, ease: EASE_OUT }}
-              onClick={() => onSelectSpeaker(speaker)}
+              onClick={() => handleCardActivate(speaker)}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  onSelectSpeaker(speaker);
+                  handleCardActivate(speaker);
                 }
               }}
               className="group flex flex-col justify-between rounded-2xl border border-slate-200/70 bg-white p-5 shadow-card transition-[border-color,box-shadow] duration-200 hover:border-[#3AB498]/40 hover:shadow-cardHover cursor-pointer"
             >
               <div>
                 <div className="flex items-start gap-3.5">
-                  <SpeakerAvatar
-                    photo={speaker.photo}
+                  <SpeakerPortrait
+                    src={speaker.avatar || speaker.photo}
                     name={speaker.name}
                     initials={speaker.initials}
                     avatarTone={speaker.avatarTone}
-                    size="md"
-                    zoomOnHover
                   />
 
                   <div className="min-w-0 flex-1">
@@ -133,9 +188,6 @@ export function SpeakersView({
                     <h2 className="mt-1.5 font-display text-[15px] font-bold leading-snug tracking-tight text-[#0B192C] transition-colors group-hover:text-[#0D224C]">
                       {speaker.name}
                     </h2>
-                    <p className="mt-0.5 text-xs leading-relaxed text-[#64748B] line-clamp-2">
-                      {speaker.title}
-                    </p>
                   </div>
                 </div>
 
@@ -173,6 +225,79 @@ export function SpeakersView({
           );
         })}
       </motion.div>
+
+      {/* Full Original Poster Modal */}
+      <AnimatePresence>
+        {activePosterSpeaker && (
+          <motion.div
+            key="speaker-poster-modal"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-[#061024]/90 backdrop-blur-md p-4 sm:p-6"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${activePosterSpeaker.name} lecture poster`}
+            onClick={() => setActivePosterSpeaker(null)}
+          >
+            {/* Top Close Button */}
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.92 }}
+              onClick={() => setActivePosterSpeaker(null)}
+              className="fixed right-4 top-4 sm:right-6 sm:top-6 z-20 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/15 text-white backdrop-blur-sm transition-colors hover:bg-white/25"
+              aria-label="Close poster"
+            >
+              <X className="h-5 w-5" />
+            </motion.button>
+
+            {/* Full Poster Image */}
+            <motion.div
+              key={activePosterSpeaker.id}
+              variants={lightboxZoomVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              onClick={(e) => e.stopPropagation()}
+              className="relative flex flex-col items-center max-w-lg w-full"
+            >
+              <img
+                src={activePosterSpeaker.poster}
+                alt={`${activePosterSpeaker.name} lecture poster`}
+                className="max-h-[78vh] w-auto max-w-full object-contain rounded-2xl border border-white/15 shadow-2xl bg-[#0B192C]"
+              />
+
+              {/* Compact Frosted Footer Bar */}
+              <div className="mt-3 flex w-full items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-white backdrop-blur-md">
+                <div className="min-w-0">
+                  <p className="truncate font-display text-sm font-bold text-white">
+                    {activePosterSpeaker.name}
+                  </p>
+                  <p className="truncate text-xs text-slate-300">
+                    {activePosterSpeaker.specialty}
+                    {scheduleById[activePosterSpeaker.sessionId]
+                      ? ` · ${formatTime12h(scheduleById[activePosterSpeaker.sessionId].startTime)}`
+                      : ''}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const target = activePosterSpeaker;
+                    setActivePosterSpeaker(null);
+                    onSelectSpeaker(target);
+                  }}
+                  className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-[#3AB498] px-3 py-1.5 font-display text-xs font-semibold text-[#061024] transition-colors hover:bg-[#5EEAD4]"
+                >
+                  <Info className="h-3.5 w-3.5" />
+                  <span>Session Details</span>
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

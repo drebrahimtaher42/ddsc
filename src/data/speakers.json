@@ -6,8 +6,10 @@
     "specialty": "Implantology",
     "initials": "AE",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d1-d-1"
+    "photo": "/speakers-avatars/spk-abdulrahman-eldabousy.jpg",
+    "sessionId": "d1-d-1",
+    "avatar": "/speakers-avatars/spk-abdulrahman-eldabousy.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%283%29.jpeg"
   },
   {
     "id": "spk-essam-zaatar",
@@ -16,8 +18,10 @@
     "specialty": "Practice & Media",
     "initials": "EZ",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d1-p-1"
+    "photo": "/speakers-avatars/spk-essam-zaatar.jpg",
+    "sessionId": "d1-p-1",
+    "avatar": "/speakers-avatars/spk-essam-zaatar.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%285%29.jpeg"
   },
   {
     "id": "spk-moustafa-tawfik",
@@ -26,8 +30,10 @@
     "specialty": "Practice & Legal",
     "initials": "MT",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d1-d-2"
+    "photo": "/speakers-avatars/spk-moustafa-tawfik.jpg",
+    "sessionId": "d1-d-2",
+    "avatar": "/speakers-avatars/spk-moustafa-tawfik.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%286%29.jpeg"
   },
   {
     "id": "spk-mosaad-soliem",
@@ -36,8 +42,10 @@
     "specialty": "Implantology",
     "initials": "MS",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d1-p-2"
+    "photo": "/speakers-avatars/spk-mosaad-soliem.jpg",
+    "sessionId": "d1-p-2",
+    "avatar": "/speakers-avatars/spk-mosaad-soliem.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.53%20PM.jpeg"
   },
   {
     "id": "spk-mostafa-swedan",
@@ -46,8 +54,10 @@
     "specialty": "Prosthodontics",
     "initials": "MS",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d1-d-3"
+    "photo": "/speakers-avatars/spk-mostafa-swedan.jpg",
+    "sessionId": "d1-d-3",
+    "avatar": "/speakers-avatars/spk-mostafa-swedan.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM%20%282%29.jpeg"
   },
   {
     "id": "spk-mostafa-nabil-hamid",
@@ -56,8 +66,10 @@
     "specialty": "Pediatric",
     "initials": "MH",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d1-p-3"
+    "photo": "/speakers-avatars/spk-mostafa-nabil-hamid.jpg",
+    "sessionId": "d1-p-3",
+    "avatar": "/speakers-avatars/spk-mostafa-nabil-hamid.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM%20%283%29.jpeg"
   },
   {
     "id": "spk-ahmed-ezz",
@@ -66,8 +78,10 @@
     "specialty": "Endodontics",
     "initials": "AE",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d1-d-4"
+    "photo": "/speakers-avatars/spk-ahmed-ezz.jpg",
+    "sessionId": "d1-d-4",
+    "avatar": "/speakers-avatars/spk-ahmed-ezz.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%283%29.jpeg"
   },
   {
     "id": "spk-ahmed-mosaad",
@@ -76,8 +90,10 @@
     "specialty": "Practice Management",
     "initials": "AM",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d1-p-4"
+    "photo": "/speakers-avatars/spk-ahmed-mosaad.jpg",
+    "sessionId": "d1-p-4",
+    "avatar": "/speakers-avatars/spk-ahmed-mosaad.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM%20%283%29.jpeg"
   },
   {
     "id": "spk-abdelrahman-fadag",
@@ -86,8 +102,10 @@
     "specialty": "Endodontics",
     "initials": "AF",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d1-d-5"
+    "photo": "/speakers-avatars/spk-abdelrahman-fadag.jpg",
+    "sessionId": "d1-d-5",
+    "avatar": "/speakers-avatars/spk-abdelrahman-fadag.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%284%29.jpeg"
   },
   {
     "id": "spk-islam-kassem",
@@ -96,8 +114,10 @@
     "specialty": "Aesthetics & AI",
     "initials": "IK",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d1-p-5"
+    "photo": "/speakers-avatars/spk-islam-kassem.jpg",
+    "sessionId": "d1-p-5",
+    "avatar": "/speakers-avatars/spk-islam-kassem.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM.jpeg"
   },
   {
     "id": "spk-mohamed-bialy",
@@ -106,8 +126,10 @@
     "specialty": "Endodontics",
     "initials": "MB",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d1-d-6"
+    "photo": "/speakers-avatars/spk-mohamed-bialy.jpg",
+    "sessionId": "d1-d-6",
+    "avatar": "/speakers-avatars/spk-mohamed-bialy.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM.jpeg"
   },
   {
     "id": "spk-sameh-shaaban",
@@ -116,8 +138,10 @@
     "specialty": "Endodontics",
     "initials": "SS",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d1-p-6"
+    "photo": "/speakers-avatars/spk-sameh-shaaban.jpg",
+    "sessionId": "d1-p-6",
+    "avatar": "/speakers-avatars/spk-sameh-shaaban.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.49%20PM%20%281%29.jpeg"
   },
   {
     "id": "spk-mohamed-al-diasty",
@@ -126,8 +150,10 @@
     "specialty": "Endodontics",
     "initials": "MD",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d1-d-7"
+    "photo": "/speakers-avatars/spk-mohamed-al-diasty.jpg",
+    "sessionId": "d1-d-7",
+    "avatar": "/speakers-avatars/spk-mohamed-al-diasty.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM.jpeg"
   },
   {
     "id": "spk-karim-galal-moawad",
@@ -136,8 +162,10 @@
     "specialty": "Restorative",
     "initials": "KM",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d1-p-7"
+    "photo": "/speakers-avatars/spk-karim-galal-moawad.jpg",
+    "sessionId": "d1-p-7",
+    "avatar": "/speakers-avatars/spk-karim-galal-moawad.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.57%20PM%20%282%29.jpeg"
   },
   {
     "id": "spk-muhammad-abaza",
@@ -146,8 +174,10 @@
     "specialty": "Laser Dentistry",
     "initials": "MA",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d2-d-1"
+    "photo": "/speakers-avatars/spk-muhammad-abaza.jpg",
+    "sessionId": "d2-d-1",
+    "avatar": "/speakers-avatars/spk-muhammad-abaza.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%282%29.jpeg"
   },
   {
     "id": "spk-noha-ghallab",
@@ -156,8 +186,10 @@
     "specialty": "Periodontics",
     "initials": "NG",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d2-p-1"
+    "photo": "/speakers-avatars/spk-noha-ghallab.jpg",
+    "sessionId": "d2-p-1",
+    "avatar": "/speakers-avatars/spk-noha-ghallab.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%282%29.jpeg"
   },
   {
     "id": "spk-mahmoud-shalaby",
@@ -166,8 +198,10 @@
     "specialty": "Career & Education",
     "initials": "MS",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d2-d-2"
+    "photo": "/speakers-avatars/spk-mahmoud-shalaby.jpg",
+    "sessionId": "d2-d-2",
+    "avatar": "/speakers-avatars/spk-mahmoud-shalaby.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM.jpeg"
   },
   {
     "id": "spk-khaled-zaghloul",
@@ -176,8 +210,10 @@
     "specialty": "Prosthodontics",
     "initials": "KZ",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d2-p-2"
+    "photo": "/speakers-avatars/spk-khaled-zaghloul.jpg",
+    "sessionId": "d2-p-2",
+    "avatar": "/speakers-avatars/spk-khaled-zaghloul.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM%20%282%29.jpeg"
   },
   {
     "id": "spk-ahmed-abdelwahed-shaaban",
@@ -186,8 +222,10 @@
     "specialty": "Oral Medicine",
     "initials": "AS",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d2-d-3"
+    "photo": "/speakers-avatars/spk-ahmed-abdelwahed-shaaban.jpg",
+    "sessionId": "d2-d-3",
+    "avatar": "/speakers-avatars/spk-ahmed-abdelwahed-shaaban.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM%20%281%29.jpeg"
   },
   {
     "id": "spk-idce-ahmed-fettouh",
@@ -196,8 +234,10 @@
     "specialty": "Implantology",
     "initials": "AF",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d2-p-3"
+    "photo": "/speakers-avatars/spk-idce-ahmed-fettouh.jpg",
+    "sessionId": "d2-p-3",
+    "avatar": "/speakers-avatars/spk-idce-ahmed-fettouh.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.57%20PM.jpeg"
   },
   {
     "id": "spk-hala-hazzaa",
@@ -207,7 +247,9 @@
     "initials": "HH",
     "avatarTone": "emerald",
     "photo": null,
-    "sessionId": "d2-d-4"
+    "sessionId": "d2-d-4",
+    "avatar": null,
+    "poster": null
   },
   {
     "id": "spk-mahmoud-ramadan",
@@ -216,8 +258,10 @@
     "specialty": "Prosthodontics",
     "initials": "MR",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d2-d-5"
+    "photo": "/speakers-avatars/spk-mahmoud-ramadan.jpg",
+    "sessionId": "d2-d-5",
+    "avatar": "/speakers-avatars/spk-mahmoud-ramadan.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%281%29.jpeg"
   },
   {
     "id": "spk-ahmed-korayem",
@@ -226,8 +270,10 @@
     "specialty": "Digital Dentistry",
     "initials": "AK",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d2-p-4"
+    "photo": "/speakers-avatars/spk-ahmed-korayem.jpg",
+    "sessionId": "d2-p-4",
+    "avatar": "/speakers-avatars/spk-ahmed-korayem.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.49%20PM.jpeg"
   },
   {
     "id": "spk-abdallah-matar",
@@ -236,8 +282,10 @@
     "specialty": "Periodontics",
     "initials": "AM",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d2-d-6"
+    "photo": "/speakers-avatars/spk-abdallah-matar.jpg",
+    "sessionId": "d2-d-6",
+    "avatar": "/speakers-avatars/spk-abdallah-matar.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.52%20PM.jpeg"
   },
   {
     "id": "spk-samuel-armanious",
@@ -246,8 +294,10 @@
     "specialty": "Endodontics",
     "initials": "SA",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d2-p-5"
+    "photo": "/speakers-avatars/spk-samuel-armanious.jpg",
+    "sessionId": "d2-p-5",
+    "avatar": "/speakers-avatars/spk-samuel-armanious.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM%20%281%29.jpeg"
   },
   {
     "id": "spk-mhammad-nagah",
@@ -256,8 +306,10 @@
     "specialty": "Orthodontics",
     "initials": "MN",
     "avatarTone": "emerald",
-    "photo": null,
-    "sessionId": "d2-d-7"
+    "photo": "/speakers-avatars/spk-mhammad-nagah.jpg",
+    "sessionId": "d2-d-7",
+    "avatar": "/speakers-avatars/spk-mhammad-nagah.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%284%29.jpeg"
   },
   {
     "id": "spk-ibrahim-elsharabasy",
@@ -266,7 +318,9 @@
     "specialty": "Implantology",
     "initials": "IE",
     "avatarTone": "navy",
-    "photo": null,
-    "sessionId": "d2-p-6"
+    "photo": "/speakers-avatars/spk-ibrahim-elsharabasy.jpg",
+    "sessionId": "d2-p-6",
+    "avatar": "/speakers-avatars/spk-ibrahim-elsharabasy.jpg",
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%281%29.jpeg"
   }
 ]
