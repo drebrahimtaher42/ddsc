@@ -377,7 +377,7 @@ export function HomeView({
           <SectionHeading
             eyebrow="2026 Program"
             title="Scientific Sessions"
-            description={`${lecturePosters.length} accredited keynote & specialty lectures across two halls. Tap any session to view full details.`}
+            description={`${lecturePosters.length} accredited keynote & specialty lectures across two halls.`}
             aside={
               <motion.button
                 type="button"
