@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import {
   Bookmark,
@@ -14,7 +14,14 @@ import {
 import { LiveBanner } from './LiveBanner';
 import { PostersShowcase } from './PostersShowcase';
 import { SectionHeading } from './SectionHeading';
-import { formatTime12h } from '../utils/time';
+import {
+  REMOTE_LIVE_CONFIG_URL,
+  DEFAULT_LIVE_CONFIG,
+  normalizeLiveConfig,
+  shiftSessionByMinutes,
+  getLiveConferenceState,
+  formatTime12h,
+} from '../utils/time';
 import { specialtyPillStyle, getSpecialtyColor } from '../utils/specialty';
 import { staggerListVariants, cardItemVariants, EASE_OUT } from '../utils/motion';
 
@@ -148,10 +155,65 @@ export function ScheduleView({
   const [hallFilter, setHallFilter] = useState('all');
   const [specialtyFilter, setSpecialtyFilter] = useState('all');
   const [specialtyOpen, setSpecialtyOpen] = useState(false);
+  const [liveConfig, setLiveConfig] = useState(DEFAULT_LIVE_CONFIG);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchLiveConfig = async () => {
+      try {
+        const res = await fetch(`${REMOTE_LIVE_CONFIG_URL}?t=${Date.now()}`, {
+          cache: 'no-store',
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (isMounted && data && typeof data === 'object') {
+          setLiveConfig(normalizeLiveConfig(data));
+        }
+      } catch {
+        // Fallback silently to current / default config when offline or unreachable
+      }
+    };
+
+    fetchLiveConfig();
+    const intervalId = window.setInterval(fetchLiveConfig, 60000);
+    return () => {
+      isMounted = false;
+      window.clearInterval(intervalId);
+    };
+  }, []);
+
+  const effectiveLiveState = useMemo(
+    () =>
+      schedule && conference
+        ? getLiveConferenceState(nowMs, schedule, conference, liveConfig)
+        : liveState,
+    [nowMs, schedule, conference, liveConfig, liveState]
+  );
+
+  const displaySchedule = useMemo(() => {
+    const shiftDiwan =
+      liveConfig.alDiwanShiftFullSchedule && liveConfig.alDiwanDelayMinutes > 0;
+    const shiftPrincess =
+      liveConfig.princessShiftFullSchedule && liveConfig.princessDelayMinutes > 0;
+
+    if (!shiftDiwan && !shiftPrincess) return schedule;
+
+    return schedule.map((item) => {
+      if (item.type !== 'session') return item;
+      if (item.hall === 'diwan' && shiftDiwan) {
+        return shiftSessionByMinutes(item, liveConfig.alDiwanDelayMinutes, true);
+      }
+      if (item.hall === 'princess' && shiftPrincess) {
+        return shiftSessionByMinutes(item, liveConfig.princessDelayMinutes, true);
+      }
+      return item;
+    });
+  }, [schedule, liveConfig]);
 
   const dayItems = useMemo(
-    () => schedule.filter((item) => item.day === selectedDay),
-    [schedule, selectedDay]
+    () => displaySchedule.filter((item) => item.day === selectedDay),
+    [displaySchedule, selectedDay]
   );
 
   const specialtyOptions = useMemo(() => {
@@ -197,15 +259,17 @@ export function ScheduleView({
 
   return (
     <div className="space-y-6">
-      <LiveBanner
-        liveState={liveState}
-        nowMs={nowMs}
-        previewPresetId={previewPresetId}
-        onTogglePreview={onTogglePreview}
-        onSelectPreset={onSelectPreset}
-        onSelectSession={onSelectSession}
-        conference={conference}
-      />
+      {liveConfig.liveEnabled !== false && (
+        <LiveBanner
+          liveState={effectiveLiveState}
+          nowMs={nowMs}
+          previewPresetId={previewPresetId}
+          onTogglePreview={onTogglePreview}
+          onSelectPreset={onSelectPreset}
+          onSelectSession={onSelectSession}
+          conference={conference}
+        />
+      )}
 
       <SectionHeading
         eyebrow="Scientific Programme"
@@ -416,7 +480,9 @@ export function ScheduleView({
           </motion.li>
         ) : (
           filteredItems.map((item) => {
-            const isLive = liveState.liveIds?.has(item.id);
+            const isLive =
+              liveConfig.liveEnabled !== false &&
+              effectiveLiveState.liveIds?.has(item.id);
 
             /* ── Break / ceremony / prayer rows ── */
             if (item.type === 'special') {
@@ -525,6 +591,11 @@ export function ScheduleView({
                             style={specialtyPillStyle(item.specialty)}
                           >
                             {item.specialty}
+                          </span>
+                        )}
+                        {item.isShifted && item.delayMinutes > 0 && (
+                          <span className="inline-flex items-center rounded-full border border-amber-500/25 bg-amber-500/10 px-2 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold text-amber-700">
+                            Adjusted +{item.delayMinutes}m
                           </span>
                         )}
                         {isLive && (

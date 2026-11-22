@@ -1,3 +1,63 @@
+export const REMOTE_LIVE_CONFIG_URL =
+  'https://gist.githubusercontent.com/drebrahimtaher42/684ca53df6f22b4dcc19911481e32a8a/raw/ddsc-live-config.json';
+
+export const DEFAULT_LIVE_CONFIG = {
+  liveEnabled: true,
+  alDiwanDelayMinutes: 0,
+  alDiwanShiftFullSchedule: false,
+  princessDelayMinutes: 0,
+  princessShiftFullSchedule: false,
+};
+
+export function normalizeLiveConfig(raw) {
+  if (!raw || typeof raw !== 'object') return { ...DEFAULT_LIVE_CONFIG };
+  const toDelay = (val) => {
+    const n = Number(val);
+    return Number.isFinite(n) ? Math.round(n) : 0;
+  };
+  return {
+    liveEnabled:
+      typeof raw.liveEnabled === 'boolean'
+        ? raw.liveEnabled
+        : DEFAULT_LIVE_CONFIG.liveEnabled,
+    alDiwanDelayMinutes: toDelay(raw.alDiwanDelayMinutes),
+    alDiwanShiftFullSchedule: Boolean(raw.alDiwanShiftFullSchedule),
+    princessDelayMinutes: toDelay(raw.princessDelayMinutes),
+    princessShiftFullSchedule: Boolean(raw.princessShiftFullSchedule),
+  };
+}
+
+export function shiftTime24(time24, delayMinutes) {
+  if (!time24 || !delayMinutes) return time24;
+  const [hourStr, minuteStr] = time24.split(':');
+  const hour = parseInt(hourStr, 10);
+  const minute = parseInt(minuteStr, 10);
+  if (Number.isNaN(hour) || Number.isNaN(minute)) return time24;
+  const total = (((hour * 60 + minute + delayMinutes) % 1440) + 1440) % 1440;
+  const newH = String(Math.floor(total / 60)).padStart(2, '0');
+  const newM = String(total % 60).padStart(2, '0');
+  return `${newH}:${newM}`;
+}
+
+export function shiftSessionByMinutes(session, delayMinutes, isShifted = false) {
+  const mins = Number(delayMinutes) || 0;
+  if (!session || mins === 0) {
+    return session;
+  }
+  const shiftMs = mins * 60000;
+  return {
+    ...session,
+    originalStartTime: session.originalStartTime || session.startTime,
+    originalEndTime: session.originalEndTime || session.endTime,
+    startTime: shiftTime24(session.startTime, mins),
+    endTime: shiftTime24(session.endTime, mins),
+    startIso: new Date(Date.parse(session.startIso) + shiftMs).toISOString(),
+    endIso: new Date(Date.parse(session.endIso) + shiftMs).toISOString(),
+    delayMinutes: mins,
+    isShifted,
+  };
+}
+
 export const PREVIEW_PRESETS = [
   {
     id: 'd1-morning',
@@ -93,12 +153,33 @@ export function getMinutesRemaining(endIso, nowMs) {
 }
 
 /**
- * Evaluates live conference status comparing nowMs against ISO +02:00 Cairo timestamps.
+ * Evaluates live conference status comparing nowMs against ISO +02:00 Cairo timestamps,
+ * applying per-hall delay offsets (alDiwanDelayMinutes, princessDelayMinutes) to Live Mode.
  */
-export function getLiveConferenceState(nowMs, schedule, conference) {
+export function getLiveConferenceState(
+  nowMs,
+  schedule,
+  conference,
+  liveConfig = DEFAULT_LIVE_CONFIG
+) {
+  const cfg = normalizeLiveConfig(liveConfig);
+  const liveSchedule = schedule.map((item) => {
+    if (item.type !== 'session') return item;
+    if (item.hall === 'diwan' && cfg.alDiwanDelayMinutes) {
+      return shiftSessionByMinutes(item, cfg.alDiwanDelayMinutes, true);
+    }
+    if (item.hall === 'princess' && cfg.princessDelayMinutes) {
+      return shiftSessionByMinutes(item, cfg.princessDelayMinutes, true);
+    }
+    return item;
+  });
+
   const openingMs = Date.parse(conference.openingCeremonyIso);
-  const conferenceEndMs = Date.parse(conference.conferenceEndIso);
-  const firstEventMs = Math.min(...schedule.map((item) => Date.parse(item.startIso)));
+  const conferenceEndMs = Math.max(
+    Date.parse(conference.conferenceEndIso),
+    ...liveSchedule.map((item) => Date.parse(item.endIso))
+  );
+  const firstEventMs = Math.min(...liveSchedule.map((item) => Date.parse(item.startIso)));
 
   const countdown = getCountdownParts(openingMs, nowMs);
 
@@ -135,7 +216,7 @@ export function getLiveConferenceState(nowMs, schedule, conference) {
   }
 
   // Active conference window (26–27 Nov 2026)
-  const liveSessions = schedule.filter((item) => {
+  const liveSessions = liveSchedule.filter((item) => {
     const start = Date.parse(item.startIso);
     const end = Date.parse(item.endIso);
     return nowMs >= start && nowMs < end;
@@ -147,7 +228,7 @@ export function getLiveConferenceState(nowMs, schedule, conference) {
   const liveIds = new Set(liveSessions.map((s) => s.id));
 
   // Find earliest upcoming event(s)
-  const upcoming = schedule
+  const upcoming = liveSchedule
     .filter((item) => Date.parse(item.startIso) > nowMs)
     .sort((a, b) => Date.parse(a.startIso) - Date.parse(b.startIso));
 
