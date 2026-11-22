@@ -210,7 +210,7 @@ export function ScheduleView({
       <SectionHeading
         eyebrow="Scientific Programme"
         title="Conference Agenda"
-        description={`${activeDay?.fullLabel} · ${sessionCount} accredited lectures across two parallel halls. Times shown in Cairo (GMT+2).`}
+        description={`${activeDay?.fullLabel} · ${sessionCount} accredited lectures across two parallel halls.`}
       />
 
       {/* Compact Sticky Glass Filter Bar */}
