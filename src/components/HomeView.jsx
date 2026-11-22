@@ -250,11 +250,11 @@ export function HomeView({
           animate="visible"
           className="relative z-10 mx-auto max-w-5xl px-4 pt-12 pb-24 sm:px-6 sm:pt-20 sm:pb-32"
         >
-          <div className="max-w-2xl">
+          <div className="max-w-3xl">
             {/* High-Contrast Display Headline */}
             <motion.h1
               variants={cardItemVariants}
-              className="font-display text-3xl sm:text-5xl font-bold tracking-tight leading-[1.12] bg-gradient-to-r from-white via-white to-[#6EE7B7] bg-clip-text text-transparent"
+              className="font-display text-[1.65rem] min-[390px]:text-[1.9rem] sm:text-5xl md:text-6xl font-bold whitespace-nowrap tracking-tight leading-[1.12] bg-gradient-to-r from-white via-white to-[#6EE7B7] bg-clip-text text-transparent"
             >
               A New Era of Dentistry
             </motion.h1>
