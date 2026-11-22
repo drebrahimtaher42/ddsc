@@ -251,18 +251,10 @@ export function HomeView({
           className="relative z-10 mx-auto max-w-5xl px-4 pt-12 pb-24 sm:px-6 sm:pt-20 sm:pb-32"
         >
           <div className="max-w-2xl">
-            {/* Single Minimalist Micro-Badge */}
-            <motion.div variants={cardItemVariants}>
-              <span className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] border border-white/10 px-3.5 py-1.5 font-display text-[11px] sm:text-xs font-semibold tracking-widest uppercase text-[#6EE7B7] backdrop-blur-md">
-                <span className="h-1.5 w-1.5 rounded-full bg-[#3AB498]" />
-                <span>26–27 NOV 2026 • STEIGENBERGER EL LESSAN</span>
-              </span>
-            </motion.div>
-
             {/* High-Contrast Display Headline */}
             <motion.h1
               variants={cardItemVariants}
-              className="mt-6 font-display text-3xl sm:text-5xl font-bold tracking-tight leading-[1.12] bg-gradient-to-r from-white via-white to-[#6EE7B7] bg-clip-text text-transparent"
+              className="font-display text-3xl sm:text-5xl font-bold tracking-tight leading-[1.12] bg-gradient-to-r from-white via-white to-[#6EE7B7] bg-clip-text text-transparent"
             >
               A New Era of Dentistry
             </motion.h1>
