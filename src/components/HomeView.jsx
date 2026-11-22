@@ -248,7 +248,7 @@ export function HomeView({
           variants={staggerListVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 mx-auto max-w-5xl px-4 pt-12 pb-24 sm:px-6 sm:pt-20 sm:pb-32"
+          className="relative z-10 mx-auto max-w-5xl px-4 pt-14 pb-24 sm:px-6 sm:pt-20 sm:pb-28"
         >
           <div className="max-w-3xl">
             {/* High-Contrast Display Headline */}
@@ -270,12 +270,12 @@ export function HomeView({
             {/* Lead Paragraph & Official Campaign Pillars */}
             <motion.p
               variants={cardItemVariants}
-              className="mt-4 text-sm sm:text-base text-slate-300/90 text-balance max-w-sm sm:max-w-lg leading-relaxed"
+              className="mt-5 text-sm sm:text-base text-slate-300/90 text-balance max-w-sm sm:max-w-lg leading-relaxed"
             >
               Uniting 27+ scientific keynotes, hands-on labs, and a dental community growing since 1995.
             </motion.p>
 
-            <motion.div variants={cardItemVariants} className="mt-4">
+            <motion.div variants={cardItemVariants} className="mt-6">
               <span className="inline-flex items-center gap-2 rounded-full bg-white/[0.06] border border-white/10 px-3 py-1 font-display text-[10px] sm:text-[11px] font-bold tracking-[0.22em] uppercase text-[#8CE9D2]">
                 MEET · SHARE · CONNECT
               </span>
@@ -322,7 +322,7 @@ export function HomeView({
         <motion.section
           variants={cardItemVariants}
           aria-label="Conference Highlights"
-          className="-mt-8 sm:-mt-10 relative z-10 bg-white rounded-2xl shadow-lg border border-slate-100 grid grid-cols-3 divide-x divide-slate-100 py-4 px-2"
+          className="-mt-10 sm:-mt-12 mb-10 relative z-10 bg-white rounded-2xl shadow-lg border border-slate-100 grid grid-cols-3 divide-x divide-slate-100 py-4 px-2"
         >
           {highlights.map((stat) => {
             const Icon = stat.icon;
