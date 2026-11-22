@@ -1,0 +1,91 @@
+{
+  "name": "DDSC 2026",
+  "fullName": "Damietta Dental Syndicate Conference",
+  "edition": "The 29th Edition",
+  "tagline": "The largest annual conference in Delta",
+  "datesLabel": "26–27 November 2026",
+  "timezone": "Africa/Cairo",
+  "openingCeremonyIso": "2026-11-26T09:30:00+02:00",
+  "conferenceEndIso": "2026-11-27T17:25:00+02:00",
+  "days": [
+    {
+      "id": "day1",
+      "date": "2026-11-26",
+      "shortLabel": "Day 1",
+      "fullLabel": "Day 1 (Thu, 26 Nov)",
+      "dayDate": "Thu, 26 Nov"
+    },
+    {
+      "id": "day2",
+      "date": "2026-11-27",
+      "shortLabel": "Day 2",
+      "fullLabel": "Day 2 (Fri, 27 Nov)",
+      "dayDate": "Fri, 27 Nov"
+    }
+  ],
+  "halls": {
+    "princess": {
+      "id": "princess",
+      "name": "Princess Hall",
+      "floor": "Main Ballroom · Ground Level",
+      "accent": "#0D224C"
+    },
+    "diwan": {
+      "id": "diwan",
+      "name": "Al Diwan Hall",
+      "floor": "Nile Wing · Level 1",
+      "accent": "#086958"
+    }
+  },
+  "whatsapp": {
+    "number": "201500990404",
+    "displayPhone": "+20 150 099 0404",
+    "tel": "+201500990404",
+    "bookingMessage": "Hello, I would like to book a ticket for DDSC 2026",
+    "supportMessage": "Hello, I have a question regarding DDSC 2026",
+    "bundleMessage": "Hello, I would like to book a DDSC 2026 Workshop Bundle"
+  },
+  "social": {
+    "facebook": "https://www.facebook.com/share/1CKne4WebU/",
+    "instagram": "https://www.instagram.com/ddsc_damietta?dmpr=d2JkcGh6emhpODF2"
+  },
+  "venue": {
+    "name": "Steigenberger Hotel El Lessan",
+    "city": "Ras El Bar, Damietta, Egypt",
+    "address": "El Lessan Peninsula, Ras El Bar, Damietta Governorate 34721, Egypt",
+    "description": "Positioned at the landmark meeting point of the Nile River and the Mediterranean Sea. Complimentary valet parking and badge collection are available at the Grand Lobby.",
+    "mapsUrl": "https://www.google.com/maps/search/?api=1&query=Steigenberger+Hotel+El+Lessan+Ras+El+Bar+Damietta"
+  },
+  "keyTimings": [
+    {
+      "id": "opening",
+      "label": "Opening Ceremony",
+      "time": "9:30 AM – 11:00 AM",
+      "day": "Thu, 26 Nov"
+    },
+    {
+      "id": "day1-sessions",
+      "label": "Day 1 Scientific Sessions",
+      "time": "11:00 AM – 4:55 PM",
+      "day": "Thu, 26 Nov"
+    },
+    {
+      "id": "day2-sessions",
+      "label": "Day 2 Scientific Sessions",
+      "time": "10:00 AM – 5:25 PM",
+      "day": "Fri, 27 Nov"
+    },
+    {
+      "id": "prayer",
+      "label": "Friday Prayer Break",
+      "time": "11:25 AM – 1:00 PM",
+      "day": "Fri, 27 Nov"
+    },
+    {
+      "id": "exhibition",
+      "label": "Dental Exhibition Hall",
+      "time": "9:00 AM – 6:00 PM",
+      "day": "Daily"
+    }
+  ]
+}

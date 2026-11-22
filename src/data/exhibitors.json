@@ -1,0 +1,110 @@
+[
+  {
+    "id": "exh-1",
+    "name": "Straumann Group Egypt",
+    "shortCode": "SG",
+    "category": "Implants",
+    "booth": "A-01",
+    "tagline": "Swiss precision implant systems & biomaterials",
+    "conferenceDeal": "15% off surgical kits"
+  },
+  {
+    "id": "exh-2",
+    "name": "Osstem Implant",
+    "shortCode": "OS",
+    "category": "Implants",
+    "booth": "A-03",
+    "tagline": "TSIII fixtures, bone grafts & guided surgery",
+    "conferenceDeal": "Bonus fixtures bundle"
+  },
+  {
+    "id": "exh-3",
+    "name": "Neodent by Straumann",
+    "shortCode": "ND",
+    "category": "Implants",
+    "booth": "A-05",
+    "tagline": "Immediate-loading Grand Morse implant solutions",
+    "conferenceDeal": null
+  },
+  {
+    "id": "exh-4",
+    "name": "Dentsply Sirona",
+    "shortCode": "DS",
+    "category": "Equipment",
+    "booth": "B-01",
+    "tagline": "Endodontic motors, imaging & treatment centers",
+    "conferenceDeal": "0% installment plan"
+  },
+  {
+    "id": "exh-5",
+    "name": "Woodpecker Medical",
+    "shortCode": "WP",
+    "category": "Equipment",
+    "booth": "B-04",
+    "tagline": "Ultrasonic scalers, curing lights & apex locators",
+    "conferenceDeal": "Conference bundle pricing"
+  },
+  {
+    "id": "exh-6",
+    "name": "Zumax Optical",
+    "shortCode": "ZM",
+    "category": "Equipment",
+    "booth": "B-06",
+    "tagline": "Dental operating microscopes & ergonomic loupes",
+    "conferenceDeal": null
+  },
+  {
+    "id": "exh-7",
+    "name": "3M Oral Care",
+    "shortCode": "3M",
+    "category": "Materials",
+    "booth": "C-02",
+    "tagline": "Universal adhesives, composites & resin cements",
+    "conferenceDeal": "Buy 3 get 1 syringe"
+  },
+  {
+    "id": "exh-8",
+    "name": "GC Dental",
+    "shortCode": "GC",
+    "category": "Materials",
+    "booth": "C-04",
+    "tagline": "Glass ionomers, bio-active restoratives & ceramics",
+    "conferenceDeal": "Free starter pack"
+  },
+  {
+    "id": "exh-9",
+    "name": "FKG Dentaire",
+    "shortCode": "FK",
+    "category": "Materials",
+    "booth": "C-07",
+    "tagline": "Swiss rotary NiTi files & bioceramic sealers",
+    "conferenceDeal": null
+  },
+  {
+    "id": "exh-10",
+    "name": "Medit & Delta Digital Lab",
+    "shortCode": "MD",
+    "category": "Digital & Lab",
+    "booth": "D-01",
+    "tagline": "Intraoral scanners, CAD design & monolithic milling",
+    "conferenceDeal": "Live scanner trade-in"
+  },
+  {
+    "id": "exh-11",
+    "name": "Shining 3D Dental",
+    "shortCode": "S3",
+    "category": "Digital & Lab",
+    "booth": "D-03",
+    "tagline": "Aoralscan scanners & chairside dental 3D printers",
+    "conferenceDeal": "Free resin starter kit"
+  },
+  {
+    "id": "exh-12",
+    "name": "Biolase & LaserMed",
+    "shortCode": "BL",
+    "category": "Digital & Lab",
+    "booth": "D-05",
+    "tagline": "Diode & Er,Cr:YSGG clinical dental laser systems",
+    "conferenceDeal": null
+  }
+]

@@ -1,0 +1,30 @@
+[
+  {
+    "id": "board-mohamed-al-shahat",
+    "name": "Prof. Mohamed Al-Shahat",
+    "role": "Honorary President",
+    "initials": "MS",
+    "photo": "/board/prof-mohamed-al-shahat.jpg.jpeg"
+  },
+  {
+    "id": "board-tarek-el-zeky",
+    "name": "Dr. Tarek El Zeky",
+    "role": "Conference Chairman",
+    "initials": "TZ",
+    "photo": "/board/dr-tarek-el-zeky.jpg.jpeg"
+  },
+  {
+    "id": "board-ahmed-attaby",
+    "name": "Dr. Ahmed Attaby",
+    "role": "Secretary General of the Syndicate",
+    "initials": "AA",
+    "photo": "/board/dr-ahmed-attaby.jpg.jpeg"
+  },
+  {
+    "id": "board-mohammed-abd-elrahman",
+    "name": "Dr. Mohammed Abd Elrahman",
+    "role": "Conference Director",
+    "initials": "MA",
+    "photo": "/board/dr-mohammed-abd-elrahman.jpg.jpeg"
+  }
+]

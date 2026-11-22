@@ -1,0 +1,128 @@
+[
+  {
+    "id": "ws-pediatric",
+    "title": "Stainless Steel Crowns & Pediatric Zirconia Crowns",
+    "specialty": "Pediatric",
+    "instructor": "Dr. Ibrahim Mansour & Dr. Ahmed Waly",
+    "instructorTitle": "RCSEd Regional Ambassador · Assoc. Prof & Head of Pediatric Dentistry Dept., Al-Azhar & Horus University",
+    "dateKey": "2026-11-20",
+    "date": "20 Nov 2026",
+    "dayLabel": "20 Nov 2026",
+    "time": "Pre-Conference Hands-On",
+    "room": "Marhaba Dental Lounge",
+    "seatsLeft": 5,
+    "fee": "2,000 EGP",
+    "poster": "/posters/ws-pediatric.jpg.jpg",
+    "highlights": [
+      "Step-by-step stainless steel crown tooth preparation, sizing, crimping, and cementation",
+      "Passive-fit pediatric zirconia crown preparation guidelines for primary anterior and posterior teeth",
+      "Hands-on clinical tips for managing subgingival margins, hemostasis, and occlusion in children",
+      "Includes official DDSC 2026 hands-on workshop certificate"
+    ]
+  },
+  {
+    "id": "ws-class4",
+    "title": "Artistic Class IV Layering",
+    "specialty": "Restorative",
+    "instructor": "Dr. Ahmad Alhakim",
+    "instructorTitle": "Specialist in Aesthetic & Adhesive Restorative Dentistry",
+    "dateKey": "2026-11-20",
+    "date": "20 Nov 2026",
+    "dayLabel": "20 Nov 2026",
+    "time": "Pre-Conference Hands-On",
+    "room": "ConfiDental Center",
+    "seatsLeft": 6,
+    "fee": "1,500 EGP",
+    "poster": "/posters/ws-class4.jpg.jpg",
+    "highlights": [
+      "Palatal silicone index fabrication and predictable Class IV bevel design",
+      "Polychromatic composite layering for lifelike mamelons, translucency, and incisal halo",
+      "Primary, secondary, and tertiary surface anatomy with high-luster polishing protocol",
+      "Includes official DDSC 2026 hands-on workshop certificate"
+    ]
+  },
+  {
+    "id": "ws-3dprint",
+    "title": "3D Printed Permanent Restorations in Everyday Practice",
+    "specialty": "Digital & Laser",
+    "instructor": "Dr. Assem Abdelwahab",
+    "instructorTitle": "Digital Dentistry & 3D Printing Specialist",
+    "dateKey": "2026-11-22",
+    "date": "22 Nov 2026",
+    "dayLabel": "22 Nov 2026",
+    "time": "Pre-Conference Hands-On",
+    "room": "ConfiDental Center",
+    "seatsLeft": 7,
+    "fee": "1,000 EGP",
+    "poster": "/posters/ws-3dprint.jpg.jpg",
+    "highlights": [
+      "Complete chairside workflow for 3D printed permanent crowns, inlays, and onlays",
+      "Resin selection, nesting orientation, washing, and post-curing protocols for clinical durability",
+      "Characterization, glazing, and reliable adhesive cementation of printed ceramic-filled resins",
+      "Includes official DDSC 2026 hands-on workshop certificate"
+    ]
+  },
+  {
+    "id": "ws-ortho",
+    "title": "Early Intervention: Primary & Mixed Dentition",
+    "specialty": "Orthodontics",
+    "instructor": "Dr. Ali Ebeid",
+    "instructorTitle": "Orthodontics & Interceptive Dentofacial Specialist",
+    "dateKey": "2026-11-22",
+    "date": "22 Nov 2026",
+    "dayLabel": "22 Nov 2026",
+    "time": "Pre-Conference Hands-On",
+    "room": "OrthoMaster Academy",
+    "seatsLeft": 6,
+    "fee": "1,000 EGP",
+    "poster": "/posters/ws-ortho.jpg.jpg",
+    "highlights": [
+      "Early diagnosis of developing malocclusions during primary and mixed dentition stages",
+      "Space maintenance, serial guidance, and interceptive appliance selection",
+      "Managing crossbites, oral habits, and ectopic eruptions to prevent complex skeletal issues",
+      "Includes official DDSC 2026 hands-on workshop certificate"
+    ]
+  },
+  {
+    "id": "ws-crown-lengthening",
+    "title": "Predictable Aesthetic Crown Lengthening",
+    "specialty": "Periodontics",
+    "instructor": "Dr. Ayman Ehab",
+    "instructorTitle": "Periodontology & Aesthetic Mucogingival Surgery Specialist",
+    "dateKey": "2026-11-24",
+    "date": "24 Nov 2026",
+    "dayLabel": "24 Nov 2026",
+    "time": "Pre-Conference Hands-On",
+    "room": "ConfiDental Center",
+    "seatsLeft": 4,
+    "fee": "1,500 EGP",
+    "poster": "/posters/ws-crown-lengthening.jpg.jpg",
+    "highlights": [
+      "Diagnosing altered passive eruption, gummy smile etiology, and supracrestal tissue attachment",
+      "Digital & clinical surgical guide planning for symmetrical gingival zeniths",
+      "Flapless vs. open-flap ostectomy and suturing techniques for stable healing without rebound",
+      "Includes official DDSC 2026 hands-on workshop certificate"
+    ]
+  },
+  {
+    "id": "ws-surgical-guide",
+    "title": "Create Your Own Surgical Guide: From Designing to Printing Using Atomica Software",
+    "specialty": "Implantology",
+    "instructor": "Dr. Mosaad Soliem",
+    "instructorTitle": "Guided Implantology & Digital Surgical Planning Specialist",
+    "dateKey": "2026-11-25",
+    "date": "25 Nov 2026",
+    "dayLabel": "25 Nov 2026",
+    "time": "Pre-Conference Hands-On",
+    "room": "TBA (Damietta)",
+    "seatsLeft": 5,
+    "fee": "2,000 EGP",
+    "poster": "/posters/ws-surgical-guide.jpg.jpg",
+    "highlights": [
+      "CBCT DICOM and intraoral STL alignment inside Atomica surgical planning software",
+      "Prosthetically driven virtual implant placement, sleeve offset selection, and guide design",
+      "Exporting, slicing, and 3D printing accurate tooth-supported surgical guides",
+      "Includes official DDSC 2026 hands-on workshop certificate"
+    ]
+  }
+]

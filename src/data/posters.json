@@ -1,0 +1,38 @@
+[
+  {
+    "id": "highlight-reason-cover",
+    "title": "3 Reasons You Can't Miss DDSC 2026",
+    "subtitle": "26–27 November 2026 · Steigenberger Hotel El Lessan",
+    "badge": "DDSC 2026",
+    "meta": "Meet · Share · Connect",
+    "image": "/highlights/reason-cover.jpg.jpg",
+    "tone": "gradient"
+  },
+  {
+    "id": "highlight-reason-1",
+    "title": "3D Printing, AI & Guided Surgery",
+    "subtitle": "Cutting-edge scientific sessions across two parallel halls",
+    "badge": "Reason 1 · Topics",
+    "meta": "27+ Scientific Lectures",
+    "image": "/highlights/reason-1-topics.jpg.jpg",
+    "tone": "navy"
+  },
+  {
+    "id": "highlight-reason-2",
+    "title": "Hands-On Clinical Skills (Learn → Design → Apply)",
+    "subtitle": "Small-group pre-conference labs built for daily clinical impact",
+    "badge": "Reason 2 · Workshops",
+    "meta": "Practical Training",
+    "image": "/highlights/reason-2-workshops.jpg.jpg",
+    "tone": "emerald"
+  },
+  {
+    "id": "highlight-reason-3",
+    "title": "A Community Growing Since 1995",
+    "subtitle": "31 years of dental excellence across Damietta & the Delta",
+    "badge": "Reason 3 · Legacy",
+    "meta": "Since 1995",
+    "image": "/highlights/reason-3-community.jpg.jpg",
+    "tone": "gradient"
+  }
+]

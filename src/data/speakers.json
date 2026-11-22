@@ -1,0 +1,272 @@
+[
+  {
+    "id": "spk-abdulrahman-eldabousy",
+    "name": "Dr. Abdulrahman Eldabousy",
+    "title": "Implantology · Al Diwan Hall",
+    "specialty": "Implantology",
+    "initials": "AE",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d1-d-1"
+  },
+  {
+    "id": "spk-essam-zaatar",
+    "name": "Dr. Essam I. Zaatar",
+    "title": "Practice & Media · Princess Hall",
+    "specialty": "Practice & Media",
+    "initials": "EZ",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d1-p-1"
+  },
+  {
+    "id": "spk-moustafa-tawfik",
+    "name": "Counselor Dr. Moustafa Tawfik",
+    "title": "Practice & Legal · Al Diwan Hall",
+    "specialty": "Practice & Legal",
+    "initials": "MT",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d1-d-2"
+  },
+  {
+    "id": "spk-mosaad-soliem",
+    "name": "Dr. Mosaad Soliem",
+    "title": "Implantology · Princess Hall",
+    "specialty": "Implantology",
+    "initials": "MS",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d1-p-2"
+  },
+  {
+    "id": "spk-mostafa-swedan",
+    "name": "Dr. Mostafa Swedan",
+    "title": "Prosthodontics · Al Diwan Hall",
+    "specialty": "Prosthodontics",
+    "initials": "MS",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d1-d-3"
+  },
+  {
+    "id": "spk-mostafa-nabil-hamid",
+    "name": "Dr. Mostafa Nabil Hamid",
+    "title": "Pediatric · Princess Hall",
+    "specialty": "Pediatric",
+    "initials": "MH",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d1-p-3"
+  },
+  {
+    "id": "spk-ahmed-ezz",
+    "name": "Dr. Ahmed Ezz",
+    "title": "Endodontics · Al Diwan Hall",
+    "specialty": "Endodontics",
+    "initials": "AE",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d1-d-4"
+  },
+  {
+    "id": "spk-ahmed-mosaad",
+    "name": "Dr. Ahmed Mosaad",
+    "title": "Practice Management · Princess Hall",
+    "specialty": "Practice Management",
+    "initials": "AM",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d1-p-4"
+  },
+  {
+    "id": "spk-abdelrahman-fadag",
+    "name": "Asst. Prof. Abd Elrahman Fadag",
+    "title": "Endodontics · Al Diwan Hall",
+    "specialty": "Endodontics",
+    "initials": "AF",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d1-d-5"
+  },
+  {
+    "id": "spk-islam-kassem",
+    "name": "Dr. Islam Kassem",
+    "title": "Aesthetics & AI · Princess Hall",
+    "specialty": "Aesthetics & AI",
+    "initials": "IK",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d1-p-5"
+  },
+  {
+    "id": "spk-mohamed-bialy",
+    "name": "Dr. Mohamed Bialy",
+    "title": "Endodontics · Al Diwan Hall",
+    "specialty": "Endodontics",
+    "initials": "MB",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d1-d-6"
+  },
+  {
+    "id": "spk-sameh-shaaban",
+    "name": "Dr. Sameh Shaaban",
+    "title": "Endodontics · Princess Hall",
+    "specialty": "Endodontics",
+    "initials": "SS",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d1-p-6"
+  },
+  {
+    "id": "spk-mohamed-al-diasty",
+    "name": "Dr. Mohamed Al Diasty",
+    "title": "Endodontics · Al Diwan Hall",
+    "specialty": "Endodontics",
+    "initials": "MD",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d1-d-7"
+  },
+  {
+    "id": "spk-karim-galal-moawad",
+    "name": "Dr. Karim Galal Moawad",
+    "title": "Restorative · Princess Hall",
+    "specialty": "Restorative",
+    "initials": "KM",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d1-p-7"
+  },
+  {
+    "id": "spk-muhammad-abaza",
+    "name": "Dr. Muhammad Abaza",
+    "title": "Laser Dentistry · Al Diwan Hall",
+    "specialty": "Laser Dentistry",
+    "initials": "MA",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d2-d-1"
+  },
+  {
+    "id": "spk-noha-ghallab",
+    "name": "Prof. Dr. Noha A. Ghallab",
+    "title": "Periodontics · Princess Hall",
+    "specialty": "Periodontics",
+    "initials": "NG",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d2-p-1"
+  },
+  {
+    "id": "spk-mahmoud-shalaby",
+    "name": "Dr. Mahmoud Shalaby",
+    "title": "Career & Education · Al Diwan Hall",
+    "specialty": "Career & Education",
+    "initials": "MS",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d2-d-2"
+  },
+  {
+    "id": "spk-khaled-zaghloul",
+    "name": "Dr. Khaled Ibrahim Zaghloul",
+    "title": "Prosthodontics · Princess Hall",
+    "specialty": "Prosthodontics",
+    "initials": "KZ",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d2-p-2"
+  },
+  {
+    "id": "spk-ahmed-abdelwahed-shaaban",
+    "name": "Prof. Ahmed Abdelwahed Shaaban",
+    "title": "Oral Medicine · Al Diwan Hall",
+    "specialty": "Oral Medicine",
+    "initials": "AS",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d2-d-3"
+  },
+  {
+    "id": "spk-idce-ahmed-fettouh",
+    "name": "IDCE Team led by Prof. Ahmed A. Fettouh",
+    "title": "Implantology · Princess Hall",
+    "specialty": "Implantology",
+    "initials": "AF",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d2-p-3"
+  },
+  {
+    "id": "spk-hala-hazzaa",
+    "name": "Prof. Hala Hazzaa",
+    "title": "Oral Medicine · Al Diwan Hall",
+    "specialty": "Oral Medicine",
+    "initials": "HH",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d2-d-4"
+  },
+  {
+    "id": "spk-mahmoud-ramadan",
+    "name": "Asst. Prof. Mahmoud Ramadan",
+    "title": "Prosthodontics · Al Diwan Hall",
+    "specialty": "Prosthodontics",
+    "initials": "MR",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d2-d-5"
+  },
+  {
+    "id": "spk-ahmed-korayem",
+    "name": "Dr. Ahmed Korayem",
+    "title": "Digital Dentistry · Princess Hall",
+    "specialty": "Digital Dentistry",
+    "initials": "AK",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d2-p-4"
+  },
+  {
+    "id": "spk-abdallah-matar",
+    "name": "Prof. Abdallah Matar",
+    "title": "Periodontics · Al Diwan Hall",
+    "specialty": "Periodontics",
+    "initials": "AM",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d2-d-6"
+  },
+  {
+    "id": "spk-samuel-armanious",
+    "name": "Dr. Samuel Armanious",
+    "title": "Endodontics · Princess Hall",
+    "specialty": "Endodontics",
+    "initials": "SA",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d2-p-5"
+  },
+  {
+    "id": "spk-mhammad-nagah",
+    "name": "Dr. Mhammad Nagah",
+    "title": "Orthodontics · Al Diwan Hall",
+    "specialty": "Orthodontics",
+    "initials": "MN",
+    "avatarTone": "emerald",
+    "photo": null,
+    "sessionId": "d2-d-7"
+  },
+  {
+    "id": "spk-ibrahim-elsharabasy",
+    "name": "Dr. Ibrahim Mohamed Elsharabasy",
+    "title": "Implantology · Princess Hall",
+    "specialty": "Implantology",
+    "initials": "IE",
+    "avatarTone": "navy",
+    "photo": null,
+    "sessionId": "d2-p-6"
+  }
+]
