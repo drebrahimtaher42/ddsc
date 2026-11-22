@@ -270,12 +270,9 @@ export function HomeView({
             {/* Lead Paragraph & Official Campaign Pillars */}
             <motion.p
               variants={cardItemVariants}
-              className="mt-4 text-slate-300/90 text-sm sm:text-base max-w-xl leading-relaxed"
+              className="mt-4 text-slate-300/90 text-sm sm:text-base text-balance max-w-md sm:max-w-lg leading-relaxed"
             >
-              A journey, not just a conference — uniting{' '}
-              <span className="whitespace-nowrap">27+ scientific keynotes,</span>
-              <br />
-              hands-on clinical labs, and a dental community growing since 1995.
+              A journey, not just a conference — uniting 27+ scientific keynotes, hands-on clinical labs, and a dental community growing since 1995.
             </motion.p>
 
             <motion.div variants={cardItemVariants} className="mt-4">
@@ -321,11 +318,11 @@ export function HomeView({
         animate="visible"
         className="mx-auto max-w-5xl px-4 pb-4 sm:px-6 space-y-8 sm:space-y-10"
       >
-        {/* 2. CONFERENCE HIGHLIGHTS STRIP (floats across the soft Hero fade) */}
+        {/* 2. CONFERENCE HIGHLIGHTS STAT BAR (unified floating bar) */}
         <motion.section
           variants={cardItemVariants}
           aria-label="Conference Highlights"
-          className="-mt-8 sm:-mt-10 relative z-10 grid grid-cols-3 gap-2.5 sm:gap-4"
+          className="-mt-8 sm:-mt-10 relative z-10 bg-white rounded-2xl shadow-lg border border-slate-100 grid grid-cols-3 divide-x divide-slate-100 py-4 px-2"
         >
           {highlights.map((stat) => {
             const Icon = stat.icon;
@@ -333,27 +330,19 @@ export function HomeView({
               <motion.button
                 key={stat.label}
                 type="button"
-                whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onNavigate(stat.target)}
-                className="group flex flex-col items-start justify-between rounded-2xl border border-slate-200/70 bg-white p-3.5 sm:p-5 text-left shadow-card transition-[border-color,box-shadow] duration-200 hover:border-[#3AB498]/45 hover:shadow-cardHover"
+                className="group flex flex-col items-center text-center px-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#086958]/40 rounded-xl"
               >
-                <div className="flex w-full items-center justify-between gap-2">
-                  <span className="font-display text-xl sm:text-[28px] font-extrabold tracking-tight text-[#0D224C] tabular-nums">
-                    {stat.value}
-                  </span>
-                  <span className="flex h-8 w-8 sm:h-9 sm:w-9 shrink-0 items-center justify-center rounded-xl bg-[#3AB498]/15 text-[#086958] transition-colors group-hover:bg-[#086958] group-hover:text-white">
-                    <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} />
-                  </span>
-                </div>
-                <div className="mt-2.5">
-                  <span className="block font-display text-[11px] sm:text-[13px] font-bold leading-snug text-[#0B192C]">
-                    {stat.label}
-                  </span>
-                  <span className="hidden sm:block mt-0.5 text-xs text-[#64748B]">
-                    {stat.sub}
-                  </span>
-                </div>
+                <span className="w-7 h-7 rounded-lg bg-[#3AB498]/10 text-[#086958] flex items-center justify-center mb-1.5 transition-colors group-hover:bg-[#086958] group-hover:text-white">
+                  <Icon className="h-[15px] w-[15px]" strokeWidth={1.75} />
+                </span>
+                <span className="font-display text-xl sm:text-2xl font-extrabold text-[#0A2540] leading-none tabular-nums">
+                  {stat.value}
+                </span>
+                <span className="text-[11px] sm:text-xs font-medium text-slate-500 mt-1 leading-tight">
+                  {stat.label}
+                </span>
               </motion.button>
             );
           })}
