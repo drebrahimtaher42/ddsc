@@ -262,7 +262,7 @@ export function HomeView({
             {/* Refined Conference Subtitle */}
             <motion.p
               variants={cardItemVariants}
-              className="mt-3 font-display text-base sm:text-xl font-semibold tracking-tight text-white/90"
+              className="mt-3 font-display text-[13px] min-[390px]:text-[14.5px] sm:text-xl font-semibold whitespace-nowrap tracking-tight text-white/90"
             >
               Damietta Dental Syndicate Conference 2026
             </motion.p>
@@ -270,9 +270,9 @@ export function HomeView({
             {/* Lead Paragraph & Official Campaign Pillars */}
             <motion.p
               variants={cardItemVariants}
-              className="mt-4 text-slate-300/90 text-sm sm:text-base text-balance max-w-md sm:max-w-lg leading-relaxed"
+              className="mt-4 text-sm sm:text-base text-slate-300/90 text-balance max-w-sm sm:max-w-lg leading-relaxed"
             >
-              A journey, not just a conference — uniting 27+ scientific keynotes, hands-on clinical labs, and a dental community growing since 1995.
+              Uniting 27+ scientific keynotes, hands-on labs, and a dental community growing since 1995.
             </motion.p>
 
             <motion.div variants={cardItemVariants} className="mt-4">
