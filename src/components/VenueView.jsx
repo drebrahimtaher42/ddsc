@@ -36,7 +36,7 @@ export function VenueView({ conference, bookingUrl, supportUrl }) {
       <SectionHeading
         as="h1"
         size="lg"
-        eyebrow="Location & Logistics"
+        eyebrow="Plan Your Visit"
         title="Venue & Info"
         description="Directions to Steigenberger Hotel El Lessan, key conference timings, and direct organizer support."
       />
