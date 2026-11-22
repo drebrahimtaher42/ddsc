@@ -292,9 +292,8 @@ export function WorkshopsView({ workshops, conference, onSelectWorkshop }) {
                     >
                       {workshop.specialty}
                     </span>
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#3AB498] px-2.5 py-0.5 font-display text-[10px] font-bold text-[#0B192C]">
-                      <span className="h-1.5 w-1.5 rounded-full bg-[#0D224C] animate-pulse" />
-                      {workshop.seatsLeft} seats left
+                    <span className="inline-flex items-center rounded-full bg-[#3AB498]/15 px-2.5 py-0.5 font-display text-[10px] font-semibold text-[#086958]">
+                      Limited Capacity
                     </span>
                   </div>
 

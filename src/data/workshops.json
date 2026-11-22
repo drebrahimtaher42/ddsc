@@ -10,7 +10,6 @@
     "dayLabel": "20 Nov 2026",
     "time": "Pre-Conference Hands-On",
     "room": "Marhaba Dental Lounge",
-    "seatsLeft": 5,
     "fee": "2,000 EGP",
     "poster": "/posters/ws-pediatric.jpg.jpg",
     "highlights": [
@@ -31,7 +30,6 @@
     "dayLabel": "20 Nov 2026",
     "time": "Pre-Conference Hands-On",
     "room": "ConfiDental Center",
-    "seatsLeft": 6,
     "fee": "1,500 EGP",
     "poster": "/posters/ws-class4.jpg.jpg",
     "highlights": [
@@ -52,7 +50,6 @@
     "dayLabel": "22 Nov 2026",
     "time": "Pre-Conference Hands-On",
     "room": "ConfiDental Center",
-    "seatsLeft": 7,
     "fee": "1,000 EGP",
     "poster": "/posters/ws-3dprint.jpg.jpg",
     "highlights": [
@@ -73,7 +70,6 @@
     "dayLabel": "22 Nov 2026",
     "time": "Pre-Conference Hands-On",
     "room": "OrthoMaster Academy",
-    "seatsLeft": 6,
     "fee": "1,000 EGP",
     "poster": "/posters/ws-ortho.jpg.jpg",
     "highlights": [
@@ -94,7 +90,6 @@
     "dayLabel": "24 Nov 2026",
     "time": "Pre-Conference Hands-On",
     "room": "ConfiDental Center",
-    "seatsLeft": 4,
     "fee": "1,500 EGP",
     "poster": "/posters/ws-crown-lengthening.jpg.jpg",
     "highlights": [
@@ -115,7 +110,6 @@
     "dayLabel": "25 Nov 2026",
     "time": "Pre-Conference Hands-On",
     "room": "TBA (Damietta)",
-    "seatsLeft": 5,
     "fee": "2,000 EGP",
     "poster": "/posters/ws-surgical-guide.jpg.jpg",
     "highlights": [

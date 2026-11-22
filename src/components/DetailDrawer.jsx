@@ -86,8 +86,8 @@ export function DetailDrawer({
                         <Sparkles className="h-3 w-3" />
                         {workshop.specialty}
                       </span>
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#3AB498] px-2.5 py-0.5 font-display text-[10px] font-bold text-[#0B192C]">
-                        {workshop.seatsLeft} seats left
+                      <span className="inline-flex items-center rounded-full bg-[#3AB498]/15 px-2.5 py-0.5 font-display text-[10px] font-semibold text-[#086958]">
+                        Limited Capacity
                       </span>
                     </div>
                     <h2
