@@ -80,8 +80,14 @@ export function SpeakersView({
   );
 
   const filteredSpeakers = useMemo(() => {
-    if (selectedSpecialty === 'All') return speakers;
-    return speakers.filter((s) => s.specialty === selectedSpecialty);
+    const list =
+      selectedSpecialty === 'All'
+        ? speakers
+        : speakers.filter((s) => s.specialty === selectedSpecialty);
+    return [
+      ...list.filter((s) => /elsharabasy/i.test(s.name)),
+      ...list.filter((s) => !/elsharabasy/i.test(s.name)),
+    ];
   }, [speakers, selectedSpecialty]);
 
   return (
