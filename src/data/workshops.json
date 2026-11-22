@@ -40,26 +40,6 @@
     ]
   },
   {
-    "id": "ws-3dprint",
-    "title": "3D Printed Permanent Restorations in Everyday Practice",
-    "specialty": "Digital & Laser",
-    "instructor": "Dr. Assem Abdelwahab",
-    "instructorTitle": "Digital Dentistry & 3D Printing Specialist",
-    "dateKey": "2026-11-22",
-    "date": "22 Nov 2026",
-    "dayLabel": "22 Nov 2026",
-    "time": "Pre-Conference Hands-On",
-    "room": "ConfiDental Center",
-    "fee": "1,000 EGP",
-    "poster": "/posters/ws-3dprint.jpg.jpg",
-    "highlights": [
-      "Complete chairside workflow for 3D printed permanent crowns, inlays, and onlays",
-      "Resin selection, nesting orientation, washing, and post-curing protocols for clinical durability",
-      "Characterization, glazing, and reliable adhesive cementation of printed ceramic-filled resins",
-      "Includes official DDSC 2026 hands-on workshop certificate"
-    ]
-  },
-  {
     "id": "ws-ortho",
     "title": "Early Intervention: Primary & Mixed Dentition",
     "specialty": "Orthodontics",
