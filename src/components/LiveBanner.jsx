@@ -1,60 +1,121 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Clock, Eye, EyeOff, ArrowRight, Sparkles, Radio, MapPin } from 'lucide-react';
+import { Clock, Eye, EyeOff, ChevronDown, Sparkles, Radio, MapPin } from 'lucide-react';
 import logoWhite from '../assets/logo-white.svg';
 import {
   PREVIEW_PRESETS,
   formatTime12h,
-  formatTimeRange,
+  formatCompactTimeRange,
   formatCairoClock,
   getMinutesRemaining,
 } from '../utils/time';
 import { EASE_OUT } from '../utils/motion';
 
-function LiveHallSlot({ label, accentDot, session, nowMs, onSelectSession }) {
+function HallUpNextRow({ upNextSession, withTopDivider = true }) {
+  const [expanded, setExpanded] = useState(false);
+
+  if (!upNextSession) return null;
+
   return (
-    <motion.div
-      onClick={() => session && onSelectSession(session)}
-      role={session ? 'button' : undefined}
-      tabIndex={session ? 0 : undefined}
-      whileHover={session ? { y: -2 } : undefined}
-      whileTap={session ? { scale: 0.985 } : undefined}
+    <div
+      onClick={(e) => {
+        e.stopPropagation();
+        setExpanded((prev) => !prev);
+      }}
+      role="button"
+      tabIndex={0}
+      aria-expanded={expanded}
       onKeyDown={(e) => {
-        if (session && (e.key === 'Enter' || e.key === ' ')) {
+        if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
-          onSelectSession(session);
+          e.stopPropagation();
+          setExpanded((prev) => !prev);
         }
       }}
-      className={`rounded-xl border border-white/15 bg-white/[0.09] backdrop-blur-sm p-3.5 transition-colors duration-200 ${
-        session ? 'cursor-pointer hover:bg-white/[0.15] hover:border-white/25' : 'opacity-80'
-      }`}
+      className={`${
+        withTopDivider ? 'border-t border-white/10 mt-3 pt-2.5' : ''
+      } cursor-pointer select-none group/upnext text-left`}
     >
-      <div className="flex items-center justify-between gap-2 mb-1.5">
-        <span className="inline-flex items-center gap-1.5 font-display text-[11px] font-semibold uppercase tracking-wider text-white/85">
-          <span className={`h-2 w-2 rounded-full ${accentDot}`} />
-          {label}
+      <div className="flex items-center justify-between gap-2">
+        <span className="font-display text-[10px] font-bold uppercase tracking-wider text-[#5EEAD4]">
+          UP NEXT · {formatTime12h(upNextSession.startTime)}
         </span>
-        {session && (
-          <span className="shrink-0 whitespace-nowrap rounded-full bg-[#3AB498]/25 px-2 py-0.5 font-display text-[10px] font-semibold text-[#A7F3E2]">
-            {getMinutesRemaining(session.endIso, nowMs)}m left
+        <ChevronDown
+          className={`h-3.5 w-3.5 shrink-0 text-[#5EEAD4]/80 transition-transform duration-200 group-hover/upnext:text-white ${
+            expanded ? 'rotate-180' : ''
+          }`}
+        />
+      </div>
+      <p
+        className={`mt-1 text-xs leading-snug text-white/80 transition-all duration-200 ${
+          expanded ? 'whitespace-normal' : 'truncate'
+        }`}
+      >
+        <span className="font-bold text-white">{upNextSession.speakerName}</span>
+        <span className="mx-1.5 text-white/45">—</span>
+        <span className="text-white/75">{upNextSession.title}</span>
+      </p>
+    </div>
+  );
+}
+
+function LiveHallSlot({
+  label,
+  accentDot,
+  session,
+  upNextSession,
+  nowMs,
+  onSelectSession,
+}) {
+  return (
+    <motion.div
+      whileHover={session ? { y: -2 } : undefined}
+      className="flex flex-col justify-between rounded-xl border border-white/15 bg-white/[0.09] backdrop-blur-sm p-3.5 transition-colors duration-200 hover:bg-white/[0.13] hover:border-white/25"
+    >
+      <div
+        onClick={() => session && onSelectSession(session)}
+        role={session ? 'button' : undefined}
+        tabIndex={session ? 0 : undefined}
+        onKeyDown={(e) => {
+          if (session && (e.key === 'Enter' || e.key === ' ')) {
+            e.preventDefault();
+            onSelectSession(session);
+          }
+        }}
+        className={session ? 'cursor-pointer' : 'opacity-80'}
+      >
+        <div className="flex items-center justify-between gap-2 mb-1.5">
+          <span className="inline-flex items-center gap-1.5 font-display text-[11px] font-semibold uppercase tracking-wider text-white/85">
+            <span className={`h-2 w-2 rounded-full ${accentDot}`} />
+            {label}
           </span>
+          {session && (
+            <span className="shrink-0 whitespace-nowrap rounded-full bg-[#3AB498]/25 px-2 py-0.5 font-display text-[10px] font-semibold text-[#A7F3E2]">
+              {getMinutesRemaining(session.endIso, nowMs)}m left
+            </span>
+          )}
+        </div>
+
+        {session ? (
+          <>
+            <h3 className="font-display text-sm font-bold leading-snug text-white line-clamp-2">
+              {session.title}
+            </h3>
+            <div className="mt-1.5 flex items-center justify-between gap-1.5 text-xs text-white/80">
+              <span className="min-w-0 truncate font-medium text-white/95">
+                {session.speakerName}
+              </span>
+              <span className="text-[11px] shrink-0 whitespace-nowrap text-white/65 tabular-nums">
+                {formatCompactTimeRange(session.startTime, session.endTime)}
+              </span>
+            </div>
+          </>
+        ) : (
+          <p className="text-xs text-white/65 py-2">No active lecture right now</p>
         )}
       </div>
 
-      {session ? (
-        <>
-          <h3 className="font-display text-sm font-bold leading-snug text-white line-clamp-2">
-            {session.title}
-          </h3>
-          <div className="mt-1.5 flex items-center justify-between gap-2 text-xs text-white/75">
-            <span className="truncate font-medium">{session.speakerName}</span>
-            <span className="shrink-0 text-[11px] text-white/65">
-              {formatTimeRange(session.startTime, session.endTime)}
-            </span>
-          </div>
-        </>
-      ) : (
-        <p className="text-xs text-white/65 py-2">No active lecture right now</p>
-      )}
+      <HallUpNextRow upNextSession={upNextSession} withTopDivider />
     </motion.div>
   );
 }
@@ -69,7 +130,15 @@ export function LiveBanner({
   conference,
 }) {
   const isPreview = Boolean(previewPresetId);
-  const { phase, countdown, livePrincess, liveDiwan, liveSpecial, upNext } = liveState;
+  const {
+    phase,
+    countdown,
+    livePrincess,
+    liveDiwan,
+    liveSpecial,
+    upNextPrincess,
+    upNextDiwan,
+  } = liveState;
   const showLiveContent = isPreview || phase === 'live' || phase === 'between';
   const modeKey = showLiveContent
     ? `live-${previewPresetId || phase}`
@@ -262,29 +331,61 @@ export function LiveBanner({
             {showLiveContent && (
               <div className="mt-3.5 space-y-3">
                 {liveSpecial ? (
-                  <div className="rounded-xl border border-white/15 bg-white/10 backdrop-blur-sm p-4">
-                    <div className="flex items-center justify-between gap-2 mb-1">
-                      <span className="inline-flex items-center gap-1.5 font-display text-[11px] font-semibold uppercase tracking-wider text-[#8CE9D2]">
-                        <Sparkles className="h-3.5 w-3.5 shrink-0" />
-                        All Halls · {formatTimeRange(liveSpecial.startTime, liveSpecial.endTime)}
-                      </span>
-                      <span className="shrink-0 whitespace-nowrap rounded-full bg-[#3AB498]/25 px-2.5 py-0.5 font-display text-[10px] font-semibold text-[#A7F3E2]">
-                        {getMinutesRemaining(liveSpecial.endIso, nowMs)}m left
-                      </span>
+                  <div className="space-y-2.5">
+                    <div className="rounded-xl border border-white/15 bg-white/10 backdrop-blur-sm p-4">
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <span className="inline-flex items-center gap-1.5 font-display text-[11px] font-semibold uppercase tracking-wider text-[#8CE9D2]">
+                          <Sparkles className="h-3.5 w-3.5 shrink-0" />
+                          All Halls · {formatCompactTimeRange(liveSpecial.startTime, liveSpecial.endTime)}
+                        </span>
+                        <span className="shrink-0 whitespace-nowrap rounded-full bg-[#3AB498]/25 px-2.5 py-0.5 font-display text-[10px] font-semibold text-[#A7F3E2]">
+                          {getMinutesRemaining(liveSpecial.endIso, nowMs)}m left
+                        </span>
+                      </div>
+                      <h2 className="font-display text-base font-bold text-white">
+                        {liveSpecial.title}
+                      </h2>
+                      {liveSpecial.subtitle && (
+                        <p className="mt-1 text-xs text-white/75">{liveSpecial.subtitle}</p>
+                      )}
                     </div>
-                    <h2 className="font-display text-base font-bold text-white">
-                      {liveSpecial.title}
-                    </h2>
-                    {liveSpecial.subtitle && (
-                      <p className="mt-1 text-xs text-white/75">{liveSpecial.subtitle}</p>
+
+                    {(upNextPrincess || upNextDiwan) && (
+                      <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+                        {upNextPrincess && (
+                          <div className="rounded-xl border border-white/15 bg-white/[0.09] backdrop-blur-sm p-3.5">
+                            <span className="inline-flex items-center gap-1.5 font-display text-[11px] font-semibold uppercase tracking-wider text-white/85 mb-2">
+                              <span className="h-2 w-2 rounded-full bg-white" />
+                              Princess Hall
+                            </span>
+                            <HallUpNextRow
+                              upNextSession={upNextPrincess}
+                              withTopDivider={false}
+                            />
+                          </div>
+                        )}
+                        {upNextDiwan && (
+                          <div className="rounded-xl border border-white/15 bg-white/[0.09] backdrop-blur-sm p-3.5">
+                            <span className="inline-flex items-center gap-1.5 font-display text-[11px] font-semibold uppercase tracking-wider text-white/85 mb-2">
+                              <span className="h-2 w-2 rounded-full bg-[#3AB498]" />
+                              Al Diwan Hall
+                            </span>
+                            <HallUpNextRow
+                              upNextSession={upNextDiwan}
+                              withTopDivider={false}
+                            />
+                          </div>
+                        )}
+                      </div>
                     )}
                   </div>
-                ) : livePrincess || liveDiwan ? (
+                ) : livePrincess || liveDiwan || upNextPrincess || upNextDiwan ? (
                   <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                     <LiveHallSlot
                       label="Princess Hall"
                       accentDot="bg-white"
                       session={livePrincess}
+                      upNextSession={upNextPrincess}
                       nowMs={nowMs}
                       onSelectSession={onSelectSession}
                     />
@@ -292,6 +393,7 @@ export function LiveBanner({
                       label="Al Diwan Hall"
                       accentDot="bg-[#3AB498]"
                       session={liveDiwan}
+                      upNextSession={upNextDiwan}
                       nowMs={nowMs}
                       onSelectSession={onSelectSession}
                     />
@@ -307,31 +409,6 @@ export function LiveBanner({
                         Explore the exhibition foyer or prepare for the next lectures below.
                       </p>
                     </div>
-                  </div>
-                )}
-
-                {upNext.length > 0 && (
-                  <div className="flex flex-col gap-1.5 rounded-xl bg-black/15 px-3.5 py-2.5 sm:flex-row sm:items-center sm:justify-between">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="shrink-0 rounded-md bg-white/15 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#8CE9D2]">
-                        Up Next · {formatTime12h(upNext[0].startTime)}
-                      </span>
-                      <p className="truncate text-xs font-medium text-white/90">
-                        {upNext.length === 1
-                          ? upNext[0].title
-                          : `${upNext[0].title} & ${upNext.length - 1} more`}
-                      </p>
-                    </div>
-                    {upNext.length === 1 && upNext[0].type === 'session' && (
-                      <button
-                        type="button"
-                        onClick={() => onSelectSession(upNext[0])}
-                        className="inline-flex items-center gap-1 self-start sm:self-auto shrink-0 font-display text-[11px] font-semibold text-[#8CE9D2] hover:text-white transition-colors"
-                      >
-                        <span>Details</span>
-                        <ArrowRight className="h-3 w-3" />
-                      </button>
-                    )}
                   </div>
                 )}
               </div>

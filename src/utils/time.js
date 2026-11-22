@@ -35,6 +35,18 @@ export function formatTimeRange(startTime, endTime) {
   return `${formatTime12h(startTime)} – ${formatTime12h(endTime)}`;
 }
 
+export function formatCompactTimeRange(startTime, endTime) {
+  if (!startTime || !endTime) return '';
+  const startFull = formatTime12h(startTime);
+  const endFull = formatTime12h(endTime);
+  const [startClock, startMeridiem] = startFull.split(' ');
+  const [, endMeridiem] = endFull.split(' ');
+  if (startMeridiem && startMeridiem === endMeridiem) {
+    return `${startClock}–${endFull}`;
+  }
+  return `${startFull}–${endFull}`;
+}
+
 /**
  * Formats an instant in Africa/Cairo timezone, e.g. "10:35 AM"
  */
@@ -100,6 +112,8 @@ export function getLiveConferenceState(nowMs, schedule, conference) {
       liveDiwan: null,
       liveSpecial: null,
       upNext: [],
+      upNextPrincess: null,
+      upNextDiwan: null,
       liveIds: new Set(),
     };
   }
@@ -114,6 +128,8 @@ export function getLiveConferenceState(nowMs, schedule, conference) {
       liveDiwan: null,
       liveSpecial: null,
       upNext: [],
+      upNextPrincess: null,
+      upNextDiwan: null,
       liveIds: new Set(),
     };
   }
@@ -142,6 +158,25 @@ export function getLiveConferenceState(nowMs, schedule, conference) {
     upNext = upcoming.filter((item) => Date.parse(item.startIso) === nextStartMs);
   }
 
+  const activeDay =
+    (livePrincess || liveDiwan || liveSpecial || upcoming[0])?.day || null;
+
+  const upNextPrincess =
+    upcoming.find(
+      (item) =>
+        item.type === 'session' &&
+        item.hall === 'princess' &&
+        (!activeDay || item.day === activeDay)
+    ) || null;
+
+  const upNextDiwan =
+    upcoming.find(
+      (item) =>
+        item.type === 'session' &&
+        item.hall === 'diwan' &&
+        (!activeDay || item.day === activeDay)
+    ) || null;
+
   const phase = liveSessions.length > 0 ? 'live' : 'between';
 
   return {
@@ -152,6 +187,8 @@ export function getLiveConferenceState(nowMs, schedule, conference) {
     liveDiwan,
     liveSpecial,
     upNext,
+    upNextPrincess,
+    upNextDiwan,
     liveIds,
   };
 }
