@@ -2,7 +2,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Expand, ChevronLeft, ChevronRight, CalendarRange } from 'lucide-react';
 import logoWhite from '../assets/logo-white.svg';
-import { lightboxZoomVariants, EASE_OUT } from '../utils/motion';
+import { Carousel } from './Carousel';
+import { lightboxZoomVariants } from '../utils/motion';
 
 function getPosterGradient(tone) {
   switch (tone) {
@@ -161,28 +162,34 @@ export function PostersShowcase({ posters }) {
         </h2>
       </div>
 
-      {/* Horizontal Swipeable Strip */}
-      <div className="flex gap-3.5 overflow-x-auto no-scrollbar snap-x snap-mandatory pb-2 -mx-4 px-4 sm:mx-0 sm:px-0">
-        {posters.map((poster, index) => (
-          <motion.button
-            key={poster.id}
-            type="button"
-            onClick={() => setActiveIndex(index)}
-            whileHover={{ y: -3 }}
-            whileTap={{ scale: 0.98 }}
-            transition={{ duration: 0.2, ease: EASE_OUT }}
-            className="group relative snap-start shrink-0 w-[240px] sm:w-[260px] aspect-square overflow-hidden rounded-2xl border border-[#0D224C]/[0.08] bg-white text-left shadow-card hover:shadow-cardHover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#086958]"
-          >
-            <PosterArtwork poster={poster} />
-            <span
-              className="pointer-events-none absolute right-2.5 top-2.5 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-black/35 text-white/95 backdrop-blur-sm opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:bg-[#3AB498] group-hover:text-[#0B192C]"
-              aria-hidden="true"
-            >
-              <Expand className="h-3.5 w-3.5" />
-            </span>
-          </motion.button>
-        ))}
-      </div>
+      {/* Center-Focus Highlights Carousel */}
+      <Carousel ariaLabel="Conference Highlights" gapClass="gap-4">
+        {({ activeIndex: centeredIdx }) =>
+          posters.map((poster, index) => {
+            const isActive = index === centeredIdx;
+            return (
+              <button
+                key={poster.id}
+                type="button"
+                onClick={() => setActiveIndex(index)}
+                className={`group relative snap-center shrink-0 w-[80vw] sm:w-[310px] md:w-[330px] aspect-square overflow-hidden rounded-2xl border border-[#0D224C]/[0.08] bg-white text-left shadow-card hover:shadow-cardHover focus:outline-none focus-visible:ring-2 focus-visible:ring-[#086958] transition-all duration-300 ${
+                  isActive
+                    ? 'scale-100 opacity-100 blur-0'
+                    : 'scale-[0.94] opacity-75 blur-[1.5px]'
+                }`}
+              >
+                <PosterArtwork poster={poster} />
+                <span
+                  className="pointer-events-none absolute right-2.5 top-2.5 z-20 flex h-7 w-7 items-center justify-center rounded-full bg-black/35 text-white/95 backdrop-blur-sm opacity-0 transition-all duration-200 group-hover:opacity-100 group-hover:bg-[#3AB498] group-hover:text-[#0B192C]"
+                  aria-hidden="true"
+                >
+                  <Expand className="h-3.5 w-3.5" />
+                </span>
+              </button>
+            );
+          })
+        }
+      </Carousel>
 
       {/* Full-Screen Lightbox Modal */}
       <AnimatePresence>
