@@ -284,10 +284,15 @@ export function LiveBanner({
             {/* STATE 1: Editorial Architectural Pre-Conference Countdown */}
             {!showLiveContent && phase === 'before' && (
               <div>
-                {/* 1. Centered Top Eyebrow Line */}
-                <p className="text-center font-display text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#5EEAD4]">
-                  COUNTDOWN TO OPENING · THU 26 NOV · 9:30 AM
-                </p>
+                {/* 1. Centered Two-Line Header (Eyebrow + Date/Time) */}
+                <div className="text-center">
+                  <p className="font-display text-[10.5px] font-semibold uppercase tracking-[0.22em] text-[#5EEAD4]">
+                    COUNTDOWN TO OPENING
+                  </p>
+                  <p className="text-[12.5px] font-medium text-slate-200/90 mt-1 whitespace-nowrap">
+                    Thu, 26 Nov · 9:30 AM
+                  </p>
+                </div>
 
                 {/* 2. Architectural 4-Column Countdown Numbers (No Glass Boxes) */}
                 <div
