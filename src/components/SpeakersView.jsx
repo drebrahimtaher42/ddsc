@@ -12,13 +12,19 @@ function formatSpeakerDisplayName(name) {
   return String(name || '').replace(/^IDCE Team led by\s+/i, '');
 }
 
-function getSpeakerCredentialsSummary(speaker) {
+function getSpeakerCredentialsList(speaker) {
   if (Array.isArray(speaker?.credentials) && speaker.credentials.length > 0) {
-    return speaker.credentials.slice(0, 2).join(' · ');
+    return speaker.credentials;
   }
-  if (speaker?.bio) return speaker.bio;
-  if (speaker?.specialty) return `${speaker.specialty} Faculty & Keynote Speaker`;
-  return speaker?.title || '';
+  if (speaker?.bio) {
+    return String(speaker.bio)
+      .split(/\s*[·\n]\s*/)
+      .filter(Boolean);
+  }
+  if (speaker?.specialty) {
+    return [`${speaker.specialty} Faculty & Keynote Speaker`];
+  }
+  return speaker?.title ? [speaker.title] : [];
 }
 
 function SpeakerPortrait({ src, name, initials, avatarTone = 'navy' }) {
@@ -35,7 +41,7 @@ function SpeakerPortrait({ src, name, initials, avatarTone = 'navy' }) {
       : 'bg-gradient-to-br from-[#0D224C] to-[#1D3E78]';
 
   return (
-    <div className="w-[68px] h-[68px] rounded-2xl overflow-hidden shrink-0 border border-slate-200/80 shadow-xs bg-slate-100">
+    <div className="w-20 h-20 rounded-2xl overflow-hidden shrink-0 border-4 border-white shadow-md bg-slate-100">
       {showImg ? (
         <img
           src={src}
@@ -46,7 +52,7 @@ function SpeakerPortrait({ src, name, initials, avatarTone = 'navy' }) {
         />
       ) : (
         <div
-          className={`flex h-full w-full items-center justify-center font-display text-base font-bold text-white ${fallbackGradient}`}
+          className={`flex h-full w-full items-center justify-center font-display text-lg font-bold text-white ${fallbackGradient}`}
         >
           {initials}
         </div>
@@ -170,7 +176,7 @@ export function SpeakersView({
           const dayInfo = conference.days.find((d) => d.id === session?.day);
           const isPrincess = session?.hall === 'princess';
           const displayName = formatSpeakerDisplayName(speaker.name);
-          const credentialsSummary = getSpeakerCredentialsSummary(speaker);
+          const credentialsList = getSpeakerCredentialsList(speaker);
 
           return (
             <motion.article
@@ -188,74 +194,87 @@ export function SpeakersView({
                   handleCardActivate(speaker);
                 }
               }}
-              className="group bg-white rounded-2xl border border-slate-200/85 shadow-[0_6px_18px_-6px_rgba(15,37,68,0.08)] overflow-hidden flex flex-col justify-between cursor-pointer transition-[border-color,box-shadow] duration-200 hover:border-[#0E6F64]/40 hover:shadow-cardHover"
+              className="group bg-white rounded-2xl border border-slate-200/80 shadow-[0_8px_24px_-8px_rgba(11,27,53,0.12)] overflow-hidden flex flex-col justify-between cursor-pointer transition-[border-color,box-shadow] duration-200 hover:border-[#0E6F64]/45 hover:shadow-cardHover"
             >
               <div>
-                {/* 3px Top Hall Accent Bar */}
-                <div
-                  className={`h-[3px] w-full ${
-                    isPrincess ? 'bg-[#0F2544]' : 'bg-[#0E6F64]'
-                  }`}
-                  aria-hidden="true"
-                />
+                {/* 1. Top Prestige Banner with Specialty Pill in Top-Right */}
+                <div className="h-16 bg-gradient-to-r from-[#0B1B35] via-[#0F2544] to-[#0E6F64] relative px-4 pt-3 flex justify-end items-start">
+                  <span className="bg-white/15 backdrop-blur-xs border border-white/20 text-white px-2.5 py-0.5 rounded-full font-display text-[11px] font-semibold">
+                    {speaker.specialty}
+                  </span>
+                </div>
 
-                {/* Main Speaker Profile Body */}
-                <div className="p-4 flex items-start gap-3.5">
+                {/* 2. Overlapping Doctor Portrait */}
+                <div className="px-4 -mt-10 relative z-10 flex items-end justify-between">
                   <SpeakerPortrait
                     src={speaker.avatar || speaker.photo}
                     name={displayName}
                     initials={speaker.initials}
                     avatarTone={speaker.avatarTone}
                   />
+                </div>
 
-                  <div className="min-w-0 flex-1">
-                    <span className="inline-block rounded-full bg-[#0E6F64]/10 px-2.5 py-0.5 font-display text-[11px] font-semibold text-[#0E6F64]">
-                      {speaker.specialty}
-                    </span>
-                    <h2 className="mt-1 font-display text-[15.5px] font-extrabold text-[#0F2544] leading-snug">
-                      {displayName}
-                    </h2>
-                    {credentialsSummary && (
-                      <p className="text-[12.5px] text-slate-600 leading-snug mt-1 line-clamp-2">
-                        {credentialsSummary}
-                      </p>
-                    )}
-                  </div>
+                {/* 3. Speaker Identity & Full Academic Credentials (NO Truncation) */}
+                <div className="px-4 pt-2.5 pb-3.5">
+                  <h2 className="font-display text-[17.5px] font-extrabold text-[#0F2544] leading-snug">
+                    {displayName}
+                  </h2>
+
+                  {credentialsList.length > 0 && (
+                    <ul className="mt-2 space-y-1.5">
+                      {credentialsList.map((cred) => (
+                        <li
+                          key={cred}
+                          className="flex items-start gap-2 text-[12.5px] text-slate-600 leading-relaxed"
+                        >
+                          <span
+                            aria-hidden="true"
+                            className="w-1.5 h-1.5 rounded-full bg-[#0E6F64] mt-1.5 shrink-0"
+                          />
+                          <span>{cred}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
                 </div>
               </div>
 
-              {/* Compact Footer Strip */}
+              {/* 4. Embedded Session Box (Bottom Section) */}
               {session && (
-                <div className="px-4 py-2.5 bg-slate-50/75 border-t border-slate-100 space-y-1.5">
-                  <div className="flex items-center gap-1.5 min-w-0">
-                    <Mic className="h-3.5 w-3.5 shrink-0 text-[#0E6F64]" />
-                    <p className="text-[11.5px] font-medium text-slate-500 truncate">
-                      {session.title}
-                    </p>
-                  </div>
+                <div className="px-4 pb-4">
+                  <div className="bg-[#F3F6FA] rounded-xl p-3 border border-slate-200/70">
+                    <div className="flex items-start gap-2">
+                      <Mic className="h-3.5 w-3.5 shrink-0 text-[#0E6F64] mt-0.5" />
+                      <p className="text-[12.5px] font-semibold text-[#0F2544] leading-snug">
+                        {session.title}
+                      </p>
+                    </div>
 
-                  <div className="flex items-center justify-between gap-2 text-[11px] text-slate-500">
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0">
-                      <span className="inline-flex items-center gap-1 font-semibold text-[#0F2544]">
-                        <Calendar className="h-3 w-3 text-slate-400" />
-                        {dayInfo?.shortLabel}
-                      </span>
-                      <span className="text-slate-300">·</span>
-                      <span className="inline-flex items-center gap-1 tabular-nums">
-                        <Clock className="h-3 w-3 text-slate-400" />
-                        {formatTime12h(session.startTime)}
-                      </span>
-                      <span className="text-slate-300">·</span>
-                      <span className="inline-flex items-center gap-1 font-medium text-slate-600">
-                        <span
-                          className={`h-1.5 w-1.5 rounded-full shrink-0 ${
-                            isPrincess ? 'bg-[#0F2544]' : 'bg-[#0E6F64]'
-                          }`}
-                        />
-                        {isPrincess ? 'Princess' : 'Al Diwan'}
+                    <div className="mt-2 pt-2 border-t border-slate-200/70 flex items-center justify-between gap-2 text-[11.5px] text-slate-600 font-medium">
+                      <div className="flex flex-wrap items-center gap-x-1.5 gap-y-0.5 min-w-0">
+                        <span className="font-semibold text-[#0F2544]">
+                          {dayInfo?.shortLabel}
+                        </span>
+                        <span className="text-slate-300">·</span>
+                        <span className="tabular-nums">
+                          {formatTime12h(session.startTime)}
+                        </span>
+                        <span className="text-slate-300">·</span>
+                        <span className="inline-flex items-center gap-1">
+                          <span
+                            className={`h-1.5 w-1.5 rounded-full shrink-0 ${
+                              isPrincess ? 'bg-[#0F2544]' : 'bg-[#0E6F64]'
+                            }`}
+                          />
+                          <span>{isPrincess ? 'Princess' : 'Al Diwan'}</span>
+                        </span>
+                      </div>
+
+                      <span className="inline-flex shrink-0 items-center gap-0.5 font-display text-[11.5px] font-semibold text-[#0E6F64] transition-transform duration-200 group-hover:translate-x-0.5">
+                        <span>Details</span>
+                        <ChevronRight className="h-3.5 w-3.5" />
                       </span>
                     </div>
-                    <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#0E6F64]" />
                   </div>
                 </div>
               )}
