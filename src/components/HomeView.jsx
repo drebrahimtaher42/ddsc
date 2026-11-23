@@ -195,8 +195,8 @@ export function HomeView({
 
   return (
     <div className="bg-[#F3F6FA]">
-      {/* 1. FULL-BLEED ARCHITECTURAL CENTERED HERO (Full-Viewport Stage) */}
-      <section className="w-full relative overflow-hidden bg-[#0B1B35] text-white min-h-[calc(100svh-64px)] md:min-h-[82vh] flex flex-col justify-between">
+      {/* 1. FULL-BLEED ARCHITECTURAL CENTERED HERO (True 100dvh Full-Viewport Stage) */}
+      <section className="w-full relative overflow-hidden bg-[#0B1B35] text-white min-h-[100dvh] flex flex-col justify-between">
         {/* Centered top radial spotlight glow */}
         <div
           aria-hidden="true"
@@ -242,7 +242,7 @@ export function HomeView({
           variants={staggerListVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 mx-auto w-full max-w-5xl px-5 flex-1 flex flex-col justify-between text-center"
+          className="relative z-10 mx-auto w-full max-w-5xl px-5 pt-20 flex-1 flex flex-col justify-between text-center"
         >
           {/* Main Center Content Block */}
           <div className="flex-1 flex flex-col items-center justify-center py-10">

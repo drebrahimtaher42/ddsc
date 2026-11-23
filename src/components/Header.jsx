@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import logoNavy from '../assets/logo-navy.svg';
 import { WhatsAppIcon } from './WhatsAppIcon';
@@ -10,10 +11,29 @@ export function Header({
   logoRef,
   logoHidden = false,
 }) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 40);
+    };
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const isTransparent = activeTab === 'home' && !isScrolled;
+
   return (
-    <header className="sticky top-0 z-40 bg-white/80 backdrop-blur-xl border-b border-slate-200/60">
-      <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-2.5 sm:px-6 sm:py-3">
-        {/* Crisp Navy DDSC mark (intro splash glides into this slot) */}
+    <header
+      className={`fixed top-0 inset-x-0 z-50 h-16 transition-all duration-300 ${
+        isTransparent
+          ? 'bg-transparent border-b border-transparent'
+          : 'bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs'
+      }`}
+    >
+      <div className="mx-auto flex h-full max-w-5xl items-center justify-between gap-2 px-4 sm:px-6">
+        {/* Crisp DDSC mark (white over Hero, navy when frosted) */}
         <motion.button
           type="button"
           whileTap={{ scale: 0.98 }}
@@ -28,17 +48,27 @@ export function Header({
             ref={logoRef}
             src={logoNavy}
             alt="DDSC Logo"
-            className="h-9 w-auto sm:h-10 transition-transform duration-200 group-hover:scale-[1.03]"
+            className={`h-9 w-auto sm:h-10 transition-all duration-300 group-hover:scale-[1.03] ${
+              isTransparent ? 'brightness-0 invert' : ''
+            }`}
             style={{ opacity: logoHidden ? 0 : 1 }}
           />
           <div
             className="hidden lg:flex flex-col text-left leading-tight transition-opacity duration-300"
             style={{ opacity: logoHidden ? 0 : 1 }}
           >
-            <span className="font-display text-xs font-extrabold tracking-[0.08em] text-[#0D224C]">
+            <span
+              className={`font-display text-xs font-extrabold tracking-[0.08em] transition-colors duration-300 ${
+                isTransparent ? 'text-white' : 'text-[#0D224C]'
+              }`}
+            >
               DDSC 2026
             </span>
-            <span className="text-[11px] font-medium text-[#64748B]">
+            <span
+              className={`text-[11px] font-medium transition-colors duration-300 ${
+                isTransparent ? 'text-slate-300' : 'text-[#64748B]'
+              }`}
+            >
               29th Edition
             </span>
           </div>
@@ -47,7 +77,11 @@ export function Header({
         {/* Desktop: centred pill navigation */}
         <nav
           aria-label="Primary Navigation"
-          className="hidden md:flex items-center gap-0.5 rounded-full border border-slate-200/70 bg-slate-100/75 p-1"
+          className={`hidden md:flex items-center gap-0.5 rounded-full border p-1 transition-colors duration-300 ${
+            isTransparent
+              ? 'border-white/15 bg-white/10 backdrop-blur-xs'
+              : 'border-slate-200/70 bg-slate-100/75'
+          }`}
         >
           {tabs.map((tab) => {
             const Icon = tab.icon;
@@ -59,14 +93,20 @@ export function Header({
                 onClick={() => onTabChange(tab.id)}
                 aria-current={isActive ? 'page' : undefined}
                 className={`relative flex items-center gap-1.5 rounded-full px-2.5 lg:px-3.5 py-1.5 font-display text-xs font-semibold transition-colors duration-200 ${
-                  isActive ? 'text-white' : 'text-[#64748B] hover:text-[#0D224C]'
+                  isActive
+                    ? 'text-white'
+                    : isTransparent
+                    ? 'text-white/75 hover:text-white'
+                    : 'text-[#64748B] hover:text-[#0D224C]'
                 }`}
               >
                 {isActive && (
                   <motion.span
                     layoutId="desktopNavPill"
                     transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                    className="absolute inset-0 rounded-full bg-[#0D224C] shadow-sm"
+                    className={`absolute inset-0 rounded-full shadow-sm ${
+                      isTransparent ? 'bg-white/20' : 'bg-[#0D224C]'
+                    }`}
                     aria-hidden="true"
                   />
                 )}
@@ -84,7 +124,11 @@ export function Header({
           rel="noopener noreferrer"
           whileHover={{ y: -1 }}
           whileTap={{ scale: 0.98 }}
-          className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#086958] py-2 pl-3.5 pr-4 font-display text-xs font-semibold text-white shadow-sm transition-colors duration-200 hover:bg-[#065749] hover:shadow-md"
+          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full py-2 pl-3.5 pr-4 font-display text-xs font-semibold text-white transition-all duration-300 ${
+            isTransparent
+              ? 'bg-[#0E6F64]/90 hover:bg-[#0E6F64] border border-white/15 backdrop-blur-xs'
+              : 'bg-[#086958] hover:bg-[#065749] border border-transparent shadow-sm hover:shadow-md'
+          }`}
         >
           <WhatsAppIcon className="h-3.5 w-3.5" />
           <span className="whitespace-nowrap">Get Pass</span>
