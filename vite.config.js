@@ -9,12 +9,19 @@ const LECTURES_DIR = path.resolve(__dirname, 'public/lectures');
 const VIRTUAL_ID = 'virtual:lecture-posters';
 const RESOLVED_VIRTUAL_ID = `\0${VIRTUAL_ID}`;
 
+const FEATURED_FIRST_POSTER = 'WhatsApp Image 2026-11-22 at 6.23.57 PM.jpeg';
+
 function readLecturePosters() {
   if (!fs.existsSync(LECTURES_DIR)) return [];
-  const files = fs
+  const sorted = fs
     .readdirSync(LECTURES_DIR)
     .filter((name) => /\.(png|jpe?g|webp)$/i.test(name))
     .sort((a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' }));
+
+  const files = [
+    ...sorted.filter((name) => name === FEATURED_FIRST_POSTER),
+    ...sorted.filter((name) => name !== FEATURED_FIRST_POSTER),
+  ];
 
   return files.map((filename, idx) => ({
     id: `lecture-poster-${idx + 1}`,
