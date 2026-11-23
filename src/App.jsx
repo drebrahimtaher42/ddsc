@@ -130,11 +130,7 @@ export default function App() {
 
   return (
     <MotionConfig reducedMotion="user">
-      <div
-        className={`flex min-h-screen flex-col overflow-x-clip text-[#0B192C] ${
-          activeTab === 'schedule' ? 'bg-[#F3F6FA]' : 'bg-[#F4F7F9]'
-        }`}
-      >
+      <div className="flex min-h-screen flex-col overflow-x-clip bg-[#F3F6FA] text-[#0B192C]">
         {/* Signature Splash-to-Header Intro Animation (once per session) */}
         {showIntro && (
           <IntroSplash

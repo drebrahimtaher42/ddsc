@@ -200,149 +200,156 @@ export function HomeView({
   ];
 
   return (
-    <div>
-      {/* 1. IMMERSIVE FULL-BLEED LUXURY HERO */}
-      <section className="relative w-full overflow-hidden bg-gradient-to-b from-[#07142E] via-[#091A3C] to-[#0D224C] text-white">
+    <div className="bg-[#F3F6FA]">
+      {/* 1. FULL-BLEED ARCHITECTURAL CENTERED HERO (No Card Shape, No Bottom Fade) */}
+      <section className="w-full relative overflow-hidden bg-[#0B1B35] text-white">
         {/* Centered top radial spotlight glow */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(58,180,152,0.22)_0%,_transparent_65%)]"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(14,111,100,0.32)_0%,_transparent_68%)]"
         />
 
-        {/* Soft Radial Ambient Emerald / Mint Mesh Glows */}
+        {/* Slow-drifting ambient teal aurora glow (#0E6F64/30 blur) */}
         <motion.div
           aria-hidden="true"
           animate={{
-            x: [0, 30, -14, 0],
-            y: [0, -16, 12, 0],
+            x: [0, 26, -16, 0],
+            y: [0, -14, 10, 0],
           }}
           transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
-          className="pointer-events-none absolute -top-28 right-[8%] h-[28rem] w-[28rem] rounded-full blur-3xl"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(58,180,152,0.16) 0%, rgba(8,105,88,0.12) 45%, transparent 72%)',
-          }}
+          className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-[22rem] w-[30rem] rounded-full bg-[#0E6F64]/30 blur-3xl"
         />
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-32 -left-24 h-[26rem] w-[26rem] rounded-full blur-3xl"
-          style={{
-            background:
-              'radial-gradient(circle, rgba(8,105,88,0.18) 0%, rgba(58,180,152,0.08) 45%, transparent 72%)',
-          }}
-        />
-        {/* Subtle fine architectural dot-grid texture fading out toward edges */}
+
+        {/* Ultra-faint architectural dot grid masked softly toward the edges */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-[0.06]"
           style={{
             backgroundImage:
-              'radial-gradient(rgba(255,255,255,0.75) 1px, transparent 1px)',
-            backgroundSize: '26px 26px',
+              'radial-gradient(rgba(255,255,255,0.8) 1px, transparent 1px)',
+            backgroundSize: '24px 24px',
             maskImage:
               'radial-gradient(ellipse at center, black 35%, transparent 80%)',
             WebkitMaskImage:
               'radial-gradient(ellipse at center, black 35%, transparent 80%)',
           }}
         />
-        {/* Very faint, large architectural DDSC watermark on far right */}
+
+        {/* Very faint architectural DDSC watermark on far right */}
         <img
           src={logoWhite}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none select-none absolute -right-10 sm:right-[4%] top-1/2 -translate-y-1/2 h-[20rem] sm:h-[27rem] w-auto opacity-[0.04]"
+          className="pointer-events-none select-none absolute -right-10 sm:right-[4%] top-1/2 -translate-y-1/2 h-[19rem] sm:h-[26rem] w-auto opacity-[0.035]"
         />
 
-        {/* Centered Editorial Content Container */}
+        {/* Centered Editorial Content */}
         <motion.div
           variants={staggerListVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 mx-auto max-w-5xl px-4 pt-12 pb-20 sm:px-6 sm:pt-20 sm:pb-28"
+          className="relative z-10 mx-auto max-w-5xl px-5 pt-10 pb-8 sm:pt-16 sm:pb-10 flex flex-col items-center text-center"
         >
-          <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-            {/* Borderless Tracked-Out Top Eyebrow */}
-            <motion.p
-              variants={cardItemVariants}
-              className="font-display text-[11px] font-semibold tracking-[0.24em] uppercase text-[#5EEAD4] mb-4"
-            >
-              MEET · SHARE · CONNECT
-            </motion.p>
+          {/* Eyebrow (No Pill) with Pulsing Teal Dot */}
+          <motion.p
+            variants={cardItemVariants}
+            className="font-display text-[11px] font-semibold tracking-[0.22em] uppercase text-[#5EEAD4] flex items-center justify-center gap-2"
+          >
+            <span className="relative flex h-1.5 w-1.5 shrink-0">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5EEAD4] opacity-75" />
+              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#5EEAD4]" />
+            </span>
+            <span>29TH EDITION · MEET · SHARE · CONNECT</span>
+          </motion.p>
 
-            {/* High-Contrast Display Headline */}
-            <motion.h1
-              variants={cardItemVariants}
-              className="font-display text-[1.65rem] min-[390px]:text-[1.9rem] sm:text-5xl md:text-6xl font-bold whitespace-nowrap tracking-tight leading-[1.12] text-white"
-            >
-              A New Era of Dentistry
-            </motion.h1>
+          {/* Main Headline */}
+          <motion.h1
+            variants={cardItemVariants}
+            className="font-display text-[32px] sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.12] tracking-tight mt-4 max-w-[340px] sm:max-w-2xl text-balance"
+          >
+            A New Era of <span className="text-[#CCFBF1]">Dentistry</span>
+          </motion.h1>
 
-            {/* Refined Conference Subtitle */}
-            <motion.p
-              variants={cardItemVariants}
-              className="mt-2.5 font-display text-[13px] min-[390px]:text-[14.5px] sm:text-xl font-medium whitespace-nowrap tracking-tight text-slate-200/95"
-            >
-              Damietta Dental Syndicate Conference 2026
-            </motion.p>
+          {/* Conference Subtitle */}
+          <motion.p
+            variants={cardItemVariants}
+            className="font-display text-[14.5px] sm:text-xl font-semibold text-slate-100 mt-3 max-w-[320px] sm:max-w-lg text-balance"
+          >
+            Damietta Dental Syndicate Conference 2026
+          </motion.p>
 
-            {/* Balanced 2-Line Lead Copy */}
-            <motion.p
-              variants={cardItemVariants}
-              className="mt-4 text-[13.5px] sm:text-base text-slate-300/80 max-w-[300px] sm:max-w-md mx-auto text-balance leading-relaxed"
-            >
-              Uniting 27+ scientific keynotes, hands-on labs, and a dental community growing since 1995.
-            </motion.p>
+          {/* Description */}
+          <motion.p
+            variants={cardItemVariants}
+            className="text-[13.5px] sm:text-base text-slate-300/85 leading-relaxed mt-2.5 max-w-[330px] sm:max-w-md text-balance"
+          >
+            Uniting 27+ scientific keynotes, hands-on labs, and a dental community growing since 1995.
+          </motion.p>
 
-            {/* Primary CTA Button */}
-            <motion.div
-              variants={cardItemVariants}
-              className="mt-7 flex justify-center"
+          {/* Primary CTA with Periodic Light-Sheen Sweep */}
+          <motion.div
+            variants={cardItemVariants}
+            className="mt-6 flex justify-center"
+          >
+            <motion.button
+              type="button"
+              whileHover={{ y: -1 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => onNavigate('schedule')}
+              className="relative overflow-hidden inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(45,212,191,0.4)] hover:brightness-105 transition-all"
             >
-              <motion.button
-                type="button"
-                whileHover={{ y: -1 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onNavigate('schedule')}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(45,212,191,0.42)] hover:brightness-105 transition-all"
-              >
-                <span>Explore Schedule</span>
-                <ArrowRight className="h-4 w-4" />
-              </motion.button>
-            </motion.div>
+              <motion.span
+                aria-hidden="true"
+                animate={{ x: ['-140%', '240%'] }}
+                transition={{
+                  duration: 2.4,
+                  repeat: Infinity,
+                  repeatDelay: 3.6,
+                  ease: 'easeInOut',
+                }}
+                className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/35 to-transparent"
+              />
+              <span className="relative z-10">Explore Schedule</span>
+              <ArrowRight className="relative z-10 h-4 w-4" />
+            </motion.button>
+          </motion.div>
 
-            {/* Minimal Metadata Anchor */}
-            <motion.p
-              variants={cardItemVariants}
-              className="mt-4 text-[12.5px] font-medium text-slate-200 tracking-wide drop-shadow-xs"
-            >
-              26–27 Nov 2026 &nbsp;·&nbsp; Steigenberger El Lessan
-            </motion.p>
-          </div>
+          {/* 2. Architectural Date & Venue Footer Strip (Inside Bottom of Hero) */}
+          <motion.div
+            variants={cardItemVariants}
+            className="border-t border-white/10 mt-8 pt-4 pb-1 px-4 w-full"
+          >
+            <div className="grid grid-cols-2 divide-x divide-white/10 max-w-md mx-auto">
+              <div className="px-3 flex flex-col items-center text-center">
+                <span className="font-display text-[10px] uppercase tracking-[0.18em] text-[#5EEAD4]/80 font-semibold">
+                  DATE
+                </span>
+                <span className="font-display text-[13px] font-semibold text-white mt-0.5 whitespace-nowrap">
+                  26–27 Nov 2026
+                </span>
+              </div>
+
+              <div className="px-3 flex flex-col items-center text-center">
+                <span className="font-display text-[10px] uppercase tracking-[0.18em] text-[#5EEAD4]/80 font-semibold">
+                  VENUE
+                </span>
+                <span className="font-display text-[13px] font-semibold text-white mt-0.5 text-balance">
+                  Steigenberger El Lessan
+                </span>
+              </div>
+            </div>
+          </motion.div>
         </motion.div>
-
-        {/* Smooth Multi-Stop Bottom Fade into Page Canvas (#F4F7F9) */}
-        <div
-          aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-24 sm:h-28"
-          style={{
-            background:
-              'linear-gradient(to bottom, rgba(244, 247, 249, 0) 0%, rgba(244, 247, 249, 0.22) 38%, rgba(244, 247, 249, 0.72) 74%, #F4F7F9 100%)',
-          }}
-        />
       </section>
 
-      {/* BELOW-THE-FOLD EDITORIAL SECTIONS */}
-      <motion.div
-        variants={staggerListVariants}
-        initial="hidden"
-        animate="visible"
-        className="mx-auto max-w-5xl px-4 pb-4 sm:px-6 space-y-8 sm:space-y-10"
-      >
-        {/* 2. CONFERENCE HIGHLIGHTS STAT BAR (unified floating bar) */}
+      {/* 3. SEPARATED STATS SECTION BELOW HERO */}
+      <div className="mx-auto max-w-5xl px-4 pt-5 pb-2 sm:px-6">
         <motion.section
-          variants={cardItemVariants}
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: EASE_OUT }}
           aria-label="Conference Highlights"
-          className="-mt-10 sm:-mt-12 mb-10 relative z-10 bg-white rounded-2xl shadow-xl shadow-[#0A2540]/10 ring-1 ring-slate-200/70 grid grid-cols-3 divide-x divide-slate-100 py-4 px-2"
+          className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_6px_18px_-6px_rgba(15,37,68,0.08)] grid grid-cols-3 divide-x divide-slate-100 py-4 px-2"
         >
           {highlights.map((stat) => {
             const Icon = stat.icon;
@@ -352,21 +359,30 @@ export function HomeView({
                 type="button"
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onNavigate(stat.target)}
-                className="group flex flex-col items-center text-center px-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#086958]/40 rounded-xl"
+                className="group flex flex-col items-center justify-center text-center px-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#086958]/40 rounded-xl"
               >
-                <span className="w-7 h-7 rounded-lg bg-[#3AB498]/10 text-[#086958] flex items-center justify-center mb-1.5 transition-colors group-hover:bg-[#086958] group-hover:text-white">
-                  <Icon className="h-[15px] w-[15px]" strokeWidth={1.75} />
+                <span className="w-8 h-8 rounded-xl bg-[#0E6F64]/10 text-[#0E6F64] flex items-center justify-center mb-2 transition-colors group-hover:bg-[#0E6F64] group-hover:text-white">
+                  <Icon className="h-4 w-4" strokeWidth={1.85} />
                 </span>
-                <span className="font-display text-xl sm:text-2xl font-extrabold text-[#0A2540] leading-none tabular-nums">
+                <span className="font-display text-xl sm:text-2xl font-extrabold text-[#0F2544] leading-none tabular-nums">
                   {stat.value}
                 </span>
-                <span className="text-[11px] sm:text-xs font-medium text-slate-500 mt-1 leading-tight">
+                <span className="text-[11.5px] sm:text-xs font-medium text-slate-600 mt-1.5 leading-snug text-balance">
                   {stat.label}
                 </span>
               </motion.button>
             );
           })}
         </motion.section>
+      </div>
+
+      {/* BELOW-THE-FOLD EDITORIAL SECTIONS */}
+      <motion.div
+        variants={staggerListVariants}
+        initial="hidden"
+        animate="visible"
+        className="mx-auto max-w-5xl px-4 pt-6 pb-4 sm:px-6 space-y-8 sm:space-y-10"
+      >
 
         {/* 3. SLIDE 1 — SCIENTIFIC SESSIONS CAROUSEL */}
         <motion.section
