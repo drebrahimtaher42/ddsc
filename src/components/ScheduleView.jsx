@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import {
   Bookmark,
@@ -97,7 +98,9 @@ function SchedulePostersModal({ isOpen, initialDay, initialHall, onClose }) {
   const currentKey = `${posterDay}-${posterHall}`;
   const currentPoster = SCHEDULE_POSTERS[currentKey] || SCHEDULE_POSTERS['day1-diwan'];
 
-  return (
+  if (typeof document === 'undefined') return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -106,7 +109,7 @@ function SchedulePostersModal({ isOpen, initialDay, initialHall, onClose }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-[#061024]/92 backdrop-blur-md p-3 sm:p-5"
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-between bg-[#0B1B35]/85 backdrop-blur-md p-3 sm:p-5"
           role="dialog"
           aria-modal="true"
           aria-label="Official Schedule Posters"
@@ -260,7 +263,8 @@ function SchedulePostersModal({ isOpen, initialDay, initialHall, onClose }) {
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   );
 }
 
@@ -632,9 +636,9 @@ export function ScheduleView({
           </div>
         </div>
 
-        {/* Scroll-Away Secondary Controls: Specialty Filter + Official Schedule Posters Button */}
+        {/* Scroll-Away Secondary Controls: 2-Column Grid for Specialty + Full Schedule */}
         <div className="!mt-2.5 space-y-2">
-          <div className="flex items-center justify-between gap-2">
+          <div className="grid grid-cols-2 gap-2.5 w-full">
             <motion.button
               type="button"
               whileTap={{ scale: 0.98 }}
@@ -647,7 +651,7 @@ export function ScheduleView({
                   setSpecialtyOpen((prev) => !prev);
                 }
               }}
-              className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 font-display text-xs font-semibold shadow-2xs transition-colors duration-200 ${
+              className={`inline-flex w-full min-w-0 items-center justify-center gap-1.5 rounded-xl border px-3 py-2 font-display text-xs font-semibold shadow-2xs transition-colors duration-200 ${
                 specialtyFilter !== 'all'
                   ? 'border-[#3AB498]/45 bg-[#3AB498]/15 text-[#086958]'
                   : showSpecialties
@@ -657,13 +661,15 @@ export function ScheduleView({
             >
               {specialtyFilter !== 'all' && (
                 <span
-                  className="h-2 w-2 rounded-full"
+                  className="h-2 w-2 shrink-0 rounded-full"
                   style={{ backgroundColor: getSpecialtyColor(specialtyFilter) }}
                 />
               )}
-              <span>{specialtyFilter !== 'all' ? specialtyFilter : 'Filter by Specialty'}</span>
+              <span className="truncate">
+                {specialtyFilter !== 'all' ? specialtyFilter : 'Specialty'}
+              </span>
               <ChevronDown
-                className={`h-3.5 w-3.5 transition-transform duration-200 ${
+                className={`h-3.5 w-3.5 shrink-0 transition-transform duration-200 ${
                   showSpecialties ? 'rotate-180' : ''
                 }`}
               />
@@ -673,10 +679,10 @@ export function ScheduleView({
               type="button"
               whileTap={{ scale: 0.98 }}
               onClick={() => setPostersModalOpen(true)}
-              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#086958]/25 bg-white px-3.5 py-1.5 font-display text-xs font-bold text-[#086958] shadow-2xs transition-all hover:border-[#086958]/50 hover:bg-[#3AB498]/10"
+              className="inline-flex w-full min-w-0 items-center justify-center gap-1.5 rounded-xl border border-[#086958]/25 bg-white px-3 py-2 font-display text-xs font-bold text-[#086958] shadow-2xs transition-all hover:border-[#086958]/50 hover:bg-[#3AB498]/10"
             >
-              <FileImage className="h-3.5 w-3.5 text-[#086958]" />
-              <span>Official Schedule Posters</span>
+              <FileImage className="h-3.5 w-3.5 shrink-0 text-[#086958]" />
+              <span className="truncate">Full Schedule</span>
             </motion.button>
           </div>
 
@@ -755,44 +761,38 @@ export function ScheduleView({
 
             /* ── 1. Opening Ceremony (Celebratory Dark Navy-to-Teal Gradient Card) ── */
             if (item.type === 'special' && item.specialKind === 'ceremony') {
-              const Icon = getSpecialIcon(item.specialKind);
               return (
                 <motion.li
                   key={item.id}
                   variants={cardItemVariants}
-                  className={`relative overflow-hidden grid grid-cols-[84px_1fr] sm:grid-cols-[100px_1fr] items-center gap-3 sm:gap-5 rounded-2xl bg-gradient-to-r from-[#0F2544] to-[#0E6F64] px-4 py-4 sm:px-5 sm:py-4.5 text-white shadow-md ${
+                  className={`relative overflow-hidden grid grid-cols-[88px_1fr] sm:grid-cols-[106px_1fr] items-center gap-3.5 sm:gap-5 rounded-2xl bg-gradient-to-r from-[#0F2544] to-[#0E6F64] px-4 py-4 sm:px-5 sm:py-4.5 text-white shadow-md ${
                     isLive ? 'ring-2 ring-[#5EEAD4]' : 'border border-white/10'
                   }`}
                 >
                   <div className="border-r border-white/15 pr-3 sm:pr-4">
                     <TimeBlock item={item} tone="ceremony" />
                   </div>
-                  <div className="flex min-w-0 items-center gap-3.5">
-                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-[#5EEAD4] shadow-xs">
-                      <Icon className="h-5 w-5" />
-                    </span>
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/35 bg-amber-400/15 px-2.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-amber-200">
-                          <Sparkles className="h-2.5 w-2.5" />
-                          Special Event
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/35 bg-amber-400/15 px-2.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-amber-200">
+                        <Sparkles className="h-2.5 w-2.5" />
+                        Special Event
+                      </span>
+                      {isLive && (
+                        <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498] px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#06201B]">
+                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#06201B]" />
+                          Now
                         </span>
-                        {isLive && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498] px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#06201B]">
-                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#06201B]" />
-                            Now
-                          </span>
-                        )}
-                      </div>
-                      <h3 className="mt-1 font-display text-base sm:text-[17px] font-extrabold leading-snug tracking-tight text-white">
-                        {item.title}
-                      </h3>
-                      {item.subtitle && (
-                        <p className="mt-0.5 text-xs leading-relaxed text-white/80">
-                          {item.subtitle}
-                        </p>
                       )}
                     </div>
+                    <h3 className="mt-1 font-display text-base sm:text-[17px] font-extrabold leading-snug tracking-tight text-white">
+                      {item.title}
+                    </h3>
+                    {item.subtitle && (
+                      <p className="mt-0.5 text-xs leading-relaxed text-white/80">
+                        {item.subtitle}
+                      </p>
+                    )}
                   </div>
                 </motion.li>
               );
@@ -848,11 +848,10 @@ export function ScheduleView({
               );
             }
 
-            /* ── 3. Scientific Session Card (Compact, High-Contrast) ── */
+            /* ── 3. Scientific Session Card (Structured Premium Two-Zone Card) ── */
             const isPrincess = item.hall === 'princess';
-            const hall = conference.halls[item.hall];
             const saved = isSaved(item.id);
-            const hallAccent = isPrincess ? '#0D224C' : '#086958';
+            const hallAccent = isPrincess ? '#0F2544' : '#0E6F64';
 
             return (
               <motion.li key={item.id} variants={cardItemVariants}>
@@ -869,91 +868,93 @@ export function ScheduleView({
                       onSelectSession(item);
                     }
                   }}
-                  className={`group relative grid cursor-pointer grid-cols-[84px_1fr] sm:grid-cols-[100px_1fr] gap-3 sm:gap-5 overflow-hidden rounded-2xl border bg-white px-4 py-3.5 sm:px-5 sm:py-4 transition-[border-color,box-shadow] duration-200 ${
+                  className={`group relative grid cursor-pointer grid-cols-[88px_1fr] sm:grid-cols-[106px_1fr] overflow-hidden rounded-2xl border bg-white transition-[border-color,box-shadow] duration-200 ${
                     isLive
                       ? 'border-[#3AB498]/60 shadow-cardHover ring-1 ring-[#3AB498]/25'
-                      : 'border-slate-200/80 shadow-sm hover:border-[#3AB498]/45 hover:shadow-cardHover'
+                      : 'border-slate-200/90 shadow-[0_4px_14px_-4px_rgba(15,37,68,0.08)] hover:border-[#3AB498]/45 hover:shadow-cardHover'
                   }`}
                 >
-                  {/* Clean 4px colored left accent bar (teal for Al Diwan, navy for Princess) */}
+                  {/* Solid 4px left accent strip (#0E6F64 for Al Diwan, #0F2544 for Princess) */}
                   <span
-                    className="absolute inset-y-0 left-0 z-10 w-1"
-                    style={{ backgroundColor: hall?.accent || hallAccent }}
+                    className="absolute inset-y-0 left-0 z-20 w-1"
+                    style={{ backgroundColor: hallAccent }}
                     aria-hidden="true"
                   />
 
-                  {/* Left Time Column with Vertical Hairline Divider */}
-                  <div className="relative z-10 border-r border-slate-200/80 pr-3 sm:pr-4 flex items-center">
+                  {/* Left Time Column with Subtle Tinted Strip */}
+                  <div className="relative z-10 flex items-center bg-slate-50/80 border-r border-slate-100 pl-4 pr-2.5 py-3.5 sm:pl-5 sm:pr-3.5 sm:py-4">
                     <TimeBlock item={item} />
                   </div>
 
                   {/* Right Session Details Column */}
-                  <div className="relative z-10 min-w-0">
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex flex-wrap items-center gap-1.5">
-                        {item.specialty && (
-                          <span
-                            className="rounded-full px-2.5 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold"
-                            style={specialtyPillStyle(item.specialty)}
-                          >
-                            {item.specialty}
-                          </span>
-                        )}
-                        {item.isShifted && item.delayMinutes > 0 && (
-                          <span className="inline-flex items-center rounded-full border border-amber-500/25 bg-amber-500/10 px-2 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold text-amber-700">
-                            Adjusted +{item.delayMinutes}m
-                          </span>
-                        )}
-                        {isLive && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498]/20 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#086958]">
-                            <span className="relative flex h-1.5 w-1.5">
-                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3AB498] opacity-75" />
-                              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#3AB498]" />
+                  <div className="relative z-10 min-w-0 flex flex-col justify-between px-3.5 py-3.5 sm:px-5 sm:py-4">
+                    <div>
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex flex-wrap items-center gap-1.5">
+                          {item.specialty && (
+                            <span
+                              className="rounded-full px-2.5 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold"
+                              style={specialtyPillStyle(item.specialty)}
+                            >
+                              {item.specialty}
                             </span>
-                            Live
-                          </span>
-                        )}
+                          )}
+                          {item.isShifted && item.delayMinutes > 0 && (
+                            <span className="inline-flex items-center rounded-full border border-amber-500/25 bg-amber-500/10 px-2 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold text-amber-700">
+                              Adjusted +{item.delayMinutes}m
+                            </span>
+                          )}
+                          {isLive && (
+                            <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498]/20 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#086958]">
+                              <span className="relative flex h-1.5 w-1.5">
+                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3AB498] opacity-75" />
+                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#3AB498]" />
+                              </span>
+                              Live
+                            </span>
+                          )}
+                        </div>
+
+                        <motion.button
+                          type="button"
+                          whileTap={{ scale: 0.88 }}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            onToggleSave(item.id);
+                          }}
+                          aria-label={saved ? 'Remove from saved sessions' : 'Save session'}
+                          aria-pressed={saved}
+                          className={`-mr-1.5 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors duration-200 ${
+                            saved
+                              ? 'bg-[#3AB498]/15 text-[#086958]'
+                              : 'text-[#94A3B8] hover:bg-[#F4F7F9] hover:text-[#0D224C]'
+                          }`}
+                        >
+                          <AnimatePresence mode="wait" initial={false}>
+                            <motion.span
+                              key={saved ? 'on' : 'off'}
+                              initial={{ scale: 0.6, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              exit={{ scale: 0.6, opacity: 0 }}
+                              transition={{ duration: 0.14 }}
+                              className="flex"
+                            >
+                              <Bookmark
+                                className="h-[17px] w-[17px]"
+                                fill={saved ? 'currentColor' : 'none'}
+                              />
+                            </motion.span>
+                          </AnimatePresence>
+                        </motion.button>
                       </div>
 
-                      <motion.button
-                        type="button"
-                        whileTap={{ scale: 0.88 }}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onToggleSave(item.id);
-                        }}
-                        aria-label={saved ? 'Remove from saved sessions' : 'Save session'}
-                        aria-pressed={saved}
-                        className={`-mr-1.5 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors duration-200 ${
-                          saved
-                            ? 'bg-[#3AB498]/15 text-[#086958]'
-                            : 'text-[#94A3B8] hover:bg-[#F4F7F9] hover:text-[#0D224C]'
-                        }`}
-                      >
-                        <AnimatePresence mode="wait" initial={false}>
-                          <motion.span
-                            key={saved ? 'on' : 'off'}
-                            initial={{ scale: 0.6, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            exit={{ scale: 0.6, opacity: 0 }}
-                            transition={{ duration: 0.14 }}
-                            className="flex"
-                          >
-                            <Bookmark
-                              className="h-[17px] w-[17px]"
-                              fill={saved ? 'currentColor' : 'none'}
-                            />
-                          </motion.span>
-                        </AnimatePresence>
-                      </motion.button>
+                      <h3 className="mt-1.5 font-display text-[15px] sm:text-[16.5px] font-bold leading-snug tracking-tight text-[#0B192C] text-pretty transition-colors group-hover:text-[#0D224C]">
+                        {item.title}
+                      </h3>
                     </div>
 
-                    <h3 className="mt-1.5 font-display text-[15px] sm:text-[16.5px] font-bold leading-snug tracking-tight text-[#0B192C] text-pretty transition-colors group-hover:text-[#0D224C]">
-                      {item.title}
-                    </h3>
-
-                    {/* Speaker + Clearly Visible Hall Name with Colored Dot */}
-                    <div className="mt-2.5 flex items-center gap-2.5">
+                    {/* Hairline Divider + Bottom Speaker & Hall Row */}
+                    <div className="border-t border-slate-100 pt-2.5 mt-3 flex items-center gap-2.5">
                       <div className="w-7 h-7 rounded-lg bg-[#3AB498]/10 flex items-center justify-center shrink-0">
                         <Mic className="h-[14px] w-[14px] text-[#086958]" />
                       </div>
@@ -964,7 +965,7 @@ export function ScheduleView({
                         <p className="mt-0.5 inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-[#64748B]">
                           <span
                             className="h-1.5 w-1.5 rounded-full shrink-0"
-                            style={{ backgroundColor: hall?.accent || hallAccent }}
+                            style={{ backgroundColor: hallAccent }}
                           />
                           <span>{isPrincess ? 'Princess Hall' : 'Al Diwan Hall'}</span>
                         </p>
