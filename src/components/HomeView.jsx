@@ -186,8 +186,8 @@ export function HomeView({
       target: 'workshops',
     },
     {
-      value: 'Top',
-      suffix: '',
+      value: '20',
+      suffix: '+',
       label: 'Dental Exhibitors',
       target: 'exhibitors',
     },
