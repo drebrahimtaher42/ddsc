@@ -3,12 +3,12 @@ import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
 import { Calendar, Clock, ChevronRight, X, Info } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
 import { formatTime12h } from '../utils/time';
-import { specialtyPillStyle, getSpecialtyColor } from '../utils/specialty';
+import { getSpecialtyColor } from '../utils/specialty';
 import { staggerListVariants, cardItemVariants, lightboxZoomVariants, EASE_OUT } from '../utils/motion';
 
 const PILL_SPRING = { type: 'spring', stiffness: 460, damping: 36 };
 
-function SpeakerPortrait({ src, name, initials, avatarTone = 'navy' }) {
+function SpeakerSidePhoto({ src, name }) {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -16,27 +16,32 @@ function SpeakerPortrait({ src, name, initials, avatarTone = 'navy' }) {
   }, [src]);
 
   const showImg = Boolean(src) && !failed;
-  const fallbackGradient =
-    avatarTone === 'emerald'
-      ? 'bg-gradient-to-br from-[#086958] to-[#3AB498]'
-      : 'bg-gradient-to-br from-[#0D224C] to-[#1D3E78]';
 
   return (
-    <div className="w-16 h-16 sm:w-[72px] sm:h-[72px] rounded-2xl overflow-hidden shrink-0 border border-slate-200/80 shadow-sm bg-slate-100">
+    <div
+      aria-hidden="true"
+      className="pointer-events-none select-none absolute inset-y-0 right-0 w-[52%] h-full overflow-hidden"
+    >
       {showImg ? (
-        <img
-          src={src}
-          alt={name}
-          loading="lazy"
-          onError={() => setFailed(true)}
-          className="object-cover object-top w-full h-full transition-transform duration-300 ease-out group-hover:scale-105"
-        />
+        <>
+          <img
+            src={src}
+            alt={name}
+            loading="lazy"
+            onError={() => setFailed(true)}
+            className="w-full h-full object-cover object-top scale-105 transition-transform duration-500 ease-out group-hover:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1B35] via-[#0B1B35]/80 via-35% to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1B35]/90 via-transparent to-transparent" />
+        </>
       ) : (
         <div
-          className={`flex h-full w-full items-center justify-center font-display text-base font-bold text-white ${fallbackGradient}`}
-        >
-          {initials}
-        </div>
+          className="absolute inset-0"
+          style={{
+            background:
+              'radial-gradient(circle at 70% 42%, rgba(14, 111, 100, 0.25) 0%, transparent 72%)',
+          }}
+        />
       )}
     </div>
   );
@@ -173,58 +178,55 @@ export function SpeakersView({
                   handleCardActivate(speaker);
                 }
               }}
-              className="group flex flex-col justify-between rounded-2xl border border-slate-200/70 bg-white p-5 shadow-card transition-[border-color,box-shadow] duration-200 hover:border-[#3AB498]/40 hover:shadow-cardHover cursor-pointer"
+              className="group rounded-2xl overflow-hidden relative bg-[#0B1B35] shadow-[0_8px_22px_-6px_rgba(11,27,53,0.28)] border border-white/10 min-h-[168px] flex flex-col justify-between cursor-pointer transition-[border-color,box-shadow] duration-200 hover:border-[#2DD4BF]/35"
             >
-              <div>
-                <div className="flex items-start gap-3.5">
-                  <SpeakerPortrait
-                    src={speaker.avatar || speaker.photo}
-                    name={speaker.name}
-                    initials={speaker.initials}
-                    avatarTone={speaker.avatarTone}
-                  />
+              {/* Full-Bleed Right-Side Speaker Photo + Seamless Fade */}
+              <SpeakerSidePhoto
+                src={speaker.avatar || speaker.photo}
+                name={speaker.name}
+              />
 
-                  <div className="min-w-0 flex-1">
-                    <span
-                      className="inline-block rounded-full px-2.5 py-0.5 font-display text-[10px] font-semibold"
-                      style={specialtyPillStyle(speaker.specialty)}
-                    >
-                      {speaker.specialty}
-                    </span>
-                    <h2 className="mt-1.5 font-display text-[15px] font-bold leading-snug tracking-tight text-[#0B192C] transition-colors group-hover:text-[#0D224C]">
-                      {speaker.name}
-                    </h2>
-                  </div>
+              {/* Left-Side Content Layer */}
+              <div className="relative z-10 p-4 pr-[36%] flex flex-col justify-between flex-1">
+                <div>
+                  <span className="inline-block bg-[#0E6F64]/30 border border-[#2DD4BF]/30 text-[#5EEAD4] px-2.5 py-0.5 rounded-full font-display text-[11px] font-semibold w-fit mb-2">
+                    {speaker.specialty}
+                  </span>
+                  <h2 className="font-display text-[16px] font-extrabold text-white leading-tight">
+                    {speaker.name}
+                  </h2>
                 </div>
 
                 {session && (
-                  <p className="mt-4 text-[13px] font-medium leading-relaxed text-[#0B192C]/90 line-clamp-2">
+                  <p className="text-[12.5px] text-slate-300 leading-snug mt-1.5 line-clamp-2">
                     {session.title}
                   </p>
                 )}
               </div>
 
+              {/* Bottom Metadata Bar */}
               {session && (
-                <div className="mt-4 pt-3.5 border-t border-slate-200/70 flex items-center justify-between gap-2 text-[11px] text-[#64748B]">
+                <div className="relative z-10 px-4 py-2.5 border-t border-white/10 bg-[#0B1B35]/60 backdrop-blur-xs flex items-center justify-between gap-2 text-[11.5px] text-slate-200">
                   <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 min-w-0">
-                    <span className="inline-flex items-center gap-1 font-semibold text-[#0B192C]">
-                      <Calendar className="h-3 w-3 text-[#64748B]" />
+                    <span className="inline-flex items-center gap-1 font-semibold text-white">
+                      <Calendar className="h-3 w-3 text-[#5EEAD4]" />
                       {dayInfo?.shortLabel}
                     </span>
-                    <span className="inline-flex items-center gap-1 tabular-nums">
-                      <Clock className="h-3 w-3 text-[#64748B]" />
+                    <span className="inline-flex items-center gap-1 tabular-nums text-slate-200">
+                      <Clock className="h-3 w-3 text-[#5EEAD4]" />
                       {formatTime12h(session.startTime)}
                     </span>
-                    <span className="inline-flex items-center gap-1 font-medium">
+                    <span className="inline-flex items-center gap-1.5 font-medium text-slate-200">
                       <span
-                        className={`h-1.5 w-1.5 rounded-full ${
-                          isPrincess ? 'bg-[#0D224C]' : 'bg-[#086958]'
-                        }`}
+                        className="h-1.5 w-1.5 rounded-full shrink-0"
+                        style={{
+                          backgroundColor: isPrincess ? '#93C5FD' : '#2DD4BF',
+                        }}
                       />
                       {isPrincess ? 'Princess' : 'Al Diwan'}
                     </span>
                   </div>
-                  <ChevronRight className="h-4 w-4 shrink-0 text-[#94A3B8] transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#086958]" />
+                  <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#5EEAD4]" />
                 </div>
               )}
             </motion.article>
