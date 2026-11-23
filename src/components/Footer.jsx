@@ -50,7 +50,7 @@ export function Footer({ conference, bookingUrl, supportUrl }) {
 
   return (
     <>
-      <footer className="relative mt-12 overflow-hidden bg-[#0D224C] text-white pb-28 md:pb-0">
+      <footer className="relative mt-10 overflow-hidden bg-[#0D224C] text-white pb-24 md:pb-8">
         {/* Mint hairline + radial ambient glow */}
         <div
           className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#3AB498]/60 to-transparent"
@@ -68,7 +68,7 @@ export function Footer({ conference, bookingUrl, supportUrl }) {
           src={logoWhite}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none select-none absolute -right-10 -bottom-14 h-72 w-auto opacity-[0.035]"
+          className="pointer-events-none select-none absolute -right-6 bottom-24 md:top-1/2 md:bottom-auto md:-translate-y-1/2 h-64 sm:h-72 w-auto opacity-[0.04]"
         />
 
         <div className="relative z-10 mx-auto max-w-5xl px-4 sm:px-6">
@@ -76,7 +76,7 @@ export function Footer({ conference, bookingUrl, supportUrl }) {
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.15 }}
-            className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-6 pt-8 pb-6 md:grid-cols-12 md:gap-x-8"
+            className="grid grid-cols-[1fr_auto] gap-x-4 gap-y-5 pt-7 pb-3.5 md:grid-cols-12 md:gap-x-8"
           >
             {/* 1. Brand + balanced 2-line tagline */}
             <motion.div
@@ -193,7 +193,7 @@ export function Footer({ conference, bookingUrl, supportUrl }) {
           </motion.div>
 
           {/* Compact copyright strip */}
-          <div className="flex flex-col items-center justify-between gap-1.5 border-t border-[#3AB498]/15 py-3.5 text-center text-xs text-white/50 sm:flex-row sm:text-left">
+          <div className="flex flex-col items-center justify-between gap-1 border-t border-[#3AB498]/15 pt-3 pb-0 text-center text-xs text-white/50 sm:flex-row sm:text-left">
             <p>© 2026 Damietta Dental Syndicate Conference · All rights reserved</p>
             <p className="font-display font-semibold tracking-wide text-white/60">
               #DDSC2026
