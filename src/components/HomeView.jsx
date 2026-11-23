@@ -250,22 +250,18 @@ export function HomeView({
           animate="visible"
           className="relative z-10 mx-auto max-w-5xl px-5 pt-10 pb-8 sm:pt-16 sm:pb-10 flex flex-col items-center text-center"
         >
-          {/* Eyebrow (No Pill) with Pulsing Teal Dot */}
+          {/* Clean Single-Line Top Eyebrow */}
           <motion.p
             variants={cardItemVariants}
-            className="font-display text-[11px] font-semibold tracking-[0.22em] uppercase text-[#5EEAD4] flex items-center justify-center gap-2"
+            className="font-display text-[11px] font-semibold tracking-[0.22em] uppercase text-[#5EEAD4] whitespace-nowrap"
           >
-            <span className="relative flex h-1.5 w-1.5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#5EEAD4] opacity-75" />
-              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#5EEAD4]" />
-            </span>
-            <span>29TH EDITION · MEET · SHARE · CONNECT</span>
+            MEET · SHARE · CONNECT
           </motion.p>
 
-          {/* Main Headline */}
+          {/* Single-Line Main Headline */}
           <motion.h1
             variants={cardItemVariants}
-            className="font-display text-[32px] sm:text-5xl md:text-6xl font-extrabold text-white leading-[1.12] tracking-tight mt-4 max-w-[340px] sm:max-w-2xl text-balance"
+            className="font-display text-[clamp(1.45rem,6.5vw,3rem)] font-extrabold text-white leading-tight tracking-tight whitespace-nowrap mt-4"
           >
             A New Era of <span className="text-[#CCFBF1]">Dentistry</span>
           </motion.h1>
@@ -324,8 +320,11 @@ export function HomeView({
                 <span className="font-display text-[10px] uppercase tracking-[0.18em] text-[#5EEAD4]/80 font-semibold">
                   DATE
                 </span>
-                <span className="font-display text-[13px] font-semibold text-white mt-0.5 whitespace-nowrap">
-                  26–27 Nov 2026
+                <span className="font-display text-[13.5px] font-semibold text-white mt-0.5 whitespace-nowrap">
+                  26–27 Nov
+                </span>
+                <span className="text-[12px] text-slate-300/80 font-medium mt-0.5 whitespace-nowrap">
+                  29th Edition
                 </span>
               </div>
 
@@ -333,7 +332,7 @@ export function HomeView({
                 <span className="font-display text-[10px] uppercase tracking-[0.18em] text-[#5EEAD4]/80 font-semibold">
                   VENUE
                 </span>
-                <span className="font-display text-[13px] font-semibold text-white mt-0.5 text-balance">
+                <span className="font-display text-[13.5px] font-semibold text-white mt-0.5 text-balance">
                   Steigenberger El Lessan
                 </span>
               </div>
