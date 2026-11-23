@@ -796,40 +796,58 @@ export function ScheduleView({
               liveConfig.liveEnabled !== false &&
               effectiveLiveState.liveIds?.has(item.id);
 
-            /* ── 1. Opening Ceremony (Celebratory Dark Navy-to-Teal Gradient Card) ── */
+            /* ── 1. Opening Ceremony (Centered VIP Gala Invitation Design) ── */
             if (item.type === 'special' && item.specialKind === 'ceremony') {
+              const ceremonySubtitle = item.subtitle
+                ? item.subtitle.replace(/\s*Hall/gi, '')
+                : 'DDSC Organizing Board · Al Diwan & Princess';
+
               return (
                 <motion.li
                   key={item.id}
                   variants={cardItemVariants}
-                  className={`relative overflow-hidden grid grid-cols-[88px_1fr] sm:grid-cols-[106px_1fr] items-center gap-3.5 sm:gap-5 rounded-2xl bg-gradient-to-r from-[#0F2544] to-[#0E6F64] px-4 py-4 sm:px-5 sm:py-4.5 text-white shadow-md ${
-                    isLive ? 'ring-2 ring-[#5EEAD4]' : 'border border-white/10'
+                  className={`bg-gradient-to-br from-[#0B1B35] via-[#0F2544] to-[#0E6F64] rounded-2xl p-5 relative overflow-hidden border border-[#D4AF37]/30 shadow-[0_10px_28px_-8px_rgba(11,27,53,0.35)] ${
+                    isLive ? 'ring-2 ring-[#5EEAD4]' : ''
                   }`}
                 >
-                  <div className="border-r border-white/15 pr-3 sm:pr-4">
-                    <TimeBlock item={item} tone="ceremony" />
-                  </div>
-                  <div className="min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/35 bg-amber-400/15 px-2.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-amber-200">
-                        <Sparkles className="h-2.5 w-2.5" />
-                        Special Event
+                  {/* Soft Radial Champagne-Gold Glow in Top-Right Corner */}
+                  <div
+                    aria-hidden="true"
+                    className="pointer-events-none absolute -top-10 -right-10 h-32 w-32 rounded-full bg-[#D4AF37]/10 blur-2xl"
+                  />
+
+                  <div className="flex flex-col items-center text-center relative z-10">
+                    {/* Top Eyebrow Row */}
+                    <div className="flex flex-wrap items-center justify-center gap-2">
+                      <span className="bg-[#D4AF37]/15 border border-[#D4AF37]/35 text-[#F3D578] px-3 py-1 rounded-full font-display text-[11px] font-semibold tracking-wider uppercase flex items-center gap-1.5 whitespace-nowrap tabular-nums">
+                        <Sparkles className="h-3 w-3 shrink-0" />
+                        <span>
+                          SPECIAL EVENT · {formatTimeRange(item.startTime, item.endTime)}
+                        </span>
                       </span>
                       {isLive && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498] px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#06201B]">
+                        <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498] px-2.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#06201B]">
                           <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#06201B]" />
                           Now
                         </span>
                       )}
                     </div>
-                    <h3 className="mt-1 font-display text-base sm:text-[17px] font-extrabold leading-snug tracking-tight text-white">
+
+                    {/* Main Title */}
+                    <h3 className="font-display text-xl font-extrabold text-white tracking-tight mt-2.5">
                       {item.title}
                     </h3>
-                    {item.subtitle && (
-                      <p className="mt-0.5 text-xs leading-relaxed text-white/80">
-                        {item.subtitle}
-                      </p>
-                    )}
+
+                    {/* Subtle Gold Divider */}
+                    <div
+                      aria-hidden="true"
+                      className="w-10 h-[2px] bg-gradient-to-r from-transparent via-[#D4AF37]/70 to-transparent my-2.5"
+                    />
+
+                    {/* Footer Details */}
+                    <p className="text-xs text-slate-200/90 font-medium">
+                      {ceremonySubtitle}
+                    </p>
                   </div>
                 </motion.li>
               );
