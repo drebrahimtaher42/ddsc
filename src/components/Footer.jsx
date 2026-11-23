@@ -101,7 +101,9 @@ export function Footer({ conference, bookingUrl, supportUrl }) {
               </div>
               <p className="mt-4 max-w-xs font-display text-[15px] font-semibold leading-snug tracking-tight text-white">
                 The largest annual conference in Delta
-                <span className="block text-[#5EEAD4]">A New Era of Dentistry</span>
+                <span className="block font-script text-[26px] sm:text-[28px] font-normal text-[#5EEAD4] leading-tight mt-0.5">
+                  A New Era of Dentistry
+                </span>
               </p>
               <p className="mt-1.5 max-w-xs text-[13px] leading-relaxed text-white/60">
                 Built around what you actually need to grow in your practice.

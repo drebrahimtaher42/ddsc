@@ -834,8 +834,13 @@ export function ScheduleView({
                     </div>
 
                     {/* Main Title */}
-                    <h3 className="font-display text-xl font-extrabold text-white tracking-tight mt-2.5">
-                      {item.title}
+                    <h3 className="mt-2.5 flex items-baseline justify-center">
+                      <span className="font-script text-[32px] font-normal text-[#F3D578] leading-none mr-1.5">
+                        Opening
+                      </span>
+                      <span className="font-display text-xl font-extrabold text-white tracking-tight">
+                        Ceremony
+                      </span>
                     </h3>
 
                     {/* Subtle Gold Divider */}

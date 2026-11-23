@@ -14,6 +14,7 @@ export default {
       fontFamily: {
         display: ['Montserrat', 'system-ui', 'sans-serif'],
         sans: ['Inter', 'system-ui', 'sans-serif'],
+        script: ['"Alex Brush"', 'cursive'],
       },
       boxShadow: {
         xs: '0 1px 2px rgba(13, 34, 76, 0.06)',
