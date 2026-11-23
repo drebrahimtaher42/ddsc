@@ -195,8 +195,8 @@ export function HomeView({
 
   return (
     <div className="bg-[#F3F6FA]">
-      {/* 1. FULL-BLEED ARCHITECTURAL CENTERED HERO (True 100dvh Full-Viewport Stage) */}
-      <section className="w-full relative overflow-hidden bg-[#0B1B35] text-white min-h-[100dvh] flex flex-col justify-between">
+      {/* 1. FULL-BLEED ARCHITECTURAL CENTERED HERO (Locked 100svh Full-Viewport Stage) */}
+      <section className="w-full relative overflow-hidden bg-[#0B1B35] text-white min-h-[100svh] md:min-h-[85vh] flex flex-col justify-between">
         {/* Centered top radial spotlight glow */}
         <div
           aria-hidden="true"

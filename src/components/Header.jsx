@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import logoNavy from '../assets/logo-navy.svg';
+import logoWhite from '../assets/logo-white.svg';
 import { WhatsAppIcon } from './WhatsAppIcon';
 
 export function Header({
@@ -20,16 +21,17 @@ export function Header({
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [activeTab]);
 
-  const isTransparent = activeTab === 'home' && !isScrolled;
+  const isHome = !activeTab || activeTab === 'home';
+  const isTransparent = isHome && !isScrolled;
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 h-16 transition-all duration-300 ${
+      className={`fixed top-0 inset-x-0 z-50 h-16 border-b transition-all duration-300 ${
         isTransparent
-          ? 'bg-transparent border-b border-transparent'
-          : 'bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs'
+          ? 'bg-transparent backdrop-blur-none border-transparent shadow-none'
+          : 'bg-white/85 backdrop-blur-md border-slate-200/75 shadow-xs'
       }`}
     >
       <div className="mx-auto flex h-full max-w-5xl items-center justify-between gap-2 px-4 sm:px-6">
@@ -46,11 +48,9 @@ export function Header({
         >
           <img
             ref={logoRef}
-            src={logoNavy}
+            src={isTransparent ? logoWhite : logoNavy}
             alt="DDSC Logo"
-            className={`h-9 w-auto sm:h-10 transition-all duration-300 group-hover:scale-[1.03] ${
-              isTransparent ? 'brightness-0 invert' : ''
-            }`}
+            className="h-9 w-auto sm:h-10 transition-transform duration-200 group-hover:scale-[1.03]"
             style={{ opacity: logoHidden ? 0 : 1 }}
           />
           <div
@@ -124,10 +124,10 @@ export function Header({
           rel="noopener noreferrer"
           whileHover={{ y: -1 }}
           whileTap={{ scale: 0.98 }}
-          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full py-2 pl-3.5 pr-4 font-display text-xs font-semibold text-white transition-all duration-300 ${
+          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border py-2 pl-3.5 pr-4 font-display text-xs font-semibold text-white transition-all duration-300 ${
             isTransparent
-              ? 'bg-[#0E6F64]/90 hover:bg-[#0E6F64] border border-white/15 backdrop-blur-xs'
-              : 'bg-[#086958] hover:bg-[#065749] border border-transparent shadow-sm hover:shadow-md'
+              ? 'bg-white/10 hover:bg-white/20 border-white/20 backdrop-blur-xs'
+              : 'bg-[#086958] hover:bg-[#065749] border-transparent shadow-sm hover:shadow-md'
           }`}
         >
           <WhatsAppIcon className="h-3.5 w-3.5" />
