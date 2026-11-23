@@ -7,6 +7,23 @@
  * conflict-free across the top Live banner and all schedule cards.
  */
 
+export const LIVE_PREVIEW_EXPIRY_MS = new Date(
+  '2026-11-23T22:00:00+02:00'
+).getTime();
+
+export function hasPrivatePreviewOverride() {
+  if (typeof window === 'undefined') return false;
+  try {
+    return new URLSearchParams(window.location.search).get('preview') === 'live';
+  } catch {
+    return false;
+  }
+}
+
+export function isLivePreviewAllowed(realNowMs = Date.now()) {
+  return realNowMs < LIVE_PREVIEW_EXPIRY_MS || hasPrivatePreviewOverride();
+}
+
 export function parseClockMinutes(timeStr) {
   if (!timeStr) return 0;
   const clean = String(timeStr).trim();

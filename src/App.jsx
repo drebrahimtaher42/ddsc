@@ -25,6 +25,7 @@ import { useSavedSessions } from './hooks/useSavedSessions';
 import {
   PREVIEW_PRESETS,
   getLiveConferenceState,
+  isLivePreviewAllowed,
   buildWhatsAppUrl,
 } from './utils/time';
 import { tabTransitionVariants } from './utils/motion';
@@ -67,11 +68,19 @@ export default function App() {
     []
   );
 
+  const canPreviewLive = isLivePreviewAllowed(realNowMs);
+
+  useEffect(() => {
+    if (!canPreviewLive && previewPresetId) {
+      setPreviewPresetId(null);
+    }
+  }, [canPreviewLive, previewPresetId]);
+
   const effectiveNowMs = useMemo(() => {
-    if (!previewPresetId) return realNowMs;
+    if (!canPreviewLive || !previewPresetId) return realNowMs;
     const preset = PREVIEW_PRESETS.find((p) => p.id === previewPresetId);
     return preset ? Date.parse(preset.iso) : realNowMs;
-  }, [previewPresetId, realNowMs]);
+  }, [canPreviewLive, previewPresetId, realNowMs]);
 
   const liveState = useMemo(
     () => getLiveConferenceState(effectiveNowMs, scheduleData, conferenceData),
@@ -102,6 +111,10 @@ export default function App() {
   }, []);
 
   const handleTogglePreview = useCallback(() => {
+    if (!isLivePreviewAllowed(Date.now())) {
+      setPreviewPresetId(null);
+      return;
+    }
     setPreviewPresetId((prev) => (prev ? null : PREVIEW_PRESETS[0].id));
   }, []);
 
@@ -177,7 +190,8 @@ export default function App() {
                       conference={conferenceData}
                       liveState={liveState}
                       nowMs={effectiveNowMs}
-                      previewPresetId={previewPresetId}
+                      previewPresetId={canPreviewLive ? previewPresetId : null}
+                      canPreviewLive={canPreviewLive}
                       onTogglePreview={handleTogglePreview}
                       onSelectPreset={setPreviewPresetId}
                       savedIds={savedIds}

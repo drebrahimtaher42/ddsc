@@ -1,10 +1,16 @@
 import {
+  LIVE_PREVIEW_EXPIRY_MS,
+  hasPrivatePreviewOverride,
+  isLivePreviewAllowed,
   getSessionWindowMs,
   getSessionStatus,
   getSecondLecturePreviewMs,
 } from './scheduleTime';
 
 export {
+  LIVE_PREVIEW_EXPIRY_MS,
+  hasPrivatePreviewOverride,
+  isLivePreviewAllowed,
   getSessionWindowMs,
   getSessionStatus,
   getSecondLecturePreviewMs,

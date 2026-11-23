@@ -124,12 +124,13 @@ export function LiveBanner({
   liveState,
   nowMs,
   previewPresetId,
+  canPreviewLive = false,
   onTogglePreview,
   onSelectPreset,
   onSelectSession,
   conference,
 }) {
-  const isPreview = Boolean(previewPresetId);
+  const isPreview = canPreviewLive && Boolean(previewPresetId);
   const {
     phase,
     countdown,
@@ -210,7 +211,7 @@ export function LiveBanner({
               )}
             </div>
 
-            {(phase === 'after' || isPreview) && (
+            {canPreviewLive && (phase === 'after' || isPreview) && (
               <motion.button
                 type="button"
                 whileTap={{ scale: 0.96 }}
@@ -326,15 +327,17 @@ export function LiveBanner({
                     <span className="truncate">{conference.venue.name}</span>
                   </span>
 
-                  <button
-                    type="button"
-                    onClick={onTogglePreview}
-                    aria-label="Preview Live Mode"
-                    className="inline-flex shrink-0 items-center gap-1 text-[11px] font-medium text-white/40 hover:text-white/80 transition-colors cursor-pointer"
-                  >
-                    <Eye className="h-3 w-3" />
-                    <span>Live</span>
-                  </button>
+                  {canPreviewLive && (
+                    <button
+                      type="button"
+                      onClick={onTogglePreview}
+                      aria-label="Preview Live Mode"
+                      className="inline-flex shrink-0 items-center gap-1 text-[11px] font-medium text-white/40 hover:text-white/80 transition-colors cursor-pointer"
+                    >
+                      <Eye className="h-3 w-3" />
+                      <span>Live</span>
+                    </button>
+                  )}
                 </div>
               </div>
             )}
