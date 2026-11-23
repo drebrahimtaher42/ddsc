@@ -341,28 +341,37 @@ export function HomeView({
       {/* 3. FULL-BLEED ARCHITECTURAL STATS BAND */}
       <section
         aria-label="Conference Highlights"
-        className="w-full bg-white border-b border-slate-200/80"
+        className="w-full bg-white border-b border-slate-200/80 overflow-hidden"
       >
-        <div className="max-w-4xl mx-auto grid grid-cols-3 divide-x divide-slate-200/80 py-6 sm:py-8">
-          {highlights.map((stat) => (
-            <motion.button
-              key={stat.label}
-              type="button"
-              whileTap={{ scale: 0.98 }}
-              onClick={() => onNavigate(stat.target)}
-              className="group px-2 sm:px-6 flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0E6F64]/40 rounded-lg"
-            >
-              <span className="font-display text-[26px] sm:text-4xl font-extrabold tracking-tight text-[#0F2544] leading-none tabular-nums transition-colors group-hover:text-[#0E6F64]">
-                {stat.value}
-                {stat.suffix && (
-                  <span className="text-[#0E6F64]">{stat.suffix}</span>
-                )}
-              </span>
-              <span className="text-[11px] sm:text-[12.5px] font-medium text-slate-500 leading-snug mt-2 text-balance max-w-[100px] sm:max-w-none">
-                {stat.label}
-              </span>
-            </motion.button>
-          ))}
+        <div className="max-w-4xl mx-auto grid grid-cols-3">
+          {highlights.map((stat, idx) => {
+            const layerClasses =
+              idx === 0
+                ? 'z-10'
+                : idx === 1
+                ? 'z-20 shadow-[-10px_0_20px_-10px_rgba(15,37,68,0.12)] border-l border-slate-100'
+                : 'z-30 shadow-[-10px_0_20px_-10px_rgba(15,37,68,0.12)] border-l border-slate-100';
+
+            return (
+              <motion.button
+                key={stat.label}
+                type="button"
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onNavigate(stat.target)}
+                className={`group relative bg-white py-6 sm:py-8 px-2 sm:px-6 flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-[#0E6F64]/40 ${layerClasses}`}
+              >
+                <span className="font-display text-[26px] sm:text-4xl font-extrabold tracking-tight text-[#0F2544] leading-none tabular-nums transition-colors group-hover:text-[#0E6F64]">
+                  {stat.value}
+                  {stat.suffix && (
+                    <span className="text-[#0E6F64]">{stat.suffix}</span>
+                  )}
+                </span>
+                <span className="text-[11px] sm:text-[12.5px] font-medium text-slate-500 leading-snug mt-2 text-balance max-w-[100px] sm:max-w-none">
+                  {stat.label}
+                </span>
+              </motion.button>
+            );
+          })}
         </div>
       </section>
 
