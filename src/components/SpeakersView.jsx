@@ -8,7 +8,7 @@ import { staggerListVariants, cardItemVariants, lightboxZoomVariants, EASE_OUT }
 
 const PILL_SPRING = { type: 'spring', stiffness: 460, damping: 36 };
 
-function SpeakerSidePhoto({ src, name }) {
+function SpeakerSidePhoto({ src, name, initials }) {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -20,29 +20,28 @@ function SpeakerSidePhoto({ src, name }) {
   return (
     <div
       aria-hidden="true"
-      className="pointer-events-none select-none absolute inset-y-0 right-0 w-[52%] h-full overflow-hidden"
+      className="pointer-events-none select-none absolute inset-y-0 left-0 w-[42%] h-full overflow-hidden"
     >
       {showImg ? (
-        <>
-          <img
-            src={src}
-            alt={name}
-            loading="lazy"
-            onError={() => setFailed(true)}
-            className="w-full h-full object-cover object-top scale-105 transition-transform duration-500 ease-out group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0B1B35] via-[#0B1B35]/80 via-35% to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0B1B35]/90 via-transparent to-transparent" />
-        </>
+        <img
+          src={src}
+          alt={name}
+          loading="lazy"
+          onError={() => setFailed(true)}
+          className="w-full h-full object-cover object-top scale-110 transition-transform duration-500 ease-out group-hover:scale-115"
+        />
       ) : (
         <div
-          className="absolute inset-0"
+          className="flex h-full w-full items-center justify-center font-display text-xl font-extrabold text-[#5EEAD4]/80"
           style={{
             background:
-              'radial-gradient(circle at 70% 42%, rgba(14, 111, 100, 0.25) 0%, transparent 72%)',
+              'radial-gradient(circle at 42% 40%, rgba(14, 111, 100, 0.32) 0%, transparent 75%)',
           }}
-        />
+        >
+          {initials}
+        </div>
       )}
+      <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#0B1B35] via-[#0B1B35]/60 to-transparent pointer-events-none" />
     </div>
   );
 }
@@ -180,14 +179,15 @@ export function SpeakersView({
               }}
               className="group rounded-2xl overflow-hidden relative bg-[#0B1B35] shadow-[0_8px_22px_-6px_rgba(11,27,53,0.28)] border border-white/10 min-h-[168px] flex flex-col justify-between cursor-pointer transition-[border-color,box-shadow] duration-200 hover:border-[#2DD4BF]/35"
             >
-              {/* Full-Bleed Right-Side Speaker Photo + Seamless Fade */}
+              {/* Full-Bleed Left-Side Speaker Photo + Edge-Only Blend */}
               <SpeakerSidePhoto
                 src={speaker.avatar || speaker.photo}
                 name={speaker.name}
+                initials={speaker.initials}
               />
 
-              {/* Left-Side Content Layer */}
-              <div className="relative z-10 p-4 pr-[36%] flex flex-col justify-between flex-1">
+              {/* Right-Side Content Layer */}
+              <div className="relative z-10 p-4 pl-[44%] flex flex-col justify-between flex-1 h-full">
                 <div>
                   <span className="inline-block bg-[#0E6F64]/30 border border-[#2DD4BF]/30 text-[#5EEAD4] px-2.5 py-0.5 rounded-full font-display text-[11px] font-semibold w-fit mb-2">
                     {speaker.specialty}
@@ -206,7 +206,7 @@ export function SpeakersView({
 
               {/* Bottom Metadata Bar */}
               {session && (
-                <div className="relative z-10 px-4 py-2.5 border-t border-white/10 bg-[#0B1B35]/60 backdrop-blur-xs flex items-center justify-between gap-2 text-[11.5px] text-slate-200">
+                <div className="relative z-10 px-4 py-2.5 border-t border-white/10 bg-[#0B1B35]/90 flex items-center justify-between gap-2 text-[11.5px] text-slate-200">
                   <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 min-w-0">
                     <span className="inline-flex items-center gap-1 font-semibold text-white">
                       <Calendar className="h-3 w-3 text-[#5EEAD4]" />
