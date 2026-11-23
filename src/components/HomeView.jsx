@@ -11,9 +11,6 @@ import {
   Phone,
   Gift,
   Award,
-  Presentation,
-  Microscope,
-  Store,
 } from 'lucide-react';
 import lecturePosters from 'virtual:lecture-posters';
 import boardMembers from '../data/board.json';
@@ -177,24 +174,21 @@ export function HomeView({
 
   const highlights = [
     {
-      value: '27+',
+      value: '27',
+      suffix: '+',
       label: 'Scientific Lectures',
-      sub: 'Two parallel halls',
-      icon: Presentation,
       target: 'schedule',
     },
     {
       value: String(workshops.length),
+      suffix: '',
       label: 'Hands-On Workshops',
-      sub: 'Pre-conference labs',
-      icon: Microscope,
       target: 'workshops',
     },
     {
       value: 'Top',
+      suffix: '',
       label: 'Dental Exhibitors',
-      sub: 'Exclusive deals',
-      icon: Store,
       target: 'exhibitors',
     },
   ];
@@ -344,46 +338,40 @@ export function HomeView({
         </motion.div>
       </section>
 
-      {/* 3. SEPARATED STATS SECTION BELOW HERO */}
-      <div className="mx-auto max-w-5xl px-4 pt-5 pb-2 sm:px-6">
-        <motion.section
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: EASE_OUT }}
-          aria-label="Conference Highlights"
-          className="bg-white rounded-2xl border border-slate-200/80 shadow-[0_6px_18px_-6px_rgba(15,37,68,0.08)] grid grid-cols-3 divide-x divide-slate-100 py-4 px-2"
-        >
-          {highlights.map((stat) => {
-            const Icon = stat.icon;
-            return (
-              <motion.button
-                key={stat.label}
-                type="button"
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onNavigate(stat.target)}
-                className="group flex flex-col items-center justify-center text-center px-2.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#086958]/40 rounded-xl"
-              >
-                <span className="w-8 h-8 rounded-xl bg-[#0E6F64]/10 text-[#0E6F64] flex items-center justify-center mb-2 transition-colors group-hover:bg-[#0E6F64] group-hover:text-white">
-                  <Icon className="h-4 w-4" strokeWidth={1.85} />
-                </span>
-                <span className="font-display text-xl sm:text-2xl font-extrabold text-[#0F2544] leading-none tabular-nums">
-                  {stat.value}
-                </span>
-                <span className="text-[11.5px] sm:text-xs font-medium text-slate-600 mt-1.5 leading-snug text-balance">
-                  {stat.label}
-                </span>
-              </motion.button>
-            );
-          })}
-        </motion.section>
-      </div>
+      {/* 3. FULL-BLEED ARCHITECTURAL STATS BAND */}
+      <section
+        aria-label="Conference Highlights"
+        className="w-full bg-white border-b border-slate-200/80"
+      >
+        <div className="max-w-4xl mx-auto grid grid-cols-3 divide-x divide-slate-200/80 py-6 sm:py-8">
+          {highlights.map((stat) => (
+            <motion.button
+              key={stat.label}
+              type="button"
+              whileTap={{ scale: 0.98 }}
+              onClick={() => onNavigate(stat.target)}
+              className="group px-2 sm:px-6 flex flex-col items-center text-center focus:outline-none focus-visible:ring-2 focus-visible:ring-[#0E6F64]/40 rounded-lg"
+            >
+              <span className="font-display text-[26px] sm:text-4xl font-extrabold tracking-tight text-[#0F2544] leading-none tabular-nums transition-colors group-hover:text-[#0E6F64]">
+                {stat.value}
+                {stat.suffix && (
+                  <span className="text-[#0E6F64]">{stat.suffix}</span>
+                )}
+              </span>
+              <span className="text-[11px] sm:text-[12.5px] font-medium text-slate-500 leading-snug mt-2 text-balance max-w-[100px] sm:max-w-none">
+                {stat.label}
+              </span>
+            </motion.button>
+          ))}
+        </div>
+      </section>
 
       {/* BELOW-THE-FOLD EDITORIAL SECTIONS */}
       <motion.div
         variants={staggerListVariants}
         initial="hidden"
         animate="visible"
-        className="mx-auto max-w-5xl px-4 pt-6 pb-4 sm:px-6 space-y-8 sm:space-y-10"
+        className="mx-auto max-w-5xl px-4 pt-8 pb-4 sm:px-6 space-y-8 sm:space-y-10"
       >
 
         {/* 3. SLIDE 1 — SCIENTIFIC SESSIONS CAROUSEL */}
