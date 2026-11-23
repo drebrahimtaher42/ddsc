@@ -834,11 +834,11 @@ export function ScheduleView({
                     </div>
 
                     {/* Main Title */}
-                    <h3 className="mt-2.5 flex items-baseline justify-center">
-                      <span className="font-script text-[32px] font-normal text-[#F3D578] leading-none mr-1.5">
+                    <h3 className="mt-2.5 inline-flex items-baseline justify-center gap-2.5">
+                      <span className="font-script text-[34px] font-normal text-[#F3D578] leading-none">
                         Opening
                       </span>
-                      <span className="font-display text-xl font-extrabold text-white tracking-tight">
+                      <span className="font-display uppercase text-[15px] font-semibold tracking-[0.22em] text-slate-100/95">
                         Ceremony
                       </span>
                     </h3>
