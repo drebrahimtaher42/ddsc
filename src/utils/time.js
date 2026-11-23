@@ -1,3 +1,15 @@
+import {
+  getSessionWindowMs,
+  getSessionStatus,
+  getSecondLecturePreviewMs,
+} from './scheduleTime';
+
+export {
+  getSessionWindowMs,
+  getSessionStatus,
+  getSecondLecturePreviewMs,
+};
+
 export const REMOTE_LIVE_CONFIG_URL =
   'https://gist.githubusercontent.com/drebrahimtaher42/684ca53df6f22b4dcc19911481e32a8a/raw/ddsc-live-config.json';
 
@@ -60,10 +72,10 @@ export function shiftSessionByMinutes(session, delayMinutes, isShifted = false) 
 
 export const PREVIEW_PRESETS = [
   {
-    id: 'd1-morning',
-    label: 'Day 1 · 11:15 AM',
-    description: 'Concurrent halls live',
-    iso: '2026-11-26T11:15:00+02:00',
+    id: 'd1-slot2',
+    label: 'Day 1 · 12:05 PM',
+    description: '2nd lecture slot live (Ended + Live + Upcoming)',
+    iso: '2026-11-26T12:05:00+02:00',
   },
   {
     id: 'd2-prayer',
@@ -164,22 +176,33 @@ export function getLiveConferenceState(
 ) {
   const cfg = normalizeLiveConfig(liveConfig);
   const liveSchedule = schedule.map((item) => {
-    if (item.type !== 'session') return item;
-    if (item.hall === 'diwan' && cfg.alDiwanDelayMinutes) {
-      return shiftSessionByMinutes(item, cfg.alDiwanDelayMinutes, true);
-    }
-    if (item.hall === 'princess' && cfg.princessDelayMinutes) {
-      return shiftSessionByMinutes(item, cfg.princessDelayMinutes, true);
-    }
-    return item;
+    const { effectiveStartMs, effectiveEndMs, delayMins } = getSessionWindowMs(
+      item,
+      conference,
+      cfg
+    );
+    const shifted =
+      delayMins !== 0 ? shiftSessionByMinutes(item, delayMins, true) : item;
+    return {
+      ...shifted,
+      startIso: new Date(effectiveStartMs).toISOString(),
+      endIso: new Date(effectiveEndMs).toISOString(),
+      effectiveStartMs,
+      effectiveEndMs,
+    };
   });
 
-  const openingMs = Date.parse(conference.openingCeremonyIso);
+  const openingItem = liveSchedule.find((s) => s.specialKind === 'ceremony');
+  const openingMs = openingItem
+    ? openingItem.effectiveStartMs
+    : Date.parse(conference.openingCeremonyIso);
   const conferenceEndMs = Math.max(
     Date.parse(conference.conferenceEndIso),
-    ...liveSchedule.map((item) => Date.parse(item.endIso))
+    ...liveSchedule.map((item) => item.effectiveEndMs)
   );
-  const firstEventMs = Math.min(...liveSchedule.map((item) => Date.parse(item.startIso)));
+  const firstEventMs = Math.min(
+    ...liveSchedule.map((item) => item.effectiveStartMs)
+  );
 
   const countdown = getCountdownParts(openingMs, nowMs);
 
@@ -196,6 +219,7 @@ export function getLiveConferenceState(
       upNextPrincess: null,
       upNextDiwan: null,
       liveIds: new Set(),
+      endedIds: new Set(),
     };
   }
 
@@ -212,31 +236,37 @@ export function getLiveConferenceState(
       upNextPrincess: null,
       upNextDiwan: null,
       liveIds: new Set(),
+      endedIds: new Set(liveSchedule.map((s) => s.id)),
     };
   }
 
-  // Active conference window (26–27 Nov 2026)
-  const liveSessions = liveSchedule.filter((item) => {
-    const start = Date.parse(item.startIso);
-    const end = Date.parse(item.endIso);
-    return nowMs >= start && nowMs < end;
-  });
+  // Active conference window (26–27 Nov 2026) using strict half-open [start, end)
+  const liveSessions = liveSchedule.filter(
+    (item) => nowMs >= item.effectiveStartMs && nowMs < item.effectiveEndMs
+  );
+  const endedSessions = liveSchedule.filter(
+    (item) => nowMs >= item.effectiveEndMs
+  );
 
-  const livePrincess = liveSessions.find((s) => s.type === 'session' && s.hall === 'princess') || null;
-  const liveDiwan = liveSessions.find((s) => s.type === 'session' && s.hall === 'diwan') || null;
+  const livePrincess =
+    liveSessions.find((s) => s.type === 'session' && s.hall === 'princess') ||
+    null;
+  const liveDiwan =
+    liveSessions.find((s) => s.type === 'session' && s.hall === 'diwan') ||
+    null;
   const liveSpecial = liveSessions.find((s) => s.type === 'special') || null;
   const liveIds = new Set(liveSessions.map((s) => s.id));
+  const endedIds = new Set(endedSessions.map((s) => s.id));
 
   // Find earliest upcoming event(s)
   const upcoming = liveSchedule
-    .filter((item) => Date.parse(item.startIso) > nowMs)
-    .sort((a, b) => Date.parse(a.startIso) - Date.parse(b.startIso));
+    .filter((item) => item.effectiveStartMs > nowMs)
+    .sort((a, b) => a.effectiveStartMs - b.effectiveStartMs);
 
   let upNext = [];
   if (upcoming.length > 0) {
-    const nextStartMs = Date.parse(upcoming[0].startIso);
-    // Group concurrent events starting at the same next slot
-    upNext = upcoming.filter((item) => Date.parse(item.startIso) === nextStartMs);
+    const nextStartMs = upcoming[0].effectiveStartMs;
+    upNext = upcoming.filter((item) => item.effectiveStartMs === nextStartMs);
   }
 
   const activeDay =
@@ -271,6 +301,7 @@ export function getLiveConferenceState(
     upNextPrincess,
     upNextDiwan,
     liveIds,
+    endedIds,
   };
 }
 

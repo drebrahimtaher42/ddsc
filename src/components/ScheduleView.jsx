@@ -10,6 +10,7 @@ import {
   Moon,
   ClipboardCheck,
   BookmarkCheck,
+  Check,
   ChevronDown,
   Mic,
   FileImage,
@@ -27,6 +28,8 @@ import {
   normalizeLiveConfig,
   shiftSessionByMinutes,
   getLiveConferenceState,
+  getSessionStatus,
+  getSecondLecturePreviewMs,
   formatTime12h,
   formatTimeRange,
   formatCompactTimeRange,
@@ -454,6 +457,22 @@ export function ScheduleView({
   const [specialtyOpen, setSpecialtyOpen] = useState(false);
   const [postersModalOpen, setPostersModalOpen] = useState(false);
   const [liveConfig, setLiveConfig] = useState(DEFAULT_LIVE_CONFIG);
+  const [tickNowMs, setTickNowMs] = useState(() => Date.now());
+
+  useEffect(() => {
+    const tickId = window.setInterval(() => {
+      setTickNowMs(Date.now());
+    }, 30000);
+    return () => window.clearInterval(tickId);
+  }, []);
+
+  useEffect(() => {
+    if (previewPresetId === 'd1-slot2') {
+      setSelectedDay('day1');
+    } else if (previewPresetId?.startsWith('d2-')) {
+      setSelectedDay('day2');
+    }
+  }, [previewPresetId]);
 
   useEffect(() => {
     let isMounted = true;
@@ -481,12 +500,20 @@ export function ScheduleView({
     };
   }, []);
 
+  const effectiveClockMs = useMemo(() => {
+    if (previewPresetId === 'd1-slot2') {
+      return getSecondLecturePreviewMs(schedule, conference, liveConfig);
+    }
+    if (previewPresetId) return nowMs;
+    return nowMs || tickNowMs;
+  }, [previewPresetId, schedule, conference, liveConfig, nowMs, tickNowMs]);
+
   const effectiveLiveState = useMemo(
     () =>
       schedule && conference
-        ? getLiveConferenceState(nowMs, schedule, conference, liveConfig)
+        ? getLiveConferenceState(effectiveClockMs, schedule, conference, liveConfig)
         : liveState,
-    [nowMs, schedule, conference, liveConfig, liveState]
+    [effectiveClockMs, schedule, conference, liveConfig, liveState]
   );
 
   const displaySchedule = useMemo(() => {
@@ -560,7 +587,7 @@ export function ScheduleView({
       {liveConfig.liveEnabled !== false && (
         <LiveBanner
           liveState={effectiveLiveState}
-          nowMs={nowMs}
+          nowMs={effectiveClockMs}
           previewPresetId={previewPresetId}
           onTogglePreview={onTogglePreview}
           onSelectPreset={onSelectPreset}
@@ -792,9 +819,12 @@ export function ScheduleView({
           </motion.li>
         ) : (
           filteredItems.map((item) => {
-            const isLive =
-              liveConfig.liveEnabled !== false &&
-              effectiveLiveState.liveIds?.has(item.id);
+            const sessionStatus =
+              liveConfig.liveEnabled !== false
+                ? getSessionStatus(item, effectiveClockMs, conference, liveConfig)
+                : 'upcoming';
+            const isLive = sessionStatus === 'live';
+            const isEnded = sessionStatus === 'ended';
 
             /* ── 1. Opening Ceremony (Centered VIP Gala Invitation Design) ── */
             if (item.type === 'special' && item.specialKind === 'ceremony') {
@@ -806,8 +836,12 @@ export function ScheduleView({
                 <motion.li
                   key={item.id}
                   variants={cardItemVariants}
-                  className={`bg-gradient-to-br from-[#0B1B35] via-[#0F2544] to-[#0E6F64] rounded-2xl p-5 relative overflow-hidden border border-[#D4AF37]/30 shadow-[0_10px_28px_-8px_rgba(11,27,53,0.35)] ${
-                    isLive ? 'ring-2 ring-[#5EEAD4]' : ''
+                  className={`bg-gradient-to-br from-[#0B1B35] via-[#0F2544] to-[#0E6F64] rounded-2xl p-5 relative overflow-hidden border border-[#D4AF37]/30 shadow-[0_10px_28px_-8px_rgba(11,27,53,0.35)] transition-all ${
+                    isLive
+                      ? 'ring-2 ring-[#5EEAD4]'
+                      : isEnded
+                      ? 'opacity-60 hover:opacity-95 grayscale-[20%]'
+                      : ''
                   }`}
                 >
                   {/* Soft Radial Champagne-Gold Glow in Top-Right Corner */}
@@ -826,9 +860,15 @@ export function ScheduleView({
                         </span>
                       </span>
                       {isLive && (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498] px-2.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#06201B]">
-                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#06201B]" />
-                          Now
+                        <span className="bg-white text-[#0E6F64] text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 shadow-xs whitespace-nowrap">
+                          <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#0E6F64]" />
+                          LIVE NOW
+                        </span>
+                      )}
+                      {isEnded && (
+                        <span className="bg-white/15 border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 whitespace-nowrap">
+                          <Check className="h-3 w-3" strokeWidth={2.5} />
+                          Ended
                         </span>
                       )}
                     </div>
@@ -874,8 +914,12 @@ export function ScheduleView({
                 <motion.li
                   key={item.id}
                   variants={cardItemVariants}
-                  className={`flex flex-col items-center justify-center rounded-2xl border border-dashed px-4 py-3 sm:px-5 sm:py-3.5 text-center transition-colors ${containerClasses} ${
-                    isLive ? 'ring-2 ring-[#3AB498]' : ''
+                  className={`flex flex-col items-center justify-center rounded-2xl border border-dashed px-4 py-3 sm:px-5 sm:py-3.5 text-center transition-all ${containerClasses} ${
+                    isLive
+                      ? 'ring-2 ring-[#0E6F64]'
+                      : isEnded
+                      ? 'opacity-60 hover:opacity-95 grayscale-[20%]'
+                      : ''
                   }`}
                 >
                   <div className="flex flex-wrap items-center justify-center gap-2">
@@ -893,9 +937,15 @@ export function ScheduleView({
                       {formatCompactTimeRange(item.startTime, item.endTime)}
                     </span>
                     {isLive && (
-                      <span className="inline-flex items-center gap-1 rounded-full bg-[#086958] px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-white">
-                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3AB498]" />
-                        Now
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#0E6F64] px-2.5 py-0.5 font-display text-[10px] font-extrabold uppercase tracking-wider text-white">
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-white" />
+                        LIVE NOW
+                      </span>
+                    )}
+                    {isEnded && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-slate-600/15 border border-slate-600/20 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-slate-700">
+                        <Check className="h-2.5 w-2.5" strokeWidth={2.5} />
+                        Ended
                       </span>
                     )}
                   </div>
@@ -936,16 +986,22 @@ export function ScheduleView({
                       onSelectSession(item);
                     }
                   }}
-                  className={`group bg-white rounded-2xl border overflow-hidden relative cursor-pointer transition-[border-color,box-shadow] duration-200 ${
+                  className={`group bg-white rounded-2xl border overflow-hidden relative cursor-pointer transition-all duration-200 ${
                     isLive
-                      ? 'border-[#3AB498]/70 shadow-cardHover ring-2 ring-[#3AB498]/30'
+                      ? 'border-[#0E6F64]/60 ring-2 ring-[#0E6F64] shadow-[0_10px_28px_-8px_rgba(14,111,100,0.3)]'
+                      : isEnded
+                      ? 'border-slate-200/80 opacity-60 hover:opacity-95 grayscale-[20%] shadow-xs'
                       : 'border-slate-200/80 shadow-[0_6px_18px_-6px_rgba(15,37,68,0.09)] hover:border-[#3AB498]/45 hover:shadow-cardHover'
                   }`}
                 >
-                  {/* 1. Top Ticket Header Bar (Single-Line Time + Concise Hall Name) */}
+                  {/* 1. Top Ticket Header Bar (Single-Line Time + Status/Hall Pills) */}
                   <div
-                    className={`px-4 py-2 flex items-center justify-between gap-2 text-white ${
-                      isPrincess ? 'bg-[#0F2544]' : 'bg-[#0E6F64]'
+                    className={`px-4 py-2 flex items-center justify-between gap-2 text-white transition-colors ${
+                      isEnded
+                        ? 'bg-slate-600'
+                        : isPrincess
+                        ? 'bg-[#0F2544]'
+                        : 'bg-[#0E6F64]'
                     }`}
                   >
                     <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wide tabular-nums whitespace-nowrap">
@@ -953,9 +1009,26 @@ export function ScheduleView({
                       <span>{formatTimeRange(item.startTime, item.endTime)}</span>
                     </span>
 
-                    <span className="bg-white/15 px-2.5 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap">
-                      {shortHallName}
-                    </span>
+                    <div className="flex items-center gap-1.5 shrink-0">
+                      {isLive && (
+                        <span className="bg-white text-[#0E6F64] text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-flex items-center gap-1.5 shadow-xs whitespace-nowrap">
+                          <span className="relative flex h-1.5 w-1.5">
+                            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#0E6F64] opacity-75" />
+                            <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#0E6F64]" />
+                          </span>
+                          LIVE NOW
+                        </span>
+                      )}
+                      {isEnded && (
+                        <span className="bg-white/15 border border-white/20 text-white text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full inline-flex items-center gap-1 whitespace-nowrap">
+                          <Check className="h-3 w-3" strokeWidth={2.5} />
+                          Ended
+                        </span>
+                      )}
+                      <span className="bg-white/15 px-2.5 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap">
+                        {shortHallName}
+                      </span>
+                    </div>
                   </div>
 
                   {/* 2. Main Lecture Body */}
@@ -975,16 +1048,7 @@ export function ScheduleView({
                             Adjusted +{item.delayMinutes}m
                           </span>
                         )}
-                        {isLive && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498]/20 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#086958]">
-                            <span className="relative flex h-1.5 w-1.5">
-                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3AB498] opacity-75" />
-                              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#3AB498]" />
-                            </span>
-                            Live
-                          </span>
-                        )}
-                        {!isLive && isUpNext && (
+                        {!isLive && !isEnded && isUpNext && (
                           <span className="inline-flex items-center rounded-full bg-[#0E6F64]/10 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#0E6F64]">
                             Up Next
                           </span>
