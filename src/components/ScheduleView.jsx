@@ -10,6 +10,11 @@ import {
   BookmarkCheck,
   ChevronDown,
   Mic,
+  FileImage,
+  Download,
+  ZoomIn,
+  ZoomOut,
+  X,
 } from 'lucide-react';
 import { LiveBanner } from './LiveBanner';
 import { PostersShowcase } from './PostersShowcase';
@@ -21,11 +26,243 @@ import {
   shiftSessionByMinutes,
   getLiveConferenceState,
   formatTime12h,
+  formatCompactTimeRange,
 } from '../utils/time';
 import { specialtyPillStyle, getSpecialtyColor } from '../utils/specialty';
-import { staggerListVariants, cardItemVariants, EASE_OUT } from '../utils/motion';
+import {
+  staggerListVariants,
+  cardItemVariants,
+  lightboxZoomVariants,
+  EASE_OUT,
+} from '../utils/motion';
 
 const PILL_SPRING = { type: 'spring', stiffness: 460, damping: 36 };
+
+const SCHEDULE_POSTERS = {
+  'day1-diwan': {
+    src: '/schedules/day1-diwan.jpg',
+    label: 'Day 1 · 26 Nov — Al Diwan Hall',
+    downloadName: 'DDSC-2026-Day1-Al-Diwan-Schedule.jpg',
+  },
+  'day1-princess': {
+    src: '/schedules/day1-princess.jpg',
+    label: 'Day 1 · 26 Nov — Princess Hall',
+    downloadName: 'DDSC-2026-Day1-Princess-Schedule.jpg',
+  },
+  'day2-diwan': {
+    src: '/schedules/day2-diwan.jpg',
+    label: 'Day 2 · 27 Nov — Al Diwan Hall',
+    downloadName: 'DDSC-2026-Day2-Al-Diwan-Schedule.jpg',
+  },
+  'day2-princess': {
+    src: '/schedules/day2-princess.jpg',
+    label: 'Day 2 · 27 Nov — Princess Hall',
+    downloadName: 'DDSC-2026-Day2-Princess-Schedule.jpg',
+  },
+};
+
+function SchedulePostersModal({ isOpen, initialDay, initialHall, onClose }) {
+  const [posterDay, setPosterDay] = useState(initialDay || 'day1');
+  const [posterHall, setPosterHall] = useState(
+    initialHall === 'princess' ? 'princess' : 'diwan'
+  );
+  const [zoomed, setZoomed] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setPosterDay(initialDay || 'day1');
+    setPosterHall(initialHall === 'princess' ? 'princess' : 'diwan');
+    setZoomed(false);
+  }, [isOpen, initialDay, initialHall]);
+
+  useEffect(() => {
+    setZoomed(false);
+  }, [posterDay, posterHall]);
+
+  useEffect(() => {
+    if (!isOpen) return undefined;
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isOpen, onClose]);
+
+  const currentKey = `${posterDay}-${posterHall}`;
+  const currentPoster = SCHEDULE_POSTERS[currentKey] || SCHEDULE_POSTERS['day1-diwan'];
+
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <motion.div
+          key="schedule-posters-modal"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-50 flex flex-col items-center justify-between bg-[#061024]/92 backdrop-blur-md p-3 sm:p-5"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Official Schedule Posters"
+          onClick={onClose}
+        >
+          {/* Top Switcher Bar */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-2xl rounded-2xl border border-white/15 bg-white/10 p-2.5 text-white backdrop-blur-md shadow-lg"
+          >
+            <div className="flex items-center justify-between gap-2 pb-2 mb-2 border-b border-white/10">
+              <div className="flex items-center gap-2 min-w-0">
+                <FileImage className="h-4 w-4 shrink-0 text-[#5EEAD4]" />
+                <span className="truncate font-display text-xs sm:text-sm font-bold text-white">
+                  Official Schedule Posters
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/10 text-white/85 transition-colors hover:bg-white/20 hover:text-white"
+                aria-label="Close schedule posters"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 gap-1.5 sm:grid-cols-2">
+              {/* Day Switcher Pills */}
+              <div className="grid grid-cols-2 gap-1 rounded-xl bg-black/25 p-1">
+                {[
+                  { id: 'day1', label: 'Day 1 · 26 Nov' },
+                  { id: 'day2', label: 'Day 2 · 27 Nov' },
+                ].map((d) => {
+                  const active = posterDay === d.id;
+                  return (
+                    <button
+                      key={d.id}
+                      type="button"
+                      onClick={() => setPosterDay(d.id)}
+                      className={`rounded-lg py-1.5 px-2.5 font-display text-xs font-bold transition-all ${
+                        active
+                          ? 'bg-white text-[#0D224C] shadow-xs'
+                          : 'text-white/75 hover:text-white'
+                      }`}
+                    >
+                      {d.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Hall Switcher Pills */}
+              <div className="grid grid-cols-2 gap-1 rounded-xl bg-black/25 p-1">
+                {[
+                  { id: 'diwan', label: 'Al Diwan Hall', dot: '#3AB498' },
+                  { id: 'princess', label: 'Princess Hall', dot: '#93C5FD' },
+                ].map((h) => {
+                  const active = posterHall === h.id;
+                  return (
+                    <button
+                      key={h.id}
+                      type="button"
+                      onClick={() => setPosterHall(h.id)}
+                      className={`inline-flex items-center justify-center gap-1.5 rounded-lg py-1.5 px-2.5 font-display text-xs font-bold transition-all ${
+                        active
+                          ? 'bg-[#3AB498] text-[#06201B] shadow-xs'
+                          : 'text-white/75 hover:text-white'
+                      }`}
+                    >
+                      <span
+                        className="h-1.5 w-1.5 rounded-full"
+                        style={{ backgroundColor: active ? '#06201B' : h.dot }}
+                      />
+                      <span>{h.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Center Zoomable/Scrollable Poster Viewer */}
+          <motion.div
+            key={currentKey}
+            variants={lightboxZoomVariants}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            onClick={(e) => e.stopPropagation()}
+            className="relative my-2 flex-1 w-full max-w-2xl overflow-auto rounded-2xl border border-white/15 bg-[#0B192C] shadow-2xl flex items-start justify-center"
+          >
+            <div
+              className={`min-h-full flex items-center justify-center p-2 ${
+                zoomed ? 'w-[180%] min-w-[640px]' : 'w-full h-full'
+              }`}
+            >
+              <img
+                src={currentPoster.src}
+                alt={currentPoster.label}
+                onClick={() => setZoomed((z) => !z)}
+                className={`select-none rounded-xl transition-all duration-200 ${
+                  zoomed
+                    ? 'w-full h-auto cursor-zoom-out'
+                    : 'max-h-[65vh] w-auto max-w-full object-contain cursor-zoom-in'
+                }`}
+              />
+            </div>
+
+            <button
+              type="button"
+              onClick={() => setZoomed((z) => !z)}
+              className="fixed sm:absolute bottom-20 sm:bottom-3 right-5 sm:right-3 z-20 inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/60 px-3 py-1.5 font-display text-[11px] font-semibold text-white backdrop-blur-md transition-colors hover:bg-black/80"
+            >
+              {zoomed ? (
+                <>
+                  <ZoomOut className="h-3.5 w-3.5 text-[#5EEAD4]" />
+                  <span>Reset 1x</span>
+                </>
+              ) : (
+                <>
+                  <ZoomIn className="h-3.5 w-3.5 text-[#5EEAD4]" />
+                  <span>Tap to Zoom 1.8x</span>
+                </>
+              )}
+            </button>
+          </motion.div>
+
+          {/* Bottom Download Bar */}
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className="w-full max-w-2xl flex items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-white backdrop-blur-md"
+          >
+            <div className="min-w-0">
+              <p className="truncate font-display text-xs sm:text-sm font-bold text-white">
+                {currentPoster.label}
+              </p>
+              <p className="truncate text-[11px] text-slate-300">
+                High-resolution official timetable poster
+              </p>
+            </div>
+
+            <a
+              href={currentPoster.src}
+              download={currentPoster.downloadName}
+              className="inline-flex shrink-0 items-center gap-2 rounded-xl bg-gradient-to-r from-[#3AB498] to-[#2EA389] px-4 py-2.5 font-display text-xs font-bold text-[#06201B] shadow-md transition-all hover:brightness-105 active:scale-98"
+            >
+              <Download className="h-4 w-4" />
+              <span>Download Poster</span>
+            </a>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
 function getSpecialIcon(kind) {
   switch (kind) {
@@ -111,25 +348,44 @@ function TimeBlock({ item, tone = 'default' }) {
   const start = splitTime(item.startTime);
   const end = formatTime12h(item.endTime);
   const mins = durationMinutes(item);
+  const isCeremony = tone === 'ceremony';
   const isSpecial = tone === 'special';
   return (
     <div className="flex flex-col items-start">
       <div className="flex items-baseline gap-1">
         <span
           className={`font-display text-[17px] sm:text-xl font-extrabold leading-none tracking-tight tabular-nums ${
-            isSpecial ? 'text-[#086958]' : 'text-[#0D224C]'
+            isCeremony
+              ? 'text-white'
+              : isSpecial
+              ? 'text-[#086958]'
+              : 'text-[#0D224C]'
           }`}
         >
           {start.clock}
         </span>
-        <span className="font-display text-[10px] font-bold uppercase text-[#64748B]">
+        <span
+          className={`font-display text-[10px] font-bold uppercase ${
+            isCeremony ? 'text-[#A7F3D0]' : 'text-[#64748B]'
+          }`}
+        >
           {start.period}
         </span>
       </div>
-      <span className="mt-1.5 whitespace-nowrap text-[11px] font-medium leading-tight text-[#64748B] tabular-nums">
+      <span
+        className={`mt-1.5 whitespace-nowrap text-[11px] font-medium leading-tight tabular-nums ${
+          isCeremony ? 'text-white/80' : 'text-[#64748B]'
+        }`}
+      >
         to {end}
       </span>
-      <span className="mt-1 hidden sm:inline-flex rounded-md bg-[#0D224C]/[0.05] px-1.5 py-0.5 text-[10px] font-semibold text-[#64748B]">
+      <span
+        className={`mt-1 hidden sm:inline-flex rounded-md px-1.5 py-0.5 text-[10px] font-semibold ${
+          isCeremony
+            ? 'bg-white/15 text-[#A7F3D0]'
+            : 'bg-[#0D224C]/[0.05] text-[#64748B]'
+        }`}
+      >
         {mins} min
       </span>
     </div>
@@ -155,6 +411,7 @@ export function ScheduleView({
   const [hallFilter, setHallFilter] = useState('all');
   const [specialtyFilter, setSpecialtyFilter] = useState('all');
   const [specialtyOpen, setSpecialtyOpen] = useState(false);
+  const [postersModalOpen, setPostersModalOpen] = useState(false);
   const [liveConfig, setLiveConfig] = useState(DEFAULT_LIVE_CONFIG);
 
   useEffect(() => {
@@ -277,7 +534,7 @@ export function ScheduleView({
         description={`${activeDay?.fullLabel} · ${sessionCount} accredited lectures across two parallel halls.`}
       />
 
-      {/* Compact Sticky Glass Filter Bar */}
+      {/* Compact Sticky Glass Filter Bar (ONLY Day Switcher + Hall/Saved Filters) */}
       <LayoutGroup id="schedule-filters">
         <div className="sticky top-[62px] sm:top-[68px] z-30 rounded-2xl p-2 bg-white/85 backdrop-blur-xl border border-slate-200/70 shadow-sm">
           {/* 1. Single-Line Day Switcher */}
@@ -329,8 +586,8 @@ export function ScheduleView({
             })}
           </div>
 
-          {/* 2. Unified Slim Filter Strip (Halls + Specialty Toggle) */}
-          <div className="mt-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+          {/* 2. Hall & Saved Filter Strip */}
+          <div className="mt-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
             {hallOptions.map((opt) => {
               const active = hallFilter === opt.id;
               return (
@@ -340,7 +597,7 @@ export function ScheduleView({
                   whileTap={{ scale: 0.98 }}
                   onClick={() => setHallFilter(opt.id)}
                   aria-pressed={active}
-                  className={`relative inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 font-display text-[11.5px] font-semibold transition-colors duration-200 ${
+                  className={`relative inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1 font-display text-[11.5px] font-semibold transition-colors duration-200 ${
                     active ? 'text-white' : 'text-[#64748B] hover:text-[#0D224C]'
                   }`}
                 >
@@ -372,9 +629,12 @@ export function ScheduleView({
                 </motion.button>
               );
             })}
+          </div>
+        </div>
 
-            <span className="h-4 w-px shrink-0 bg-slate-200/80" aria-hidden="true" />
-
+        {/* Scroll-Away Secondary Controls: Specialty Filter + Official Schedule Posters Button */}
+        <div className="!mt-2.5 space-y-2">
+          <div className="flex items-center justify-between gap-2">
             <motion.button
               type="button"
               whileTap={{ scale: 0.98 }}
@@ -387,30 +647,39 @@ export function ScheduleView({
                   setSpecialtyOpen((prev) => !prev);
                 }
               }}
-              className={`inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2.5 py-1 font-display text-[11.5px] font-semibold transition-colors duration-200 ${
+              className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-3 py-1.5 font-display text-xs font-semibold shadow-2xs transition-colors duration-200 ${
                 specialtyFilter !== 'all'
-                  ? 'bg-[#3AB498]/15 text-[#086958] ring-1 ring-[#3AB498]/40'
+                  ? 'border-[#3AB498]/45 bg-[#3AB498]/15 text-[#086958]'
                   : showSpecialties
-                  ? 'bg-[#0D224C]/[0.07] text-[#0D224C]'
-                  : 'text-[#64748B] hover:text-[#0D224C]'
+                  ? 'border-[#0D224C]/20 bg-[#0D224C]/[0.07] text-[#0D224C]'
+                  : 'border-slate-200/80 bg-white text-[#475569] hover:border-slate-300 hover:text-[#0D224C]'
               }`}
             >
               {specialtyFilter !== 'all' && (
                 <span
-                  className="h-1.5 w-1.5 rounded-full"
+                  className="h-2 w-2 rounded-full"
                   style={{ backgroundColor: getSpecialtyColor(specialtyFilter) }}
                 />
               )}
-              <span>{specialtyFilter !== 'all' ? specialtyFilter : 'Specialty'}</span>
+              <span>{specialtyFilter !== 'all' ? specialtyFilter : 'Filter by Specialty'}</span>
               <ChevronDown
-                className={`h-3 w-3 transition-transform duration-200 ${
+                className={`h-3.5 w-3.5 transition-transform duration-200 ${
                   showSpecialties ? 'rotate-180' : ''
                 }`}
               />
             </motion.button>
+
+            <motion.button
+              type="button"
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setPostersModalOpen(true)}
+              className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#086958]/25 bg-white px-3.5 py-1.5 font-display text-xs font-bold text-[#086958] shadow-2xs transition-all hover:border-[#086958]/50 hover:bg-[#3AB498]/10"
+            >
+              <FileImage className="h-3.5 w-3.5 text-[#086958]" />
+              <span>Official Schedule Posters</span>
+            </motion.button>
           </div>
 
-          {/* 3. Expandable Specialty Pills Row */}
           <AnimatePresence initial={false}>
             {showSpecialties && (
               <motion.div
@@ -420,7 +689,7 @@ export function ScheduleView({
                 transition={{ duration: 0.2, ease: EASE_OUT }}
                 className="overflow-hidden"
               >
-                <div className="mt-1 border-t border-slate-200/70 pt-1.5">
+                <div className="rounded-2xl border border-slate-200/80 bg-white p-2 shadow-2xs">
                   <PillRow
                     options={specialtyOptions}
                     value={specialtyFilter}
@@ -444,7 +713,7 @@ export function ScheduleView({
         variants={staggerListVariants}
         initial="hidden"
         animate="visible"
-        className="space-y-3"
+        className="flex flex-col gap-3.5"
       >
         {filteredItems.length === 0 ? (
           <motion.li
@@ -484,38 +753,42 @@ export function ScheduleView({
               liveConfig.liveEnabled !== false &&
               effectiveLiveState.liveIds?.has(item.id);
 
-            /* ── Break / ceremony / prayer rows ── */
-            if (item.type === 'special') {
+            /* ── 1. Opening Ceremony (Celebratory Dark Navy-to-Teal Gradient Card) ── */
+            if (item.type === 'special' && item.specialKind === 'ceremony') {
               const Icon = getSpecialIcon(item.specialKind);
               return (
                 <motion.li
                   key={item.id}
                   variants={cardItemVariants}
-                  className={`grid grid-cols-[84px_1fr] sm:grid-cols-[100px_1fr] items-center gap-3 sm:gap-5 rounded-2xl px-4 py-3.5 sm:px-5 ${
-                    isLive
-                      ? 'bg-[#3AB498]/20 ring-1 ring-[#3AB498]/45'
-                      : 'bg-[#3AB498]/10 ring-1 ring-[#3AB498]/20'
+                  className={`relative overflow-hidden grid grid-cols-[84px_1fr] sm:grid-cols-[100px_1fr] items-center gap-3 sm:gap-5 rounded-2xl bg-gradient-to-r from-[#0F2544] to-[#0E6F64] px-4 py-4 sm:px-5 sm:py-4.5 text-white shadow-md ${
+                    isLive ? 'ring-2 ring-[#5EEAD4]' : 'border border-white/10'
                   }`}
                 >
-                  <TimeBlock item={item} tone="special" />
-                  <div className="flex min-w-0 items-center gap-3">
-                    <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-white/80 text-[#086958] shadow-xs">
-                      <Icon className="h-4 w-4" />
+                  <div className="border-r border-white/15 pr-3 sm:pr-4">
+                    <TimeBlock item={item} tone="ceremony" />
+                  </div>
+                  <div className="flex min-w-0 items-center gap-3.5">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/15 bg-white/10 text-[#5EEAD4] shadow-xs">
+                      <Icon className="h-5 w-5" />
                     </span>
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="font-display text-sm font-bold leading-snug tracking-tight text-[#0D224C]">
-                          {item.title}
-                        </h3>
+                        <span className="inline-flex items-center gap-1 rounded-full border border-amber-300/35 bg-amber-400/15 px-2.5 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-amber-200">
+                          <Sparkles className="h-2.5 w-2.5" />
+                          Special Event
+                        </span>
                         {isLive && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-[#086958] px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-white">
-                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3AB498]" />
+                          <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498] px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#06201B]">
+                            <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#06201B]" />
                             Now
                           </span>
                         )}
                       </div>
+                      <h3 className="mt-1 font-display text-base sm:text-[17px] font-extrabold leading-snug tracking-tight text-white">
+                        {item.title}
+                      </h3>
                       {item.subtitle && (
-                        <p className="mt-0.5 text-xs leading-relaxed text-[#64748B]">
+                        <p className="mt-0.5 text-xs leading-relaxed text-white/80">
                           {item.subtitle}
                         </p>
                       )}
@@ -525,11 +798,61 @@ export function ScheduleView({
               );
             }
 
-            /* ── Scientific session card ── */
+            /* ── 2. Breaks & Friday Prayer (Compact Centered Dashed-Border Divider Cards) ── */
+            if (item.type === 'special') {
+              const isPrayer = item.specialKind === 'prayer';
+              const Icon = isPrayer ? Moon : Coffee;
+              const containerClasses = isPrayer
+                ? 'border-[#10B981]/40 bg-[#ECFDF5]/90 text-[#065F46]'
+                : 'border-amber-400/55 bg-[#FFFBEB]/95 text-amber-950';
+              const badgeClasses = isPrayer
+                ? 'bg-[#10B981]/15 text-[#047857]'
+                : 'bg-amber-500/15 text-amber-700';
+              const subtitleClasses = isPrayer ? 'text-[#047857]/85' : 'text-amber-800/85';
+
+              return (
+                <motion.li
+                  key={item.id}
+                  variants={cardItemVariants}
+                  className={`flex flex-col items-center justify-center rounded-2xl border border-dashed px-4 py-3 sm:px-5 sm:py-3.5 text-center transition-colors ${containerClasses} ${
+                    isLive ? 'ring-2 ring-[#3AB498]' : ''
+                  }`}
+                >
+                  <div className="flex flex-wrap items-center justify-center gap-2">
+                    <span
+                      className={`inline-flex h-6 w-6 items-center justify-center rounded-lg ${badgeClasses}`}
+                    >
+                      <Icon className="h-3.5 w-3.5" />
+                    </span>
+                    <span className="font-display text-xs sm:text-[13px] font-bold tracking-tight">
+                      {item.title}
+                    </span>
+                    <span
+                      className={`rounded-full px-2.5 py-0.5 font-display text-[11px] font-semibold tabular-nums ${badgeClasses}`}
+                    >
+                      {formatCompactTimeRange(item.startTime, item.endTime)}
+                    </span>
+                    {isLive && (
+                      <span className="inline-flex items-center gap-1 rounded-full bg-[#086958] px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-white">
+                        <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-[#3AB498]" />
+                        Now
+                      </span>
+                    )}
+                  </div>
+                  {item.subtitle && (
+                    <p className={`mt-1 text-[11.5px] leading-snug ${subtitleClasses}`}>
+                      {item.subtitle}
+                    </p>
+                  )}
+                </motion.li>
+              );
+            }
+
+            /* ── 3. Scientific Session Card (Compact, High-Contrast) ── */
             const isPrincess = item.hall === 'princess';
             const hall = conference.halls[item.hall];
             const saved = isSaved(item.id);
-            const speaker = speakersById[item.speakerId];
+            const hallAccent = isPrincess ? '#0D224C' : '#086958';
 
             return (
               <motion.li key={item.id} variants={cardItemVariants}>
@@ -546,48 +869,31 @@ export function ScheduleView({
                       onSelectSession(item);
                     }
                   }}
-                  className={`group relative grid cursor-pointer grid-cols-[84px_1fr] sm:grid-cols-[100px_1fr] gap-3 sm:gap-5 overflow-hidden rounded-2xl border bg-white px-4 py-4 sm:px-5 sm:py-5 transition-[border-color,box-shadow] duration-200 ${
+                  className={`group relative grid cursor-pointer grid-cols-[84px_1fr] sm:grid-cols-[100px_1fr] gap-3 sm:gap-5 overflow-hidden rounded-2xl border bg-white px-4 py-3.5 sm:px-5 sm:py-4 transition-[border-color,box-shadow] duration-200 ${
                     isLive
                       ? 'border-[#3AB498]/60 shadow-cardHover ring-1 ring-[#3AB498]/25'
-                      : 'border-slate-200/90 shadow-[0_2px_10px_rgba(13,34,76,0.04)] hover:border-[#3AB498]/45 hover:shadow-cardHover'
+                      : 'border-slate-200/80 shadow-sm hover:border-[#3AB498]/45 hover:shadow-cardHover'
                   }`}
                 >
-                  {/* Subtle architectural dot-grid micro-pattern */}
-                  <div
-                    aria-hidden="true"
-                    className="pointer-events-none absolute inset-0 opacity-[0.03]"
-                    style={{
-                      backgroundImage: 'radial-gradient(#0D224C 1px, transparent 1px)',
-                      backgroundSize: '14px 14px',
-                    }}
-                  />
-
-                  {/* Hall accent bar */}
+                  {/* Clean 4px colored left accent bar (teal for Al Diwan, navy for Princess) */}
                   <span
                     className="absolute inset-y-0 left-0 z-10 w-1"
-                    style={{ backgroundColor: hall?.accent }}
+                    style={{ backgroundColor: hall?.accent || hallAccent }}
                     aria-hidden="true"
                   />
 
-                  {/* Time column */}
-                  <div className="relative z-10 border-r border-dashed border-[#0D224C]/10 pr-2 sm:pr-4">
+                  {/* Left Time Column with Vertical Hairline Divider */}
+                  <div className="relative z-10 border-r border-slate-200/80 pr-3 sm:pr-4 flex items-center">
                     <TimeBlock item={item} />
                   </div>
 
-                  {/* Content column */}
+                  {/* Right Session Details Column */}
                   <div className="relative z-10 min-w-0">
                     <div className="flex items-start justify-between gap-2">
                       <div className="flex flex-wrap items-center gap-1.5">
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-[#F4F7F9] px-2 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold text-[#0B192C]">
-                          <span
-                            className="h-1.5 w-1.5 rounded-full"
-                            style={{ backgroundColor: hall?.accent }}
-                          />
-                          {isPrincess ? 'Princess Hall' : 'Al Diwan Hall'}
-                        </span>
                         {item.specialty && (
                           <span
-                            className="rounded-full px-2 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold"
+                            className="rounded-full px-2.5 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold"
                             style={specialtyPillStyle(item.specialty)}
                           >
                             {item.specialty}
@@ -618,7 +924,7 @@ export function ScheduleView({
                         }}
                         aria-label={saved ? 'Remove from saved sessions' : 'Save session'}
                         aria-pressed={saved}
-                        className={`-mr-1.5 -mt-1.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-xl transition-colors duration-200 ${
+                        className={`-mr-1.5 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors duration-200 ${
                           saved
                             ? 'bg-[#3AB498]/15 text-[#086958]'
                             : 'text-[#94A3B8] hover:bg-[#F4F7F9] hover:text-[#0D224C]'
@@ -634,7 +940,7 @@ export function ScheduleView({
                             className="flex"
                           >
                             <Bookmark
-                              className="h-[18px] w-[18px]"
+                              className="h-[17px] w-[17px]"
                               fill={saved ? 'currentColor' : 'none'}
                             />
                           </motion.span>
@@ -642,24 +948,26 @@ export function ScheduleView({
                       </motion.button>
                     </div>
 
-                    <h3 className="mt-2.5 font-display text-[15px] sm:text-[17px] font-bold leading-snug tracking-tight text-[#0B192C] text-pretty transition-colors group-hover:text-[#0D224C]">
+                    <h3 className="mt-1.5 font-display text-[15px] sm:text-[16.5px] font-bold leading-snug tracking-tight text-[#0B192C] text-pretty transition-colors group-hover:text-[#0D224C]">
                       {item.title}
                     </h3>
 
-                    {/* Clean Vertically Centered Speaker Row */}
-                    <div className="mt-3 flex items-center gap-2.5">
+                    {/* Speaker + Clearly Visible Hall Name with Colored Dot */}
+                    <div className="mt-2.5 flex items-center gap-2.5">
                       <div className="w-7 h-7 rounded-lg bg-[#3AB498]/10 flex items-center justify-center shrink-0">
-                        <Mic className="h-[15px] w-[15px] text-[#086958]" />
+                        <Mic className="h-[14px] w-[14px] text-[#086958]" />
                       </div>
-                      <div className="min-w-0 leading-tight">
+                      <div className="min-w-0 flex-1 leading-tight">
                         <p className="truncate text-[13px] sm:text-sm font-semibold text-[#0B192C]">
                           {item.speakerName}
                         </p>
-                        {speaker?.title && (
-                          <p className="mt-0.5 truncate text-[11px] sm:text-xs text-[#64748B]">
-                            {speaker.title}
-                          </p>
-                        )}
+                        <p className="mt-0.5 inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-[#64748B]">
+                          <span
+                            className="h-1.5 w-1.5 rounded-full shrink-0"
+                            style={{ backgroundColor: hall?.accent || hallAccent }}
+                          />
+                          <span>{isPrincess ? 'Princess Hall' : 'Al Diwan Hall'}</span>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -671,6 +979,14 @@ export function ScheduleView({
       </motion.ol>
 
       {posters && posters.length > 0 && <PostersShowcase posters={posters} />}
+
+      {/* Official Schedule Posters Lightbox Modal */}
+      <SchedulePostersModal
+        isOpen={postersModalOpen}
+        initialDay={selectedDay}
+        initialHall={hallFilter}
+        onClose={() => setPostersModalOpen(false)}
+      />
     </div>
   );
 }
