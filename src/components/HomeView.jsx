@@ -264,15 +264,15 @@ export function HomeView({
             {/* Borderless Tracked-Out Top Eyebrow */}
             <motion.p
               variants={cardItemVariants}
-              className="font-display text-[10.5px] font-semibold tracking-[0.28em] uppercase text-[#5EEAD4]/90 mb-4"
+              className="font-display text-[11px] font-semibold tracking-[0.24em] uppercase text-[#5EEAD4] mb-4"
             >
-              MEET • SHARE • CONNECT
+              MEET · SHARE · CONNECT
             </motion.p>
 
             {/* High-Contrast Display Headline */}
             <motion.h1
               variants={cardItemVariants}
-              className="font-display text-[1.65rem] min-[390px]:text-[1.9rem] sm:text-5xl md:text-6xl font-bold whitespace-nowrap tracking-tight leading-[1.12] bg-gradient-to-b from-white via-white to-[#A7F3D0] bg-clip-text text-transparent"
+              className="font-display text-[1.65rem] min-[390px]:text-[1.9rem] sm:text-5xl md:text-6xl font-bold whitespace-nowrap tracking-tight leading-[1.12] text-white"
             >
               A New Era of Dentistry
             </motion.h1>
@@ -288,7 +288,7 @@ export function HomeView({
             {/* Balanced 2-Line Lead Copy */}
             <motion.p
               variants={cardItemVariants}
-              className="mt-4 text-sm sm:text-base text-slate-300/80 max-w-xs sm:max-w-md text-balance leading-relaxed"
+              className="mt-4 text-[13.5px] sm:text-base text-slate-300/80 max-w-[300px] sm:max-w-md mx-auto text-balance leading-relaxed"
             >
               Uniting 27+ scientific keynotes, hands-on labs, and a dental community growing since 1995.
             </motion.p>
@@ -303,7 +303,7 @@ export function HomeView({
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onNavigate('schedule')}
-                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(58,180,152,0.5)] hover:brightness-105 transition-all"
+                className="inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(45,212,191,0.42)] hover:brightness-105 transition-all"
               >
                 <span>Explore Schedule</span>
                 <ArrowRight className="h-4 w-4" />
@@ -313,7 +313,7 @@ export function HomeView({
             {/* Minimal Metadata Anchor */}
             <motion.p
               variants={cardItemVariants}
-              className="mt-4 text-[11.5px] text-slate-400 tracking-wide"
+              className="mt-4 text-[12.5px] font-medium text-slate-200 tracking-wide drop-shadow-xs"
             >
               26–27 Nov 2026 &nbsp;·&nbsp; Steigenberger El Lessan
             </motion.p>
