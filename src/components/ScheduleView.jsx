@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { motion, AnimatePresence, LayoutGroup } from 'framer-motion';
 import {
   Bookmark,
+  Clock,
   Coffee,
   Sparkles,
   Utensils,
@@ -27,6 +28,7 @@ import {
   shiftSessionByMinutes,
   getLiveConferenceState,
   formatTime12h,
+  formatTimeRange,
   formatCompactTimeRange,
 } from '../utils/time';
 import { specialtyPillStyle, getSpecialtyColor } from '../utils/specialty';
@@ -344,6 +346,41 @@ function PillRow({ options, value, onChange, layoutId, size = 'md' }) {
           </motion.button>
         );
       })}
+    </div>
+  );
+}
+
+function TicketSpeakerAvatar({ speaker, speakerName, isPrincess }) {
+  const src = speaker?.avatar || speaker?.photo || null;
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    setFailed(false);
+  }, [src]);
+
+  if (src && !failed) {
+    return (
+      <img
+        src={src}
+        alt={speakerName}
+        loading="lazy"
+        onError={() => setFailed(true)}
+        className={`w-10 h-10 rounded-full object-cover object-top shrink-0 border-2 border-white shadow-sm ${
+          isPrincess ? 'ring-2 ring-[#0F2544]/25' : 'ring-2 ring-[#0E6F64]/25'
+        }`}
+      />
+    );
+  }
+
+  return (
+    <div
+      className={`w-10 h-10 rounded-full shrink-0 flex items-center justify-center ${
+        isPrincess
+          ? 'bg-[#0F2544]/10 text-[#0F2544]'
+          : 'bg-[#0E6F64]/10 text-[#0E6F64]'
+      }`}
+    >
+      <Mic className="h-4 w-4" />
     </div>
   );
 }
@@ -848,10 +885,18 @@ export function ScheduleView({
               );
             }
 
-            /* ── 3. Scientific Session Card (Structured Premium Two-Zone Card) ── */
+            /* ── 3. Scientific Session Card (Pass / Conference Ticket Layout) ── */
             const isPrincess = item.hall === 'princess';
+            const hall = conference.halls[item.hall];
             const saved = isSaved(item.id);
-            const hallAccent = isPrincess ? '#0F2544' : '#0E6F64';
+            const speaker = speakersById[item.speakerId];
+            const shortHallName = (
+              hall?.name || (isPrincess ? 'Princess' : 'Al Diwan')
+            ).replace(/\s*Hall$/i, '');
+            const isUpNext =
+              liveConfig.liveEnabled !== false &&
+              (effectiveLiveState.upNextPrincess?.id === item.id ||
+                effectiveLiveState.upNextDiwan?.id === item.id);
 
             return (
               <motion.li key={item.id} variants={cardItemVariants}>
@@ -868,109 +913,120 @@ export function ScheduleView({
                       onSelectSession(item);
                     }
                   }}
-                  className={`group relative grid cursor-pointer grid-cols-[88px_1fr] sm:grid-cols-[106px_1fr] overflow-hidden rounded-2xl border bg-white transition-[border-color,box-shadow] duration-200 ${
+                  className={`group bg-white rounded-2xl border overflow-hidden relative cursor-pointer transition-[border-color,box-shadow] duration-200 ${
                     isLive
-                      ? 'border-[#3AB498]/60 shadow-cardHover ring-1 ring-[#3AB498]/25'
-                      : 'border-slate-200/90 shadow-[0_4px_14px_-4px_rgba(15,37,68,0.08)] hover:border-[#3AB498]/45 hover:shadow-cardHover'
+                      ? 'border-[#3AB498]/70 shadow-cardHover ring-2 ring-[#3AB498]/30'
+                      : 'border-slate-200/80 shadow-[0_6px_18px_-6px_rgba(15,37,68,0.09)] hover:border-[#3AB498]/45 hover:shadow-cardHover'
                   }`}
                 >
-                  {/* Solid 4px left accent strip (#0E6F64 for Al Diwan, #0F2544 for Princess) */}
-                  <span
-                    className="absolute inset-y-0 left-0 z-20 w-1"
-                    style={{ backgroundColor: hallAccent }}
-                    aria-hidden="true"
-                  />
+                  {/* 1. Top Ticket Header Bar (Single-Line Time + Concise Hall Name) */}
+                  <div
+                    className={`px-4 py-2 flex items-center justify-between gap-2 text-white ${
+                      isPrincess ? 'bg-[#0F2544]' : 'bg-[#0E6F64]'
+                    }`}
+                  >
+                    <span className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wide tabular-nums whitespace-nowrap">
+                      <Clock className="h-3.5 w-3.5 shrink-0 opacity-90" />
+                      <span>{formatTimeRange(item.startTime, item.endTime)}</span>
+                    </span>
 
-                  {/* Left Time Column with Subtle Tinted Strip */}
-                  <div className="relative z-10 flex items-center bg-slate-50/80 border-r border-slate-100 pl-4 pr-2.5 py-3.5 sm:pl-5 sm:pr-3.5 sm:py-4">
-                    <TimeBlock item={item} />
+                    <span className="bg-white/15 px-2.5 py-0.5 rounded-full text-[11px] font-semibold whitespace-nowrap">
+                      {shortHallName}
+                    </span>
                   </div>
 
-                  {/* Right Session Details Column */}
-                  <div className="relative z-10 min-w-0 flex flex-col justify-between px-3.5 py-3.5 sm:px-5 sm:py-4">
-                    <div>
-                      <div className="flex items-start justify-between gap-2">
-                        <div className="flex flex-wrap items-center gap-1.5">
-                          {item.specialty && (
-                            <span
-                              className="rounded-full px-2.5 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold"
-                              style={specialtyPillStyle(item.specialty)}
-                            >
-                              {item.specialty}
-                            </span>
-                          )}
-                          {item.isShifted && item.delayMinutes > 0 && (
-                            <span className="inline-flex items-center rounded-full border border-amber-500/25 bg-amber-500/10 px-2 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold text-amber-700">
-                              Adjusted +{item.delayMinutes}m
-                            </span>
-                          )}
-                          {isLive && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498]/20 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#086958]">
-                              <span className="relative flex h-1.5 w-1.5">
-                                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3AB498] opacity-75" />
-                                <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#3AB498]" />
-                              </span>
-                              Live
-                            </span>
-                          )}
-                        </div>
-
-                        <motion.button
-                          type="button"
-                          whileTap={{ scale: 0.88 }}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onToggleSave(item.id);
-                          }}
-                          aria-label={saved ? 'Remove from saved sessions' : 'Save session'}
-                          aria-pressed={saved}
-                          className={`-mr-1.5 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors duration-200 ${
-                            saved
-                              ? 'bg-[#3AB498]/15 text-[#086958]'
-                              : 'text-[#94A3B8] hover:bg-[#F4F7F9] hover:text-[#0D224C]'
-                          }`}
-                        >
-                          <AnimatePresence mode="wait" initial={false}>
-                            <motion.span
-                              key={saved ? 'on' : 'off'}
-                              initial={{ scale: 0.6, opacity: 0 }}
-                              animate={{ scale: 1, opacity: 1 }}
-                              exit={{ scale: 0.6, opacity: 0 }}
-                              transition={{ duration: 0.14 }}
-                              className="flex"
-                            >
-                              <Bookmark
-                                className="h-[17px] w-[17px]"
-                                fill={saved ? 'currentColor' : 'none'}
-                              />
-                            </motion.span>
-                          </AnimatePresence>
-                        </motion.button>
-                      </div>
-
-                      <h3 className="mt-1.5 font-display text-[15px] sm:text-[16.5px] font-bold leading-snug tracking-tight text-[#0B192C] text-pretty transition-colors group-hover:text-[#0D224C]">
-                        {item.title}
-                      </h3>
-                    </div>
-
-                    {/* Hairline Divider + Bottom Speaker & Hall Row */}
-                    <div className="border-t border-slate-100 pt-2.5 mt-3 flex items-center gap-2.5">
-                      <div className="w-7 h-7 rounded-lg bg-[#3AB498]/10 flex items-center justify-center shrink-0">
-                        <Mic className="h-[14px] w-[14px] text-[#086958]" />
-                      </div>
-                      <div className="min-w-0 flex-1 leading-tight">
-                        <p className="truncate text-[13px] sm:text-sm font-semibold text-[#0B192C]">
-                          {item.speakerName}
-                        </p>
-                        <p className="mt-0.5 inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-medium text-[#64748B]">
+                  {/* 2. Main Lecture Body */}
+                  <div className="px-4 pt-3 pb-2.5">
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <div className="flex flex-wrap items-center gap-1.5">
+                        {item.specialty && (
                           <span
-                            className="h-1.5 w-1.5 rounded-full shrink-0"
-                            style={{ backgroundColor: hallAccent }}
-                          />
-                          <span>{isPrincess ? 'Princess Hall' : 'Al Diwan Hall'}</span>
-                        </p>
+                            className="rounded-full px-2.5 py-0.5 font-display text-[11px] font-semibold"
+                            style={specialtyPillStyle(item.specialty)}
+                          >
+                            {item.specialty}
+                          </span>
+                        )}
+                        {item.isShifted && item.delayMinutes > 0 && (
+                          <span className="inline-flex items-center rounded-full border border-amber-500/25 bg-amber-500/10 px-2 py-0.5 font-display text-[10px] sm:text-[11px] font-semibold text-amber-700">
+                            Adjusted +{item.delayMinutes}m
+                          </span>
+                        )}
+                        {isLive && (
+                          <span className="inline-flex items-center gap-1 rounded-full bg-[#3AB498]/20 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#086958]">
+                            <span className="relative flex h-1.5 w-1.5">
+                              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#3AB498] opacity-75" />
+                              <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-[#3AB498]" />
+                            </span>
+                            Live
+                          </span>
+                        )}
+                        {!isLive && isUpNext && (
+                          <span className="inline-flex items-center rounded-full bg-[#0E6F64]/10 px-2 py-0.5 font-display text-[10px] font-bold uppercase tracking-wider text-[#0E6F64]">
+                            Up Next
+                          </span>
+                        )}
                       </div>
+
+                      <motion.button
+                        type="button"
+                        whileTap={{ scale: 0.88 }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onToggleSave(item.id);
+                        }}
+                        aria-label={saved ? 'Remove from saved sessions' : 'Save session'}
+                        aria-pressed={saved}
+                        className={`-mr-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-xl transition-colors duration-200 ${
+                          saved
+                            ? isPrincess
+                              ? 'bg-[#0F2544]/10 text-[#0F2544]'
+                              : 'bg-[#0E6F64]/10 text-[#0E6F64]'
+                            : 'text-[#94A3B8] hover:bg-[#F4F7F9] hover:text-[#0F2544]'
+                        }`}
+                      >
+                        <AnimatePresence mode="wait" initial={false}>
+                          <motion.span
+                            key={saved ? 'on' : 'off'}
+                            initial={{ scale: 0.6, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            exit={{ scale: 0.6, opacity: 0 }}
+                            transition={{ duration: 0.14 }}
+                            className="flex"
+                          >
+                            <Bookmark
+                              className="h-[17px] w-[17px]"
+                              fill={saved ? 'currentColor' : 'none'}
+                            />
+                          </motion.span>
+                        </AnimatePresence>
+                      </motion.button>
                     </div>
+
+                    <h3 className="font-display text-[15px] font-bold text-[#0F2544] leading-snug text-pretty">
+                      {item.title}
+                    </h3>
+                  </div>
+
+                  {/* 3. Ticket Perforation Divider with Semicircular Edge Cutout Notches */}
+                  <div
+                    className="border-t border-dashed border-slate-200 relative"
+                    aria-hidden="true"
+                  >
+                    <span className="pointer-events-none absolute -left-2 -top-[7px] w-3.5 h-3.5 rounded-full bg-[#F3F6FA] border border-slate-200/80" />
+                    <span className="pointer-events-none absolute -right-2 -top-[7px] w-3.5 h-3.5 rounded-full bg-[#F3F6FA] border border-slate-200/80" />
+                  </div>
+
+                  {/* 4. Compact Speaker Photo Stub Footer */}
+                  <div className="px-4 py-2.5 bg-slate-50/60 flex items-center gap-3">
+                    <TicketSpeakerAvatar
+                      speaker={speaker}
+                      speakerName={item.speakerName}
+                      isPrincess={isPrincess}
+                    />
+                    <p className="text-[13.5px] font-semibold text-slate-800 leading-tight">
+                      {item.speakerName}
+                    </p>
                   </div>
                 </motion.article>
               </motion.li>
