@@ -9,7 +9,11 @@
     "photo": "/speakers-avatars/spk-abdulrahman-eldabousy.jpg",
     "sessionId": "d1-d-1",
     "avatar": "/speakers-avatars/spk-abdulrahman-eldabousy.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%283%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%283%29.jpeg",
+    "credentials": [
+      "FRD, MRD, M Prosth RCSEd",
+      "Fellowship of the Royal College of Surgeons of Edinburgh"
+    ]
   },
   {
     "id": "spk-essam-zaatar",
@@ -21,7 +25,12 @@
     "photo": "/speakers-avatars/spk-essam-zaatar.jpg",
     "sessionId": "d1-p-1",
     "avatar": "/speakers-avatars/spk-essam-zaatar.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%285%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%285%29.jpeg",
+    "credentials": [
+      "BDS Cairo University",
+      "CAGS Endo & MS Endo, UNMC, Lincoln, Nebraska, USA",
+      "FGDSRCSI (Honorary), Royal College of Dentistry, Dublin, Ireland"
+    ]
   },
   {
     "id": "spk-moustafa-tawfik",
@@ -33,7 +42,10 @@
     "photo": "/speakers-avatars/spk-moustafa-tawfik.jpg",
     "sessionId": "d1-d-2",
     "avatar": "/speakers-avatars/spk-moustafa-tawfik.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%286%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%286%29.jpeg",
+    "credentials": [
+      "Head of Medical Sector – Al-Tawfeeq Office for International Medical & Legal Expertise and Training"
+    ]
   },
   {
     "id": "spk-mosaad-soliem",
@@ -45,7 +57,10 @@
     "photo": "/speakers-avatars/spk-mosaad-soliem.jpg",
     "sessionId": "d1-p-2",
     "avatar": "/speakers-avatars/spk-mosaad-soliem.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.53%20PM.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.53%20PM.jpeg",
+    "credentials": [
+      "Consultant of Digital Dentistry"
+    ]
   },
   {
     "id": "spk-mostafa-swedan",
@@ -57,7 +72,12 @@
     "photo": "/speakers-avatars/spk-mostafa-swedan.jpg",
     "sessionId": "d1-d-3",
     "avatar": "/speakers-avatars/spk-mostafa-swedan.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM%20%282%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM%20%282%29.jpeg",
+    "credentials": [
+      "Assistant Professor of Prosthetic Dentistry, Faculty of Dentistry, Menoufia University",
+      "Vice Dean for Community Service and Environmental Development",
+      "BDS, MSc, PhD"
+    ]
   },
   {
     "id": "spk-mostafa-nabil-hamid",
@@ -69,7 +89,11 @@
     "photo": "/speakers-avatars/spk-mostafa-nabil-hamid.jpg",
     "sessionId": "d1-p-3",
     "avatar": "/speakers-avatars/spk-mostafa-nabil-hamid.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM%20%283%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM%20%283%29.jpeg",
+    "credentials": [
+      "BSc, MSc, MPaed Dent Edinburgh, UK",
+      "Assistant Researcher of Pedodontics, National Research Center in Egypt"
+    ]
   },
   {
     "id": "spk-ahmed-ezz",
@@ -81,7 +105,10 @@
     "photo": "/speakers-avatars/spk-ahmed-ezz.jpg",
     "sessionId": "d1-d-4",
     "avatar": "/speakers-avatars/spk-ahmed-ezz.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%283%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%283%29.jpeg",
+    "credentials": [
+      "Micro-Endodontics Specialist"
+    ]
   },
   {
     "id": "spk-ahmed-mosaad",
@@ -93,7 +120,13 @@
     "photo": "/speakers-avatars/spk-ahmed-mosaad.jpg",
     "sessionId": "d1-p-4",
     "avatar": "/speakers-avatars/spk-ahmed-mosaad.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM%20%283%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM%20%283%29.jpeg",
+    "credentials": [
+      "CEO of Hayat Dental Education Company",
+      "Maxillofacial and Implantology Diploma, Toulouse University, France",
+      "Healthcare Management Diploma, AUC, Egypt",
+      "High Dental Diploma of Fixed Prosthodontics, Cairo University"
+    ]
   },
   {
     "id": "spk-abdelrahman-fadag",
@@ -105,7 +138,10 @@
     "photo": "/speakers-avatars/spk-abdelrahman-fadag.jpg",
     "sessionId": "d1-d-5",
     "avatar": "/speakers-avatars/spk-abdelrahman-fadag.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%284%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%284%29.jpeg",
+    "credentials": [
+      "President of Yemeni Endodontic Society"
+    ]
   },
   {
     "id": "spk-islam-kassem",
@@ -117,7 +153,11 @@
     "photo": "/speakers-avatars/spk-islam-kassem.jpg",
     "sessionId": "d1-p-5",
     "avatar": "/speakers-avatars/spk-islam-kassem.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM.jpeg",
+    "credentials": [
+      "Consultant Maxillofacial Surgeon",
+      "Regional Advisor of the Royal College of Surgeons & Physicians of Glasgow"
+    ]
   },
   {
     "id": "spk-mohamed-bialy",
@@ -129,7 +169,11 @@
     "photo": "/speakers-avatars/spk-mohamed-bialy.jpg",
     "sessionId": "d1-d-6",
     "avatar": "/speakers-avatars/spk-mohamed-bialy.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM.jpeg",
+    "credentials": [
+      "PhD in Endodontics",
+      "Lecturer of Endodontics"
+    ]
   },
   {
     "id": "spk-sameh-shaaban",
@@ -141,7 +185,8 @@
     "photo": "/speakers-avatars/spk-sameh-shaaban.jpg",
     "sessionId": "d1-p-6",
     "avatar": "/speakers-avatars/spk-sameh-shaaban.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.49%20PM%20%281%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.49%20PM%20%281%29.jpeg",
+    "credentials": []
   },
   {
     "id": "spk-mohamed-al-diasty",
@@ -153,7 +198,11 @@
     "photo": "/speakers-avatars/spk-mohamed-al-diasty.jpg",
     "sessionId": "d1-d-7",
     "avatar": "/speakers-avatars/spk-mohamed-al-diasty.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM.jpeg",
+    "credentials": [
+      "BDS, MUST University · MSc, Suez Canal University",
+      "Microscopic Endodontics Practitioner (Broken File Retrieval & Bypass)"
+    ]
   },
   {
     "id": "spk-karim-galal-moawad",
@@ -165,7 +214,12 @@
     "photo": "/speakers-avatars/spk-karim-galal-moawad.jpg",
     "sessionId": "d1-p-7",
     "avatar": "/speakers-avatars/spk-karim-galal-moawad.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.57%20PM%20%282%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.57%20PM%20%282%29.jpeg",
+    "credentials": [
+      "BDS Mansoura University · MDs Lincoln University, Malaysia",
+      "DSD Certified Member & Microscopic Aesthetic Dentistry Practitioner",
+      "International Speaker & Key Opinion Leader for Kulzer"
+    ]
   },
   {
     "id": "spk-muhammad-abaza",
@@ -177,7 +231,13 @@
     "photo": "/speakers-avatars/spk-muhammad-abaza.jpg",
     "sessionId": "d2-d-1",
     "avatar": "/speakers-avatars/spk-muhammad-abaza.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%282%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%282%29.jpeg",
+    "credentials": [
+      "PhD in Oral and Dental Laser Applications, NILES, Cairo University",
+      "Fellowship in Orofacial Laserology, ILDMA, Italy",
+      "Mastership in Oral Laserology, Nice, France",
+      "First Local Representative of International Laser Dentistry Master Academy in Egypt"
+    ]
   },
   {
     "id": "spk-noha-ghallab",
@@ -189,7 +249,12 @@
     "photo": "/speakers-avatars/spk-noha-ghallab.jpg",
     "sessionId": "d2-p-1",
     "avatar": "/speakers-avatars/spk-noha-ghallab.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%282%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%282%29.jpeg",
+    "credentials": [
+      "Professor of Oral Medicine and Periodontology, Faculty of Dentistry, Cairo University",
+      "Head of Oral Medicine & Periodontology Division, School of Dentistry, New Giza University",
+      "Director of Research and Development Unit, School of Dentistry, New Giza University"
+    ]
   },
   {
     "id": "spk-mahmoud-shalaby",
@@ -201,7 +266,12 @@
     "photo": "/speakers-avatars/spk-mahmoud-shalaby.jpg",
     "sessionId": "d2-d-2",
     "avatar": "/speakers-avatars/spk-mahmoud-shalaby.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM.jpeg",
+    "credentials": [
+      "M Endo from Royal College of Surgeons of Edinburgh since 2019",
+      "Examiner at The Royal College of Glasgow",
+      "MRD Supervisor"
+    ]
   },
   {
     "id": "spk-khaled-zaghloul",
@@ -213,7 +283,12 @@
     "photo": "/speakers-avatars/spk-khaled-zaghloul.jpg",
     "sessionId": "d2-p-2",
     "avatar": "/speakers-avatars/spk-khaled-zaghloul.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM%20%282%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM%20%282%29.jpeg",
+    "credentials": [
+      "BDS, MScD, PhD, MBA — Consultant in Fixed Prosthodontics",
+      "Owner and Founder of Marvel Dental Capital (3 branches)",
+      "CEO & GM of Governile & Nilecure for Business Solutions and Medical Tourism"
+    ]
   },
   {
     "id": "spk-ahmed-abdelwahed-shaaban",
@@ -225,7 +300,13 @@
     "photo": "/speakers-avatars/spk-ahmed-abdelwahed-shaaban.jpg",
     "sessionId": "d2-d-3",
     "avatar": "/speakers-avatars/spk-ahmed-abdelwahed-shaaban.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM%20%281%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.51%20PM%20%281%29.jpeg",
+    "credentials": [
+      "Professor of Prosthodontics and Implantology · FDSRCPS, Glasgow, Scotland",
+      "Founder & President of Egyptian Association of Prosthetic and Restorative Dentistry",
+      "President of Egyptian Dental Union",
+      "BDS, MSc, PhD"
+    ]
   },
   {
     "id": "spk-idce-ahmed-fettouh",
@@ -237,7 +318,11 @@
     "photo": "/speakers-avatars/spk-idce-ahmed-fettouh.jpg",
     "sessionId": "d2-p-3",
     "avatar": "/speakers-avatars/spk-idce-ahmed-fettouh.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.57%20PM.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.57%20PM.jpeg",
+    "credentials": [
+      "Leader of IDCE Team (with Dr. Nael Adel, Dr. Rafik Nasser & Dr. Nourhan Gamal)",
+      "Professor of Oral Implantology"
+    ]
   },
   {
     "id": "spk-hala-hazzaa",
@@ -249,7 +334,10 @@
     "photo": null,
     "sessionId": "d2-d-4",
     "avatar": null,
-    "poster": null
+    "poster": null,
+    "credentials": [
+      "Professor of Oral Medicine and Periodontology"
+    ]
   },
   {
     "id": "spk-mahmoud-ramadan",
@@ -261,7 +349,12 @@
     "photo": "/speakers-avatars/spk-mahmoud-ramadan.jpg",
     "sessionId": "d2-d-5",
     "avatar": "/speakers-avatars/spk-mahmoud-ramadan.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%281%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%281%29.jpeg",
+    "credentials": [
+      "Assoc. Prof. of Prosthodontics, Horus University in Egypt (HUE) · BDS, HDD, MDs, PhD",
+      "President of Egyptian Society of Orofacial Pain and Dysfunction (ESOPD)",
+      "Member of Higher Council of Arabic Society of Orofacial Pain and Dysfunction (ASOPD)"
+    ]
   },
   {
     "id": "spk-ahmed-korayem",
@@ -273,7 +366,10 @@
     "photo": "/speakers-avatars/spk-ahmed-korayem.jpg",
     "sessionId": "d2-p-4",
     "avatar": "/speakers-avatars/spk-ahmed-korayem.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.49%20PM.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.49%20PM.jpeg",
+    "credentials": [
+      "BDS, FICD Restorative Dentistry"
+    ]
   },
   {
     "id": "spk-abdallah-matar",
@@ -285,7 +381,12 @@
     "photo": "/speakers-avatars/spk-abdallah-matar.jpg",
     "sessionId": "d2-d-6",
     "avatar": "/speakers-avatars/spk-abdallah-matar.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.52%20PM.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.52%20PM.jpeg",
+    "credentials": [
+      "PhD in Periodontology & Lecturer of Periodontology",
+      "Certified International Speaker",
+      "Member of the EFP, IADR, and EDSOI"
+    ]
   },
   {
     "id": "spk-samuel-armanious",
@@ -297,7 +398,11 @@
     "photo": "/speakers-avatars/spk-samuel-armanious.jpg",
     "sessionId": "d2-p-5",
     "avatar": "/speakers-avatars/spk-samuel-armanious.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM%20%281%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.55%20PM%20%281%29.jpeg",
+    "credentials": [
+      "BDS, MSc in Orofacial Pain and Temporomandibular Disorders, Siena University, Italy",
+      "President of AACP, Egypt Chapter"
+    ]
   },
   {
     "id": "spk-mhammad-nagah",
@@ -309,7 +414,11 @@
     "photo": "/speakers-avatars/spk-mhammad-nagah.jpg",
     "sessionId": "d2-d-7",
     "avatar": "/speakers-avatars/spk-mhammad-nagah.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%284%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.56%20PM%20%284%29.jpeg",
+    "credentials": [
+      "Consultant Orthodontist · FOrth RCSEd",
+      "RCSEd Program Lead, Horus University"
+    ]
   },
   {
     "id": "spk-ibrahim-elsharabasy",
@@ -321,6 +430,9 @@
     "photo": "/speakers-avatars/spk-ibrahim-elsharabasy.jpg",
     "sessionId": "d2-p-6",
     "avatar": "/speakers-avatars/spk-ibrahim-elsharabasy.jpg",
-    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%281%29.jpeg"
+    "poster": "/lectures/WhatsApp%20Image%202026-11-22%20at%206.23.50%20PM%20%281%29.jpeg",
+    "credentials": [
+      "Senior Consultant of Oral and Maxillofacial Surgery"
+    ]
   }
 ]

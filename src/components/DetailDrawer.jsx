@@ -296,16 +296,32 @@ export function DetailDrawer({
                   </div>
                 )}
 
-                {speaker?.bio && (
+                {(Array.isArray(speaker?.credentials) && speaker.credentials.length > 0) ||
+                speaker?.bio ? (
                   <div className="mt-4 pt-4 border-t border-[#0D224C]/[0.07]">
                     <p className="font-display text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">
-                      About the Speaker
+                      Academic Credentials &amp; Affiliations
                     </p>
-                    <p className="mt-1.5 text-sm leading-relaxed text-[#475569]">
-                      {speaker.bio}
-                    </p>
+                    {Array.isArray(speaker?.credentials) &&
+                    speaker.credentials.length > 0 ? (
+                      <ul className="mt-2 space-y-1.5">
+                        {speaker.credentials.map((cred) => (
+                          <li
+                            key={cred}
+                            className="flex items-start gap-2 text-sm leading-snug text-[#475569]"
+                          >
+                            <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#3AB498]" />
+                            <span>{cred}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p className="mt-1.5 text-sm leading-relaxed text-[#475569]">
+                        {speaker.bio}
+                      </p>
+                    )}
                   </div>
-                )}
+                ) : null}
 
                 {session && (
                   <div className="mt-6 flex items-center gap-2.5 pb-safe">

@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react';
 import { motion, LayoutGroup, AnimatePresence } from 'framer-motion';
-import { Calendar, Clock, ChevronRight, X, Info } from 'lucide-react';
+import { Calendar, Clock, ChevronRight, Mic, CheckCircle2, X, Info } from 'lucide-react';
 import { SectionHeading } from './SectionHeading';
 import { formatTime12h } from '../utils/time';
 import { getSpecialtyColor } from '../utils/specialty';
@@ -12,7 +12,16 @@ function formatSpeakerDisplayName(name) {
   return String(name || '').replace(/^IDCE Team led by\s+/i, '');
 }
 
-function SpeakerSidePhoto({ src, name, initials }) {
+function getSpeakerCredentialsSummary(speaker) {
+  if (Array.isArray(speaker?.credentials) && speaker.credentials.length > 0) {
+    return speaker.credentials.slice(0, 2).join(' · ');
+  }
+  if (speaker?.bio) return speaker.bio;
+  if (speaker?.specialty) return `${speaker.specialty} Faculty & Keynote Speaker`;
+  return speaker?.title || '';
+}
+
+function SpeakerPortrait({ src, name, initials, avatarTone = 'navy' }) {
   const [failed, setFailed] = useState(false);
 
   useEffect(() => {
@@ -20,32 +29,28 @@ function SpeakerSidePhoto({ src, name, initials }) {
   }, [src]);
 
   const showImg = Boolean(src) && !failed;
+  const fallbackGradient =
+    avatarTone === 'emerald'
+      ? 'bg-gradient-to-br from-[#086958] to-[#3AB498]'
+      : 'bg-gradient-to-br from-[#0D224C] to-[#1D3E78]';
 
   return (
-    <div
-      aria-hidden="true"
-      className="pointer-events-none select-none absolute inset-y-0 left-0 w-[42%] h-full overflow-hidden"
-    >
+    <div className="w-[68px] h-[68px] rounded-2xl overflow-hidden shrink-0 border border-slate-200/80 shadow-xs bg-slate-100">
       {showImg ? (
         <img
           src={src}
           alt={name}
           loading="lazy"
           onError={() => setFailed(true)}
-          className="w-full h-full object-cover object-top scale-110 transition-transform duration-500 ease-out group-hover:scale-115"
+          className="w-full h-full object-cover object-top"
         />
       ) : (
         <div
-          className="flex h-full w-full items-center justify-center font-display text-xl font-extrabold text-[#5EEAD4]/80"
-          style={{
-            background:
-              'radial-gradient(circle at 42% 40%, rgba(14, 111, 100, 0.32) 0%, transparent 75%)',
-          }}
+          className={`flex h-full w-full items-center justify-center font-display text-base font-bold text-white ${fallbackGradient}`}
         >
           {initials}
         </div>
       )}
-      <div className="absolute inset-y-0 right-0 w-10 bg-gradient-to-l from-[#0B1B35] via-[#0B1B35]/60 to-transparent pointer-events-none" />
     </div>
   );
 }
@@ -165,6 +170,7 @@ export function SpeakersView({
           const dayInfo = conference.days.find((d) => d.id === session?.day);
           const isPrincess = session?.hall === 'princess';
           const displayName = formatSpeakerDisplayName(speaker.name);
+          const credentialsSummary = getSpeakerCredentialsSummary(speaker);
 
           return (
             <motion.article
@@ -182,56 +188,75 @@ export function SpeakersView({
                   handleCardActivate(speaker);
                 }
               }}
-              className="group rounded-2xl overflow-hidden relative bg-[#0B1B35] shadow-[0_8px_22px_-6px_rgba(11,27,53,0.28)] border border-white/10 min-h-[168px] flex flex-col justify-between cursor-pointer transition-[border-color,box-shadow] duration-200 hover:border-[#2DD4BF]/35"
+              className="group bg-white rounded-2xl border border-slate-200/85 shadow-[0_6px_18px_-6px_rgba(15,37,68,0.08)] overflow-hidden flex flex-col justify-between cursor-pointer transition-[border-color,box-shadow] duration-200 hover:border-[#0E6F64]/40 hover:shadow-cardHover"
             >
-              {/* Full-Bleed Left-Side Speaker Photo + Edge-Only Blend */}
-              <SpeakerSidePhoto
-                src={speaker.avatar || speaker.photo}
-                name={displayName}
-                initials={speaker.initials}
-              />
+              <div>
+                {/* 3px Top Hall Accent Bar */}
+                <div
+                  className={`h-[3px] w-full ${
+                    isPrincess ? 'bg-[#0F2544]' : 'bg-[#0E6F64]'
+                  }`}
+                  aria-hidden="true"
+                />
 
-              {/* Right-Side Content Layer */}
-              <div className="relative z-10 p-4 pl-[44%] flex flex-col justify-between flex-1 h-full">
-                <div>
-                  <span className="inline-block bg-[#0E6F64]/30 border border-[#2DD4BF]/30 text-[#5EEAD4] px-2.5 py-0.5 rounded-full font-display text-[11px] font-semibold w-fit mb-2">
-                    {speaker.specialty}
-                  </span>
-                  <h2 className="font-display text-[16px] font-extrabold text-white leading-tight">
-                    {displayName}
-                  </h2>
+                {/* Main Speaker Profile Body */}
+                <div className="p-4 flex items-start gap-3.5">
+                  <SpeakerPortrait
+                    src={speaker.avatar || speaker.photo}
+                    name={displayName}
+                    initials={speaker.initials}
+                    avatarTone={speaker.avatarTone}
+                  />
+
+                  <div className="min-w-0 flex-1">
+                    <span className="inline-block rounded-full bg-[#0E6F64]/10 px-2.5 py-0.5 font-display text-[11px] font-semibold text-[#0E6F64]">
+                      {speaker.specialty}
+                    </span>
+                    <h2 className="mt-1 font-display text-[15.5px] font-extrabold text-[#0F2544] leading-snug">
+                      {displayName}
+                    </h2>
+                    {credentialsSummary && (
+                      <p className="text-[12.5px] text-slate-600 leading-snug mt-1 line-clamp-2">
+                        {credentialsSummary}
+                      </p>
+                    )}
+                  </div>
                 </div>
-
-                {session && (
-                  <p className="text-[12.5px] text-slate-300 leading-snug mt-1.5 line-clamp-2">
-                    {session.title}
-                  </p>
-                )}
               </div>
 
-              {/* Bottom Metadata Bar */}
+              {/* Compact Footer Strip */}
               {session && (
-                <div className="relative z-10 px-4 py-2.5 border-t border-white/10 bg-[#0B1B35]/90 flex items-center justify-between gap-2 text-[11.5px] text-slate-200">
-                  <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 min-w-0">
-                    <span className="inline-flex items-center gap-1 font-semibold text-white">
-                      <Calendar className="h-3 w-3 text-[#5EEAD4]" />
-                      {dayInfo?.shortLabel}
-                    </span>
-                    <span className="inline-flex items-center gap-1 tabular-nums text-slate-200">
-                      <Clock className="h-3 w-3 text-[#5EEAD4]" />
-                      {formatTime12h(session.startTime)}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 font-medium text-slate-200">
-                      <span
-                        className="h-1.5 w-1.5 rounded-full shrink-0"
-                        style={{
-                          backgroundColor: isPrincess ? '#93C5FD' : '#2DD4BF',
-                        }}
-                      />
-                      {isPrincess ? 'Princess' : 'Al Diwan'}
-                    </span>
+                <div className="px-4 py-2.5 bg-slate-50/75 border-t border-slate-100 space-y-1.5">
+                  <div className="flex items-center gap-1.5 min-w-0">
+                    <Mic className="h-3.5 w-3.5 shrink-0 text-[#0E6F64]" />
+                    <p className="text-[11.5px] font-medium text-slate-500 truncate">
+                      {session.title}
+                    </p>
                   </div>
-                  <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#5EEAD4]" />
+
+                  <div className="flex items-center justify-between gap-2 text-[11px] text-slate-500">
+                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 min-w-0">
+                      <span className="inline-flex items-center gap-1 font-semibold text-[#0F2544]">
+                        <Calendar className="h-3 w-3 text-slate-400" />
+                        {dayInfo?.shortLabel}
+                      </span>
+                      <span className="text-slate-300">·</span>
+                      <span className="inline-flex items-center gap-1 tabular-nums">
+                        <Clock className="h-3 w-3 text-slate-400" />
+                        {formatTime12h(session.startTime)}
+                      </span>
+                      <span className="text-slate-300">·</span>
+                      <span className="inline-flex items-center gap-1 font-medium text-slate-600">
+                        <span
+                          className={`h-1.5 w-1.5 rounded-full shrink-0 ${
+                            isPrincess ? 'bg-[#0F2544]' : 'bg-[#0E6F64]'
+                          }`}
+                        />
+                        {isPrincess ? 'Princess' : 'Al Diwan'}
+                      </span>
+                    </div>
+                    <ChevronRight className="h-4 w-4 shrink-0 text-slate-400 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-[#0E6F64]" />
+                  </div>
                 </div>
               )}
             </motion.article>
@@ -281,31 +306,48 @@ export function SpeakersView({
                 className="max-h-[78vh] w-auto max-w-full object-contain rounded-2xl border border-white/15 shadow-2xl bg-[#0B192C]"
               />
 
-              {/* Compact Frosted Footer Bar */}
-              <div className="mt-3 flex w-full items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-white backdrop-blur-md">
-                <div className="min-w-0">
-                  <p className="truncate font-display text-sm font-bold text-white">
-                    {formatSpeakerDisplayName(activePosterSpeaker.name)}
-                  </p>
-                  <p className="truncate text-xs text-slate-300">
-                    {activePosterSpeaker.specialty}
-                    {scheduleById[activePosterSpeaker.sessionId]
-                      ? ` · ${formatTime12h(scheduleById[activePosterSpeaker.sessionId].startTime)}`
-                      : ''}
-                  </p>
+              {/* Compact Frosted Footer Bar with Full Bulleted Credentials */}
+              <div className="mt-3 w-full rounded-2xl border border-white/15 bg-white/10 px-4 py-3 text-white backdrop-blur-md">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="truncate font-display text-sm font-bold text-white">
+                      {formatSpeakerDisplayName(activePosterSpeaker.name)}
+                    </p>
+                    <p className="truncate text-xs text-slate-300">
+                      {activePosterSpeaker.specialty}
+                      {scheduleById[activePosterSpeaker.sessionId]
+                        ? ` · ${formatTime12h(scheduleById[activePosterSpeaker.sessionId].startTime)}`
+                        : ''}
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const target = activePosterSpeaker;
+                      setActivePosterSpeaker(null);
+                      onSelectSpeaker(target);
+                    }}
+                    className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-[#3AB498] px-3 py-1.5 font-display text-xs font-semibold text-[#061024] transition-colors hover:bg-[#5EEAD4]"
+                  >
+                    <Info className="h-3.5 w-3.5" />
+                    <span>Session Details</span>
+                  </button>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const target = activePosterSpeaker;
-                    setActivePosterSpeaker(null);
-                    onSelectSpeaker(target);
-                  }}
-                  className="inline-flex shrink-0 items-center gap-1.5 rounded-xl bg-[#3AB498] px-3 py-1.5 font-display text-xs font-semibold text-[#061024] transition-colors hover:bg-[#5EEAD4]"
-                >
-                  <Info className="h-3.5 w-3.5" />
-                  <span>Session Details</span>
-                </button>
+
+                {Array.isArray(activePosterSpeaker.credentials) &&
+                  activePosterSpeaker.credentials.length > 0 && (
+                    <ul className="mt-2.5 border-t border-white/10 pt-2 space-y-1">
+                      {activePosterSpeaker.credentials.map((cred) => (
+                        <li
+                          key={cred}
+                          className="flex items-start gap-2 text-xs leading-snug text-slate-200"
+                        >
+                          <CheckCircle2 className="mt-0.5 h-3.5 w-3.5 shrink-0 text-[#5EEAD4]" />
+                          <span>{cred}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
               </div>
             </motion.div>
           </motion.div>
