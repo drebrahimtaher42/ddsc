@@ -8,6 +8,10 @@ import { staggerListVariants, cardItemVariants, lightboxZoomVariants, EASE_OUT }
 
 const PILL_SPRING = { type: 'spring', stiffness: 460, damping: 36 };
 
+function formatSpeakerDisplayName(name) {
+  return String(name || '').replace(/^IDCE Team led by\s+/i, '');
+}
+
 function SpeakerSidePhoto({ src, name, initials }) {
   const [failed, setFailed] = useState(false);
 
@@ -160,6 +164,7 @@ export function SpeakersView({
           const session = scheduleById[speaker.sessionId];
           const dayInfo = conference.days.find((d) => d.id === session?.day);
           const isPrincess = session?.hall === 'princess';
+          const displayName = formatSpeakerDisplayName(speaker.name);
 
           return (
             <motion.article
@@ -182,7 +187,7 @@ export function SpeakersView({
               {/* Full-Bleed Left-Side Speaker Photo + Edge-Only Blend */}
               <SpeakerSidePhoto
                 src={speaker.avatar || speaker.photo}
-                name={speaker.name}
+                name={displayName}
                 initials={speaker.initials}
               />
 
@@ -193,7 +198,7 @@ export function SpeakersView({
                     {speaker.specialty}
                   </span>
                   <h2 className="font-display text-[16px] font-extrabold text-white leading-tight">
-                    {speaker.name}
+                    {displayName}
                   </h2>
                 </div>
 
@@ -280,7 +285,7 @@ export function SpeakersView({
               <div className="mt-3 flex w-full items-center justify-between gap-3 rounded-2xl border border-white/15 bg-white/10 px-4 py-2.5 text-white backdrop-blur-md">
                 <div className="min-w-0">
                   <p className="truncate font-display text-sm font-bold text-white">
-                    {activePosterSpeaker.name}
+                    {formatSpeakerDisplayName(activePosterSpeaker.name)}
                   </p>
                   <p className="truncate text-xs text-slate-300">
                     {activePosterSpeaker.specialty}
