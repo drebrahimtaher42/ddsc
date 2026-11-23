@@ -201,8 +201,8 @@ export function HomeView({
 
   return (
     <div className="bg-[#F3F6FA]">
-      {/* 1. FULL-BLEED ARCHITECTURAL CENTERED HERO (No Card Shape, No Bottom Fade) */}
-      <section className="w-full relative overflow-hidden bg-[#0B1B35] text-white">
+      {/* 1. FULL-BLEED ARCHITECTURAL CENTERED HERO (Full-Viewport Stage) */}
+      <section className="w-full relative overflow-hidden bg-[#0B1B35] text-white min-h-[calc(100svh-64px)] md:min-h-[82vh] flex flex-col justify-between">
         {/* Centered top radial spotlight glow */}
         <div
           aria-hidden="true"
@@ -248,72 +248,75 @@ export function HomeView({
           variants={staggerListVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 mx-auto max-w-5xl px-5 pt-10 pb-8 sm:pt-16 sm:pb-10 flex flex-col items-center text-center"
+          className="relative z-10 mx-auto w-full max-w-5xl px-5 flex-1 flex flex-col justify-between text-center"
         >
-          {/* Clean Single-Line Top Eyebrow */}
-          <motion.p
-            variants={cardItemVariants}
-            className="font-display text-[11px] font-semibold tracking-[0.22em] uppercase text-[#5EEAD4] whitespace-nowrap"
-          >
-            MEET · SHARE · CONNECT
-          </motion.p>
-
-          {/* Single-Line Main Headline */}
-          <motion.h1
-            variants={cardItemVariants}
-            className="font-display text-[clamp(1.45rem,6.5vw,3rem)] font-extrabold text-white leading-tight tracking-tight whitespace-nowrap mt-4"
-          >
-            A New Era of <span className="text-[#CCFBF1]">Dentistry</span>
-          </motion.h1>
-
-          {/* Conference Subtitle */}
-          <motion.p
-            variants={cardItemVariants}
-            className="font-display text-[14.5px] sm:text-xl font-semibold text-slate-100 mt-3 max-w-[320px] sm:max-w-lg text-balance"
-          >
-            Damietta Dental Syndicate Conference 2026
-          </motion.p>
-
-          {/* Description */}
-          <motion.p
-            variants={cardItemVariants}
-            className="text-[13.5px] sm:text-base text-slate-300/85 leading-relaxed mt-2.5 max-w-[330px] sm:max-w-md text-balance"
-          >
-            Uniting 27+ scientific keynotes, hands-on labs, and a dental community growing since 1995.
-          </motion.p>
-
-          {/* Primary CTA with Periodic Light-Sheen Sweep */}
-          <motion.div
-            variants={cardItemVariants}
-            className="mt-6 flex justify-center"
-          >
-            <motion.button
-              type="button"
-              whileHover={{ y: -1 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => onNavigate('schedule')}
-              className="relative overflow-hidden inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(45,212,191,0.4)] hover:brightness-105 transition-all"
+          {/* Main Center Content Block */}
+          <div className="flex-1 flex flex-col items-center justify-center py-10">
+            {/* Clean Single-Line Top Eyebrow */}
+            <motion.p
+              variants={cardItemVariants}
+              className="font-display text-[11px] font-semibold tracking-[0.22em] uppercase text-[#5EEAD4] whitespace-nowrap"
             >
-              <motion.span
-                aria-hidden="true"
-                animate={{ x: ['-140%', '240%'] }}
-                transition={{
-                  duration: 2.4,
-                  repeat: Infinity,
-                  repeatDelay: 3.6,
-                  ease: 'easeInOut',
-                }}
-                className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/35 to-transparent"
-              />
-              <span className="relative z-10">Explore Schedule</span>
-              <ArrowRight className="relative z-10 h-4 w-4" />
-            </motion.button>
-          </motion.div>
+              MEET · SHARE · CONNECT
+            </motion.p>
 
-          {/* 2. Architectural Date & Venue Footer Strip (Inside Bottom of Hero) */}
+            {/* Single-Line Main Headline */}
+            <motion.h1
+              variants={cardItemVariants}
+              className="font-display text-[clamp(1.45rem,6.5vw,3rem)] font-extrabold text-white leading-tight tracking-tight whitespace-nowrap mt-5"
+            >
+              A New Era of <span className="text-[#CCFBF1]">Dentistry</span>
+            </motion.h1>
+
+            {/* Conference Subtitle */}
+            <motion.p
+              variants={cardItemVariants}
+              className="font-display text-[14.5px] sm:text-xl font-semibold text-slate-100 mt-4 max-w-[320px] sm:max-w-lg text-balance"
+            >
+              Damietta Dental Syndicate Conference 2026
+            </motion.p>
+
+            {/* Description */}
+            <motion.p
+              variants={cardItemVariants}
+              className="text-[13.5px] sm:text-base text-slate-300/85 leading-relaxed mt-3.5 max-w-[330px] sm:max-w-md text-balance"
+            >
+              Uniting 27+ scientific keynotes, hands-on labs, and a dental community growing since 1995.
+            </motion.p>
+
+            {/* Primary CTA with Periodic Light-Sheen Sweep */}
+            <motion.div
+              variants={cardItemVariants}
+              className="mt-8 flex justify-center"
+            >
+              <motion.button
+                type="button"
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                onClick={() => onNavigate('schedule')}
+                className="relative overflow-hidden inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(45,212,191,0.4)] hover:brightness-105 transition-all"
+              >
+                <motion.span
+                  aria-hidden="true"
+                  animate={{ x: ['-140%', '240%'] }}
+                  transition={{
+                    duration: 2.4,
+                    repeat: Infinity,
+                    repeatDelay: 3.6,
+                    ease: 'easeInOut',
+                  }}
+                  className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/35 to-transparent"
+                />
+                <span className="relative z-10">Explore Schedule</span>
+                <ArrowRight className="relative z-10 h-4 w-4" />
+              </motion.button>
+            </motion.div>
+          </div>
+
+          {/* 2. Architectural Date & Venue Footer Strip (Anchored at Bottom of Hero) */}
           <motion.div
             variants={cardItemVariants}
-            className="border-t border-white/10 mt-8 pt-4 pb-1 px-4 w-full"
+            className="border-t border-white/10 pt-5 pb-24 md:pb-10 px-4 w-full"
           >
             <div className="grid grid-cols-2 divide-x divide-white/10 max-w-md mx-auto">
               <div className="px-3 flex flex-col items-center text-center">
