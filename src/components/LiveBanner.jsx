@@ -185,58 +185,58 @@ export function LiveBanner({
       />
 
       <div className="relative z-10">
-        {/* Unified Single-Row Top Bar: Status + Compact Live Toggle */}
-        <div className="flex items-center justify-between gap-2">
-          <div className="flex min-w-0 items-center gap-2">
-            <span className="relative flex h-2.5 w-2.5 shrink-0">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3AB498] opacity-75" />
-              <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#3AB498]" />
-            </span>
-            <span className="truncate font-display text-[11px] font-bold uppercase tracking-widest text-[#8CE9D2]">
-              {isPreview
-                ? 'Live Mode Preview'
-                : phase === 'live'
-                ? 'Happening Now'
-                : phase === 'before'
-                ? 'Countdown to DDSC 2026'
-                : phase === 'between'
-                ? 'Conference In Progress'
-                : 'DDSC 2026 Concluded'}
-            </span>
-            {showLiveContent && (
-              <span className="hidden sm:inline-flex shrink-0 items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/80">
-                <Clock className="h-3 w-3 text-[#3AB498]" />
-                {formatCairoClock(nowMs)} Cairo
+        {/* Top Bar (shown only in Live Mode / Preview / Post-Conference) */}
+        {(showLiveContent || phase !== 'before') && (
+          <div className="flex items-center justify-between gap-2">
+            <div className="flex min-w-0 items-center gap-2">
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#3AB498] opacity-75" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#3AB498]" />
               </span>
+              <span className="truncate font-display text-[11px] font-bold uppercase tracking-widest text-[#8CE9D2]">
+                {isPreview
+                  ? 'Live Mode Preview'
+                  : phase === 'live'
+                  ? 'Happening Now'
+                  : phase === 'between'
+                  ? 'Conference In Progress'
+                  : 'DDSC 2026 Concluded'}
+              </span>
+              {showLiveContent && (
+                <span className="hidden sm:inline-flex shrink-0 items-center gap-1 rounded-full bg-white/10 px-2 py-0.5 text-[11px] font-medium text-white/80">
+                  <Clock className="h-3 w-3 text-[#3AB498]" />
+                  {formatCairoClock(nowMs)} Cairo
+                </span>
+              )}
+            </div>
+
+            {(phase === 'after' || isPreview) && (
+              <motion.button
+                type="button"
+                whileTap={{ scale: 0.96 }}
+                onClick={onTogglePreview}
+                aria-label={isPreview ? 'Exit Live Preview' : 'Preview Live Mode'}
+                className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 font-display text-[11px] font-semibold transition-colors ${
+                  isPreview
+                    ? 'bg-white text-[#0D224C] hover:bg-white/90'
+                    : 'bg-white/10 border border-white/15 text-white hover:bg-white/20'
+                }`}
+              >
+                {isPreview ? (
+                  <>
+                    <EyeOff className="h-3 w-3" />
+                    <span>Exit</span>
+                  </>
+                ) : (
+                  <>
+                    <Eye className="h-3 w-3 text-[#3AB498]" />
+                    <span>Live</span>
+                  </>
+                )}
+              </motion.button>
             )}
           </div>
-
-          {(phase === 'before' || phase === 'after' || isPreview) && (
-            <motion.button
-              type="button"
-              whileTap={{ scale: 0.96 }}
-              onClick={onTogglePreview}
-              aria-label={isPreview ? 'Exit Live Preview' : 'Preview Live Mode'}
-              className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 font-display text-[11px] font-semibold transition-colors ${
-                isPreview
-                  ? 'bg-white text-[#0D224C] hover:bg-white/90'
-                  : 'bg-white/10 border border-white/15 text-white hover:bg-white/20'
-              }`}
-            >
-              {isPreview ? (
-                <>
-                  <EyeOff className="h-3 w-3" />
-                  <span>Exit</span>
-                </>
-              ) : (
-                <>
-                  <Eye className="h-3 w-3 text-[#3AB498]" />
-                  <span>Live</span>
-                </>
-              )}
-            </motion.button>
-          )}
-        </div>
+        )}
 
         {/* Organizer Preview Time Switcher */}
         <AnimatePresence initial={false}>
@@ -281,28 +281,17 @@ export function LiveBanner({
             exit={{ opacity: 0, y: -4 }}
             transition={{ duration: 0.22, ease: EASE_OUT }}
           >
-            {/* STATE 1: Pre-Conference Countdown */}
+            {/* STATE 1: Editorial Architectural Pre-Conference Countdown */}
             {!showLiveContent && phase === 'before' && (
-              <div className="mt-4">
-                <h1 className="font-display text-lg sm:text-xl font-bold tracking-tight text-white">
-                  {conference.fullName}
-                </h1>
-                {conference.tagline && (
-                  <p className="mt-1 font-display text-xs sm:text-[13px] font-semibold text-[#8CE9D2]">
-                    {conference.tagline}
-                  </p>
-                )}
+              <div>
+                {/* 1. Centered Top Eyebrow Line */}
+                <p className="text-center font-display text-[10.5px] font-semibold uppercase tracking-[0.18em] text-[#5EEAD4]">
+                  COUNTDOWN TO OPENING · THU 26 NOV · 9:30 AM
+                </p>
 
-                <div className="mt-2.5 space-y-1 text-xs sm:text-sm text-slate-200/90">
-                  <p>Opening Ceremony · Thu, 26 Nov at 9:30 AM</p>
-                  <p className="inline-flex items-center gap-1.5 font-medium text-white/90">
-                    <MapPin className="h-[13px] w-[13px] shrink-0 text-[#3AB498]" />
-                    <span>{conference.venue.name}</span>
-                  </p>
-                </div>
-
+                {/* 2. Architectural 4-Column Countdown Numbers (No Glass Boxes) */}
                 <div
-                  className="mt-5 grid grid-cols-4 gap-2 sm:gap-3"
+                  className="grid grid-cols-4 divide-x divide-white/10 py-4 my-2"
                   aria-label="Countdown timer"
                 >
                   {[
@@ -313,16 +302,34 @@ export function LiveBanner({
                   ].map((unit) => (
                     <div
                       key={unit.label}
-                      className="flex flex-col items-center justify-center rounded-xl border border-white/15 bg-white/10 backdrop-blur-sm px-2 py-2.5"
+                      className="flex flex-col items-center justify-center px-2 text-center"
                     >
-                      <span className="font-display text-lg sm:text-xl font-bold tabular-nums leading-none text-white">
+                      <span className="font-display text-[32px] sm:text-[38px] font-extrabold text-white leading-none tracking-tight tabular-nums">
                         {String(unit.value).padStart(2, '0')}
                       </span>
-                      <span className="mt-1 text-[10px] font-medium uppercase tracking-wider text-white/70">
+                      <span className="font-display text-[10px] uppercase tracking-[0.18em] text-slate-300/75 font-medium mt-1.5">
                         {unit.label}
                       </span>
                     </div>
                   ))}
+                </div>
+
+                {/* 3. Clean Footer Row + Discreet Live Preview Ghost Link */}
+                <div className="border-t border-white/10 pt-3 flex items-center justify-between gap-2">
+                  <span className="inline-flex items-center gap-1.5 text-[12px] text-slate-200/90 font-medium min-w-0">
+                    <MapPin className="h-3.5 w-3.5 shrink-0 text-[#5EEAD4]" />
+                    <span className="truncate">{conference.venue.name}</span>
+                  </span>
+
+                  <button
+                    type="button"
+                    onClick={onTogglePreview}
+                    aria-label="Preview Live Mode"
+                    className="inline-flex shrink-0 items-center gap-1 text-[11px] font-medium text-white/40 hover:text-white/80 transition-colors cursor-pointer"
+                  >
+                    <Eye className="h-3 w-3" />
+                    <span>Live</span>
+                  </button>
                 </div>
               </div>
             )}
