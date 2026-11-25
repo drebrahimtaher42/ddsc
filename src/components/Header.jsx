@@ -1,13 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import logoWhite from '../assets/logo-white.svg';
-import { WhatsAppIcon } from './WhatsAppIcon';
 
 export function Header({
   tabs,
   activeTab,
   onTabChange,
-  bookingUrl,
   logoRef,
   logoHidden = false,
 }) {
@@ -32,10 +30,10 @@ export function Header({
   return (
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 md:px-6">
       <div
-        className={`pointer-events-auto mx-auto flex items-center justify-between gap-2 border transition-[max-width,margin,height,padding,background-color,border-color,box-shadow,border-radius] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
+        className={`pointer-events-auto mx-auto flex items-center justify-center md:justify-between gap-2 border transition-[margin,height,padding,background-color,border-color,box-shadow,border-radius] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
           isFloating
-            ? 'mt-3 h-14 max-w-[min(100%,64rem)] rounded-full border-white/15 bg-[#091938]/85 pl-4 pr-2 shadow-[0_16px_40px_rgba(7,20,46,0.35)] backdrop-blur-2xl'
-            : 'mt-0 h-16 max-w-5xl rounded-none border-transparent bg-transparent px-1 sm:px-0 shadow-none'
+            ? 'mt-3 h-12 w-fit md:h-14 md:w-auto md:max-w-5xl rounded-full border-white/15 bg-[#091938]/85 pl-3 pr-4 md:pl-4 md:pr-2 shadow-[0_16px_40px_rgba(7,20,46,0.35)] backdrop-blur-2xl'
+            : 'mt-0 h-16 md:max-w-5xl rounded-none border-transparent bg-transparent px-0 shadow-none'
         }`}
       >
         <motion.button
@@ -53,12 +51,14 @@ export function Header({
             src={logoWhite}
             alt="DDSC Logo"
             className={`w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] ${
-              isFloating ? 'h-8' : 'h-9 sm:h-10'
+              isFloating ? 'h-7 md:h-8' : 'h-10'
             }`}
             style={{ opacity: logoHidden ? 0 : 1 }}
           />
           <div
-            className="hidden lg:flex flex-col text-left leading-tight transition-opacity duration-300"
+            className={`flex-col text-left leading-tight transition-opacity duration-300 ${
+              isFloating ? 'flex md:hidden lg:flex' : 'hidden lg:flex'
+            }`}
             style={{ opacity: logoHidden ? 0 : 1 }}
           >
             <span className="font-display text-xs font-extrabold tracking-[0.08em] text-white">
@@ -68,7 +68,7 @@ export function Header({
           </div>
         </motion.button>
 
-        {/* Desktop: centred pill navigation */}
+        {/* Desktop: pill navigation (mobile uses the bottom nav) */}
         <nav
           aria-label="Primary Navigation"
           className="hidden md:flex items-center gap-0.5 rounded-full border border-white/10 bg-white/[0.06] p-1"
@@ -101,22 +101,6 @@ export function Header({
           })}
         </nav>
 
-        {/* Get Pass — glass over the hero, solid teal inside the floating pill */}
-        <motion.a
-          href={bookingUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          whileHover={{ y: -1 }}
-          whileTap={{ scale: 0.98 }}
-          className={`inline-flex shrink-0 items-center gap-1.5 rounded-full border font-display text-xs font-bold transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-            isFloating
-              ? 'h-10 pl-3.5 pr-4 border-transparent bg-[#3AB498] text-[#06201B] shadow-[0_4px_18px_rgba(58,180,152,0.35)] hover:brightness-105'
-              : 'h-10 pl-3.5 pr-4 border-white/20 bg-white/10 text-white backdrop-blur-xs hover:bg-white/20'
-          }`}
-        >
-          <WhatsAppIcon className="h-3.5 w-3.5" />
-          <span className="whitespace-nowrap">Get Pass</span>
-        </motion.a>
       </div>
     </header>
   );
