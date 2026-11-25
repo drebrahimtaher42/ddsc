@@ -364,19 +364,11 @@ export function HomeView({
           className="relative z-10 mx-auto w-full max-w-5xl px-5 pt-20 flex-1 flex flex-col justify-between text-center"
         >
           <div className="flex-1 flex flex-col items-center justify-center pb-8">
-            {/* Edition badge — the strongest credential, up front */}
-            <motion.span
-              variants={cardItemVariants}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#5EEAD4]/25 bg-white/[0.06] px-3.5 py-1.5 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-[#5EEAD4]"
-            >
-              <Award className="h-3.5 w-3.5" />
-              29th Edition · Since 1995
-            </motion.span>
 
             {/* Conference name as the headline */}
             <motion.h1
               variants={cardItemVariants}
-              className="mt-4 font-display text-[clamp(2.75rem,13.5vw,5.5rem)] font-extrabold leading-none tracking-tight text-white"
+              className="font-display text-[clamp(2.75rem,13.5vw,5.5rem)] font-extrabold leading-none tracking-tight text-white"
             >
               DDSC <span className="text-[#5EEAD4]">2026</span>
             </motion.h1>
