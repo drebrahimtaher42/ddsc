@@ -180,6 +180,7 @@ export default function App() {
                   supportUrl={supportUrl}
                   onNavigate={handleNavigate}
                   onSelectWorkshop={handleSelectWorkshop}
+                  liveState={liveState}
                 />
               ) : (
                 <div className="mx-auto w-full max-w-5xl px-4 pt-20 pb-4 sm:px-6 sm:pt-22">
