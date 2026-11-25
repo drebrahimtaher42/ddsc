@@ -157,7 +157,6 @@ export default function App() {
           tabs={DESKTOP_TABS}
           activeTab={activeTab}
           onTabChange={setActiveTab}
-          bookingUrl={bookingUrl}
           logoRef={headerLogoRef}
           logoHidden={showIntro}
         />
