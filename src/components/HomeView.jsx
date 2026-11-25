@@ -517,18 +517,8 @@ export function HomeView({
           <SectionHeading
             eyebrow="2026 Program"
             title="Scientific Sessions"
-            description={`${lecturePosters.length} accredited keynote & specialty lectures across two halls.`}
-            aside={
-              <motion.button
-                type="button"
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onNavigate('schedule')}
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#0D224C] px-4 py-2 font-display text-xs font-semibold text-white shadow-xs transition-colors hover:bg-[#14326B]"
-              >
-                <span>View Full Timetable</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </motion.button>
-            }
+            meta={[`${lecturePosters.length} lectures`, '2 halls', 'Accredited']}
+            action={{ label: 'Timetable', onClick: () => onNavigate('schedule') }}
           />
 
           <Carousel ariaLabel="Scientific Sessions" gapClass="gap-4">
@@ -574,20 +564,10 @@ export function HomeView({
           className="space-y-4"
         >
           <SectionHeading
-            eyebrow="Practical Clinical Training"
+            eyebrow="Practical Training"
             title="Hands-On Workshops"
-            description={`${workshops.length} limited-seat pre-conference labs (20–25 Nov) built around real chairside protocols you can apply immediately.`}
-            aside={
-              <motion.button
-                type="button"
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onNavigate('workshops')}
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#086958] px-4 py-2 font-display text-xs font-semibold text-white shadow-xs transition-colors hover:bg-[#065749]"
-              >
-                <span>View All Workshops</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </motion.button>
-            }
+            meta={[`${workshops.length} labs`, '20–25 Nov', 'Limited seats']}
+            action={{ label: 'View all', onClick: () => onNavigate('workshops') }}
           />
 
           {/* Compact Workshop Bundle Offers Summary */}
