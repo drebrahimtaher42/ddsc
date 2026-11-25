@@ -18,7 +18,7 @@ import logoWhite from '../assets/logo-white.svg';
 import { WhatsAppIcon } from './WhatsAppIcon';
 import { Carousel } from './Carousel';
 import { SectionHeading } from './SectionHeading';
-import { buildWhatsAppUrl } from '../utils/time';
+import { buildWhatsAppUrl, formatTime12h } from '../utils/time';
 import { specialtyPillStyle } from '../utils/specialty';
 import {
   staggerListVariants,
@@ -122,6 +122,118 @@ function WorkshopSlidePoster({ workshop }) {
   );
 }
 
+const pad2 = (n) => String(n).padStart(2, '0');
+
+function LiveRow({ hall, session }) {
+  if (!session) return null;
+  return (
+    <p className="mt-1.5 text-left text-[12.5px] leading-snug text-white/85 truncate">
+      <span className="font-semibold text-[#5EEAD4]">{hall}:</span>{' '}
+      <span className="text-white">{session.title}</span>
+    </p>
+  );
+}
+
+/**
+ * Hero status card driven by the shared liveState (ticks every second in App):
+ * before → countdown to opening · live → what's on in each hall ·
+ * between → next session · after → thank-you note. Never sits at 00:00:00.
+ */
+function HeroStatus({ liveState, onNavigate }) {
+  if (!liveState) return null;
+  const { phase, countdown } = liveState;
+  const cardClass =
+    'w-full max-w-[340px] rounded-2xl border border-white/12 bg-white/[0.06] backdrop-blur-sm px-4 py-3.5';
+
+  if (phase === 'before' && !countdown.isComplete) {
+    const units = [
+      ...(countdown.days > 0 ? [{ v: countdown.days, l: 'Days' }] : []),
+      { v: countdown.hours, l: 'Hrs' },
+      { v: countdown.minutes, l: 'Min' },
+      { v: countdown.seconds, l: 'Sec' },
+    ];
+    return (
+      <div className={cardClass} role="timer" aria-live="off">
+        <p className="font-display text-[10px] font-semibold uppercase tracking-[0.18em] text-[#5EEAD4]/90">
+          Opening ceremony starts in
+        </p>
+        <div className={`mt-2.5 grid gap-2 ${units.length === 4 ? 'grid-cols-4' : 'grid-cols-3'}`}>
+          {units.map((u) => (
+            <div key={u.l} className="rounded-xl bg-[#0B1B35]/60 border border-white/10 py-2">
+              <span className="block font-display text-2xl font-extrabold tabular-nums leading-none text-white">
+                {pad2(u.v)}
+              </span>
+              <span className="mt-1 block text-[10px] font-medium uppercase tracking-wider text-slate-400">
+                {u.l}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (phase === 'after') {
+    return (
+      <div className={cardClass}>
+        <p className="font-display text-sm font-bold text-white">
+          Thank you for joining DDSC 2026
+        </p>
+        <p className="mt-1 text-[12.5px] text-slate-300/85">See you at the 30th edition.</p>
+      </div>
+    );
+  }
+
+  const { livePrincess, liveDiwan, liveSpecial, upNext } = liveState;
+  const isLive = phase === 'live' || (phase === 'before' && countdown.isComplete);
+
+  if (isLive) {
+    return (
+      <button
+        type="button"
+        onClick={() => onNavigate('schedule')}
+        className={`${cardClass} text-left transition-colors hover:bg-white/[0.1]`}
+      >
+        <span className="inline-flex items-center gap-2 font-display text-[11px] font-bold uppercase tracking-[0.16em] text-white">
+          <span className="relative flex h-2.5 w-2.5">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-red-500 opacity-70" />
+            <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-red-500" />
+          </span>
+          Live now
+        </span>
+        {liveSpecial ? (
+          <p className="mt-1.5 text-[13px] font-semibold text-white truncate">{liveSpecial.title}</p>
+        ) : (
+          <>
+            <LiveRow hall="Princess" session={livePrincess} />
+            <LiveRow hall="Al Diwan" session={liveDiwan} />
+          </>
+        )}
+        {!liveSpecial && !livePrincess && !liveDiwan && (
+          <p className="mt-1.5 text-[12.5px] text-white/80">Opening ceremony</p>
+        )}
+      </button>
+    );
+  }
+
+  // between sessions / between days
+  const next = upNext?.[0];
+  return (
+    <button
+      type="button"
+      onClick={() => onNavigate('schedule')}
+      className={`${cardClass} text-left transition-colors hover:bg-white/[0.1]`}
+    >
+      <p className="font-display text-[10px] font-semibold uppercase tracking-[0.18em] text-[#5EEAD4]/90">
+        {next ? `Up next · ${formatTime12h(next.startTime)}` : 'Break'}
+      </p>
+      {next && (
+        <p className="mt-1.5 text-[13px] font-semibold text-white truncate">{next.title}</p>
+      )}
+    </button>
+  );
+}
+
 export function HomeView({
   conference,
   workshops,
@@ -129,6 +241,7 @@ export function HomeView({
   supportUrl,
   onNavigate,
   onSelectWorkshop,
+  liveState,
 }) {
   const [lightboxIdx, setLightboxIdx] = useState(null);
 
@@ -195,7 +308,7 @@ export function HomeView({
 
   return (
     <div className="bg-[#F3F6FA]">
-      {/* 1. FULL-BLEED ARCHITECTURAL CENTERED HERO (Locked 100svh Full-Viewport Stage) */}
+      {/* 1. HERO — identity first, live conference status, two clear actions */}
       <section className="w-full relative overflow-hidden bg-[#0B1B35] text-white min-h-[100svh] md:min-h-[85vh] flex flex-col justify-between">
         {/* Centered top radial spotlight glow */}
         <div
@@ -203,7 +316,7 @@ export function HomeView({
           className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_top,_rgba(14,111,100,0.32)_0%,_transparent_68%)]"
         />
 
-        {/* Slow-drifting ambient teal aurora glow (#0E6F64/30 blur) */}
+        {/* Slow-drifting ambient teal aurora glow */}
         <motion.div
           aria-hidden="true"
           animate={{
@@ -214,7 +327,7 @@ export function HomeView({
           className="pointer-events-none absolute -top-24 left-1/2 -translate-x-1/2 h-[22rem] w-[30rem] rounded-full bg-[#0E6F64]/30 blur-3xl"
         />
 
-        {/* Ultra-faint architectural dot grid masked softly toward the edges */}
+        {/* Ultra-faint dot grid masked toward the edges */}
         <div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 opacity-[0.06]"
@@ -229,88 +342,90 @@ export function HomeView({
           }}
         />
 
-        {/* Very faint architectural DDSC watermark on far right */}
+        {/* Faint DDSC watermark — desktop only (on mobile it gets cut and sits under the text) */}
         <img
           src={logoWhite}
           alt=""
           aria-hidden="true"
-          className="pointer-events-none select-none absolute -right-10 sm:right-[4%] top-1/2 -translate-y-1/2 h-[19rem] sm:h-[26rem] w-auto opacity-[0.035]"
+          className="hidden md:block pointer-events-none select-none absolute right-[4%] top-1/2 -translate-y-1/2 h-[26rem] w-auto opacity-[0.035]"
         />
 
-        {/* Centered Editorial Content */}
         <motion.div
           variants={staggerListVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 mx-auto w-full max-w-5xl px-5 pt-20 flex-1 flex flex-col justify-between text-center"
+          className="relative z-10 mx-auto w-full max-w-5xl px-5 pt-24 flex-1 flex flex-col justify-between text-center"
         >
-          {/* Main Center Content Block */}
-          <div className="flex-1 flex flex-col items-center justify-center py-10">
-            {/* Clean Single-Line Top Eyebrow */}
-            <motion.p
+          <div className="flex-1 flex flex-col items-center justify-center pb-8">
+            {/* Edition badge — the strongest credential, up front */}
+            <motion.span
               variants={cardItemVariants}
-              className="font-display text-[11px] font-semibold tracking-[0.22em] uppercase text-[#5EEAD4] whitespace-nowrap"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#5EEAD4]/25 bg-white/[0.06] px-3.5 py-1.5 font-display text-[11px] font-semibold uppercase tracking-[0.16em] text-[#5EEAD4]"
             >
-              MEET · SHARE · CONNECT
-            </motion.p>
+              <Award className="h-3.5 w-3.5" />
+              29th Edition · Since 1995
+            </motion.span>
 
-            {/* Single-Line Main Headline */}
+            {/* Conference name as the headline */}
             <motion.h1
               variants={cardItemVariants}
-              className="font-display text-[clamp(1.45rem,6.5vw,3rem)] font-extrabold text-white leading-tight tracking-tight whitespace-nowrap mt-5"
+              className="mt-5 font-display text-[clamp(3rem,15vw,5.5rem)] font-extrabold leading-none tracking-tight text-white"
             >
-              A New Era of <span className="text-[#CCFBF1]">Dentistry</span>
+              DDSC <span className="text-[#5EEAD4]">2026</span>
             </motion.h1>
 
-            {/* Conference Subtitle */}
             <motion.p
               variants={cardItemVariants}
-              className="font-display text-[14.5px] sm:text-xl font-semibold text-slate-100 mt-4 max-w-[320px] sm:max-w-lg text-balance"
+              className="mt-3 font-display text-[15px] sm:text-xl font-semibold text-slate-100 max-w-[320px] sm:max-w-lg text-balance"
             >
-              Damietta Dental Syndicate Conference 2026
+              Damietta Dental Syndicate Conference
             </motion.p>
 
-            {/* Description */}
             <motion.p
               variants={cardItemVariants}
-              className="text-[13.5px] sm:text-base text-slate-300/85 leading-relaxed mt-3.5 max-w-[330px] sm:max-w-md text-balance"
+              className="mt-2 text-[13.5px] sm:text-base text-slate-300/85 leading-relaxed max-w-[330px] sm:max-w-md text-balance"
             >
-              Uniting 27+ scientific keynotes, hands-on labs, and a dental community growing since 1995.
+              {conference.tagline} — 27+ lectures, hands-on workshops & 20+ exhibitors.
             </motion.p>
 
-            {/* Primary CTA with Periodic Light-Sheen Sweep */}
+            {/* Live status: countdown → live now → next up → thank you */}
+            <motion.div variants={cardItemVariants} className="mt-7 w-full flex justify-center">
+              <HeroStatus liveState={liveState} onNavigate={onNavigate} />
+            </motion.div>
+
+            {/* Actions */}
             <motion.div
               variants={cardItemVariants}
-              className="mt-8 flex justify-center"
+              className="mt-6 flex w-full max-w-[340px] gap-3"
             >
               <motion.button
                 type="button"
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onNavigate('schedule')}
-                className="relative overflow-hidden inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(45,212,191,0.4)] hover:brightness-105 transition-all"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(45,212,191,0.4)] hover:brightness-105 transition-all"
               >
-                <motion.span
-                  aria-hidden="true"
-                  animate={{ x: ['-140%', '240%'] }}
-                  transition={{
-                    duration: 2.4,
-                    repeat: Infinity,
-                    repeatDelay: 3.6,
-                    ease: 'easeInOut',
-                  }}
-                  className="pointer-events-none absolute inset-y-0 left-0 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/35 to-transparent"
-                />
-                <span className="relative z-10">Explore Schedule</span>
-                <ArrowRight className="relative z-10 h-4 w-4" />
+                <Calendar className="h-4 w-4" />
+                Schedule
               </motion.button>
+              <motion.a
+                href={conference.venue.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                whileHover={{ y: -1 }}
+                whileTap={{ scale: 0.98 }}
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full border border-white/20 bg-white/[0.06] text-white font-display text-sm font-bold hover:bg-white/[0.12] transition-all"
+              >
+                <MapPin className="h-4 w-4 text-[#5EEAD4]" />
+                Directions
+              </motion.a>
             </motion.div>
           </div>
 
-          {/* 2. Architectural Date & Venue Footer Strip (Anchored at Bottom of Hero) */}
+          {/* Date & venue strip */}
           <motion.div
             variants={cardItemVariants}
-            className="border-t border-white/10 pt-5 pb-24 md:pb-10 px-4 w-full"
+            className="border-t border-white/10 pt-5 pb-28 md:pb-10 px-4 w-full"
           >
             <div className="grid grid-cols-2 divide-x divide-white/10 max-w-md mx-auto">
               <div className="px-3 flex flex-col items-center text-center">
@@ -318,10 +433,10 @@ export function HomeView({
                   DATE
                 </span>
                 <span className="font-display text-[13.5px] font-semibold text-white mt-0.5 whitespace-nowrap">
-                  26–27 Nov
+                  26–27 Nov 2026
                 </span>
                 <span className="text-[12px] text-slate-300/80 font-medium mt-0.5 whitespace-nowrap">
-                  29th Edition
+                  Thu – Fri
                 </span>
               </div>
 
@@ -331,6 +446,9 @@ export function HomeView({
                 </span>
                 <span className="font-display text-[13.5px] font-semibold text-white mt-0.5 text-balance">
                   Steigenberger El Lessan
+                </span>
+                <span className="text-[12px] text-slate-300/80 font-medium mt-0.5 whitespace-nowrap">
+                  Ras El Bar, Damietta
                 </span>
               </div>
             </div>
