@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import logoWhite from '../assets/logo-white.svg';
+
+const EASE = [0.22, 1, 0.36, 1];
+// Hysteresis: float after 60px, settle back under 20px — no flicker at the edge.
+const FLOAT_AT = 60;
+const SETTLE_AT = 20;
 
 export function Header({
   tabs,
@@ -13,7 +18,8 @@ export function Header({
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 40);
+      const y = window.scrollY;
+      setIsScrolled((prev) => (prev ? y > SETTLE_AT : y > FLOAT_AT));
     };
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -21,51 +27,88 @@ export function Header({
   }, [activeTab]);
 
   const isHome = !activeTab || activeTab === 'home';
-  const isTransparent = isHome && !isScrolled;
-
   // Floating glass pill whenever the header sits over light content
   // (scrolled, or any non-home tab) — same language as the bottom nav.
-  const isFloating = !isTransparent;
+  const isFloating = !(isHome && !isScrolled);
 
   return (
-    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 px-3 md:px-6">
-      <div
-        className={`pointer-events-auto mx-auto flex items-center justify-center md:justify-between gap-2 border transition-[margin,height,padding,background-color,border-color,box-shadow,border-radius] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] ${
-          isFloating
-            ? 'mt-3 h-12 w-fit md:h-14 md:w-auto md:max-w-5xl rounded-full border-white/15 bg-[#091938]/85 pl-3 pr-4 md:pl-4 md:pr-2 shadow-[0_16px_40px_rgba(7,20,46,0.35)] backdrop-blur-2xl'
-            : 'mt-0 h-16 md:max-w-5xl rounded-none border-transparent bg-transparent px-0 shadow-none'
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-3 md:px-6">
+      <motion.div
+        initial={false}
+        animate={{
+          marginTop: isFloating ? 12 : 0,
+          height: isFloating ? 52 : 64,
+          paddingLeft: isFloating ? 14 : 4,
+          paddingRight: isFloating ? 14 : 4,
+          backgroundColor: isFloating ? 'rgba(9,25,56,0.86)' : 'rgba(9,25,56,0)',
+          borderColor: isFloating ? 'rgba(255,255,255,0.15)' : 'rgba(255,255,255,0)',
+          boxShadow: isFloating
+            ? '0 16px 40px rgba(7,20,46,0.35)'
+            : '0 16px 40px rgba(7,20,46,0)',
+        }}
+        transition={{ duration: 0.45, ease: EASE }}
+        className={`pointer-events-auto flex w-fit items-center justify-between gap-3 rounded-full border md:w-full md:max-w-5xl ${
+          isFloating ? 'backdrop-blur-2xl' : ''
         }`}
       >
         <motion.button
           type="button"
-          whileTap={{ scale: 0.98 }}
+          whileTap={{ scale: 0.97 }}
           onClick={() => {
             onTabChange('home');
             window.scrollTo({ top: 0, behavior: 'smooth' });
           }}
-          className="group flex items-center gap-2.5 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3AB498]/60"
+          className="group flex items-center rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-[#3AB498]/60"
           aria-label="DDSC 2026 Home"
         >
-          <img
+          <motion.img
             ref={logoRef}
             src={logoWhite}
             alt="DDSC Logo"
-            className={`w-auto transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03] ${
-              isFloating ? 'h-7 md:h-8' : 'h-10'
-            }`}
+            initial={false}
+            animate={{ height: isFloating ? 28 : 40 }}
+            transition={{ duration: 0.45, ease: EASE }}
+            className="w-auto"
             style={{ opacity: logoHidden ? 0 : 1 }}
           />
-          <div
-            className={`flex-col text-left leading-tight transition-opacity duration-300 ${
-              isFloating ? 'flex md:hidden lg:flex' : 'hidden lg:flex'
-            }`}
-            style={{ opacity: logoHidden ? 0 : 1 }}
-          >
-            <span className="font-display text-xs font-extrabold tracking-[0.08em] text-white">
-              DDSC 2026
-            </span>
-            <span className="text-[11px] font-medium text-slate-300">29th Edition</span>
-          </div>
+
+          {/* "29th Edition" opens beside the logo once the pill forms */}
+          <AnimatePresence initial={false}>
+            {isFloating && !logoHidden && (
+              <motion.span
+                key="edition"
+                initial={{ width: 0, opacity: 0 }}
+                animate={{
+                  width: 'auto',
+                  opacity: 1,
+                  transition: {
+                    width: { duration: 0.4, ease: EASE, delay: 0.08 },
+                    opacity: { duration: 0.25, delay: 0.2 },
+                  },
+                }}
+                exit={{
+                  width: 0,
+                  opacity: 0,
+                  transition: {
+                    opacity: { duration: 0.12 },
+                    width: { duration: 0.3, ease: EASE },
+                  },
+                }}
+                className="overflow-hidden md:hidden lg:block"
+              >
+                <motion.span
+                  initial={{ x: -6 }}
+                  animate={{ x: 0, transition: { duration: 0.4, ease: EASE, delay: 0.15 } }}
+                  className="flex items-center gap-2.5 whitespace-nowrap pl-3"
+                >
+                  <span className="h-5 w-px bg-white/20" aria-hidden="true" />
+                  <span className="font-display text-[12.5px] font-bold tracking-wide text-white">
+                    29th <span className="text-[#5EEAD4]">Edition</span>
+                  </span>
+                </motion.span>
+              </motion.span>
+            )}
+          </AnimatePresence>
         </motion.button>
 
         {/* Desktop: pill navigation (mobile uses the bottom nav) */}
@@ -100,8 +143,7 @@ export function Header({
             );
           })}
         </nav>
-
-      </div>
+      </motion.div>
     </header>
   );
 }
