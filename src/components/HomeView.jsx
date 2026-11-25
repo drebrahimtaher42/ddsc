@@ -143,7 +143,7 @@ function HeroStatus({ liveState, onNavigate }) {
   if (!liveState) return null;
   const { phase, countdown } = liveState;
   const cardClass =
-    'w-full max-w-[340px] rounded-2xl border border-white/12 bg-white/[0.06] backdrop-blur-sm px-4 py-3.5';
+    'w-full max-w-[340px] rounded-2xl border border-white/12 bg-white/[0.06] backdrop-blur-sm px-4 py-3';
 
   if (phase === 'before' && !countdown.isComplete) {
     const units = [
@@ -157,13 +157,15 @@ function HeroStatus({ liveState, onNavigate }) {
         <p className="font-display text-[10px] font-semibold uppercase tracking-[0.18em] text-[#5EEAD4]/90">
           Opening ceremony starts in
         </p>
-        <div className={`mt-2.5 grid gap-2 ${units.length === 4 ? 'grid-cols-4' : 'grid-cols-3'}`}>
+        <div
+          className={`mt-2 grid divide-x divide-white/10 ${units.length === 4 ? 'grid-cols-4' : 'grid-cols-3'}`}
+        >
           {units.map((u) => (
-            <div key={u.l} className="rounded-xl bg-[#0B1B35]/60 border border-white/10 py-2">
-              <span className="block font-display text-2xl font-extrabold tabular-nums leading-none text-white">
+            <div key={u.l} className="flex flex-col items-center px-2">
+              <span className="font-display text-[30px] font-extrabold tabular-nums leading-none tracking-tight text-white">
                 {pad2(u.v)}
               </span>
-              <span className="mt-1 block text-[10px] font-medium uppercase tracking-wider text-slate-400">
+              <span className="mt-1.5 font-display text-[10px] font-medium uppercase tracking-[0.18em] text-slate-300/75">
                 {u.l}
               </span>
             </div>
@@ -354,7 +356,7 @@ export function HomeView({
           variants={staggerListVariants}
           initial="hidden"
           animate="visible"
-          className="relative z-10 mx-auto w-full max-w-5xl px-5 pt-24 flex-1 flex flex-col justify-between text-center"
+          className="relative z-10 mx-auto w-full max-w-5xl px-5 pt-20 flex-1 flex flex-col justify-between text-center"
         >
           <div className="flex-1 flex flex-col items-center justify-center pb-8">
             {/* Edition badge — the strongest credential, up front */}
@@ -369,7 +371,7 @@ export function HomeView({
             {/* Conference name as the headline */}
             <motion.h1
               variants={cardItemVariants}
-              className="mt-5 font-display text-[clamp(3rem,15vw,5.5rem)] font-extrabold leading-none tracking-tight text-white"
+              className="mt-4 font-display text-[clamp(2.75rem,13.5vw,5.5rem)] font-extrabold leading-none tracking-tight text-white"
             >
               DDSC <span className="text-[#5EEAD4]">2026</span>
             </motion.h1>
@@ -389,21 +391,21 @@ export function HomeView({
             </motion.p>
 
             {/* Live status: countdown → live now → next up → thank you */}
-            <motion.div variants={cardItemVariants} className="mt-7 w-full flex justify-center">
+            <motion.div variants={cardItemVariants} className="mt-5 w-full flex justify-center">
               <HeroStatus liveState={liveState} onNavigate={onNavigate} />
             </motion.div>
 
             {/* Actions */}
             <motion.div
               variants={cardItemVariants}
-              className="mt-6 flex w-full max-w-[340px] gap-3"
+              className="mt-5 flex w-full max-w-[340px] gap-3"
             >
               <motion.button
                 type="button"
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => onNavigate('schedule')}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(45,212,191,0.4)] hover:brightness-105 transition-all"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full bg-gradient-to-r from-[#3AB498] to-[#2EA389] text-[#06201B] font-display text-sm font-bold shadow-[0_10px_28px_-6px_rgba(45,212,191,0.4)] hover:brightness-105 transition-all"
               >
                 <Calendar className="h-4 w-4" />
                 Schedule
@@ -414,7 +416,7 @@ export function HomeView({
                 rel="noopener noreferrer"
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
-                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-full border border-white/20 bg-white/[0.06] text-white font-display text-sm font-bold hover:bg-white/[0.12] transition-all"
+                className="flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-white/20 bg-white/[0.06] text-white font-display text-sm font-bold hover:bg-white/[0.12] transition-all"
               >
                 <MapPin className="h-4 w-4 text-[#5EEAD4]" />
                 Directions
