@@ -127,7 +127,7 @@ const pad2 = (n) => String(n).padStart(2, '0');
 function LiveRow({ hall, session }) {
   if (!session) return null;
   return (
-    <p className="mt-1.5 text-left text-[12.5px] leading-snug text-white/85 truncate">
+    <p className="mt-1.5 text-[12.5px] leading-snug text-white/85 truncate">
       <span className="font-semibold text-[#5EEAD4]">{hall}:</span>{' '}
       <span className="text-white">{session.title}</span>
     </p>
@@ -143,7 +143,7 @@ function HeroStatus({ liveState, onNavigate }) {
   if (!liveState) return null;
   const { phase, countdown } = liveState;
   const cardClass =
-    'w-full max-w-[340px] rounded-2xl border border-white/12 bg-white/[0.06] backdrop-blur-sm px-4 py-3';
+    'w-full max-w-[340px] px-2 py-1';
 
   if (phase === 'before' && !countdown.isComplete) {
     const units = [
@@ -153,21 +153,26 @@ function HeroStatus({ liveState, onNavigate }) {
       { v: countdown.seconds, l: 'Sec' },
     ];
     return (
-      <div className={cardClass} role="timer" aria-live="off">
-        <p className="font-display text-[10px] font-semibold uppercase tracking-[0.18em] text-[#5EEAD4]/90">
-          Opening ceremony starts in
+      <div className="flex flex-col items-center" role="timer" aria-live="off">
+        <p className="font-display text-[10px] font-semibold uppercase tracking-[0.22em] text-[#5EEAD4]/90">
+          Opening ceremony in
         </p>
-        <div
-          className={`mt-2 grid divide-x divide-white/10 ${units.length === 4 ? 'grid-cols-4' : 'grid-cols-3'}`}
-        >
-          {units.map((u) => (
-            <div key={u.l} className="flex flex-col items-center px-2">
-              <span className="font-display text-[30px] font-extrabold tabular-nums leading-none tracking-tight text-white">
-                {pad2(u.v)}
-              </span>
-              <span className="mt-1.5 font-display text-[10px] font-medium uppercase tracking-[0.18em] text-slate-300/75">
-                {u.l}
-              </span>
+        <div className="mt-2 flex items-start justify-center">
+          {units.map((u, i) => (
+            <div key={u.l} className="flex items-start">
+              {i > 0 && (
+                <span className="px-1.5 font-display text-[28px] font-light leading-none text-[#5EEAD4]/50">
+                  :
+                </span>
+              )}
+              <div className="flex w-[52px] flex-col items-center">
+                <span className="font-display text-[32px] font-extrabold tabular-nums leading-none tracking-tight text-white">
+                  {pad2(u.v)}
+                </span>
+                <span className="mt-1 font-display text-[9.5px] font-medium uppercase tracking-[0.2em] text-slate-400">
+                  {u.l}
+                </span>
+              </div>
             </div>
           ))}
         </div>
@@ -194,7 +199,7 @@ function HeroStatus({ liveState, onNavigate }) {
       <button
         type="button"
         onClick={() => onNavigate('schedule')}
-        className={`${cardClass} text-left transition-colors hover:bg-white/[0.1]`}
+        className={`${cardClass} text-center transition-opacity hover:opacity-90`}
       >
         <span className="inline-flex items-center gap-2 font-display text-[11px] font-bold uppercase tracking-[0.16em] text-white">
           <span className="relative flex h-2.5 w-2.5">
@@ -224,7 +229,7 @@ function HeroStatus({ liveState, onNavigate }) {
     <button
       type="button"
       onClick={() => onNavigate('schedule')}
-      className={`${cardClass} text-left transition-colors hover:bg-white/[0.1]`}
+      className={`${cardClass} text-center transition-opacity hover:opacity-90`}
     >
       <p className="font-display text-[10px] font-semibold uppercase tracking-[0.18em] text-[#5EEAD4]/90">
         {next ? `Up next · ${formatTime12h(next.startTime)}` : 'Break'}
@@ -512,18 +517,8 @@ export function HomeView({
           <SectionHeading
             eyebrow="2026 Program"
             title="Scientific Sessions"
-            description={`${lecturePosters.length} accredited keynote & specialty lectures across two halls.`}
-            aside={
-              <motion.button
-                type="button"
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onNavigate('schedule')}
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#0D224C] px-4 py-2 font-display text-xs font-semibold text-white shadow-xs transition-colors hover:bg-[#14326B]"
-              >
-                <span>View Full Timetable</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </motion.button>
-            }
+            meta={[`${lecturePosters.length} lectures`, '2 halls', 'Accredited']}
+            action={{ label: 'Timetable', onClick: () => onNavigate('schedule') }}
           />
 
           <Carousel ariaLabel="Scientific Sessions" gapClass="gap-4">
@@ -569,20 +564,10 @@ export function HomeView({
           className="space-y-4"
         >
           <SectionHeading
-            eyebrow="Practical Clinical Training"
+            eyebrow="Practical Training"
             title="Hands-On Workshops"
-            description={`${workshops.length} limited-seat pre-conference labs (20–25 Nov) built around real chairside protocols you can apply immediately.`}
-            aside={
-              <motion.button
-                type="button"
-                whileTap={{ scale: 0.98 }}
-                onClick={() => onNavigate('workshops')}
-                className="inline-flex items-center gap-1.5 rounded-full bg-[#086958] px-4 py-2 font-display text-xs font-semibold text-white shadow-xs transition-colors hover:bg-[#065749]"
-              >
-                <span>View All Workshops</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </motion.button>
-            }
+            meta={[`${workshops.length} labs`, '20–25 Nov', 'Limited seats']}
+            action={{ label: 'View all', onClick: () => onNavigate('workshops') }}
           />
 
           {/* Compact Workshop Bundle Offers Summary */}
