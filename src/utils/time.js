@@ -21,6 +21,7 @@ export const REMOTE_LIVE_CONFIG_URL =
 
 export const DEFAULT_LIVE_CONFIG = {
   liveEnabled: true,
+  delayDay: 'day1',
   alDiwanDelayMinutes: 0,
   alDiwanShiftFullSchedule: false,
   princessDelayMinutes: 0,
@@ -38,6 +39,7 @@ export function normalizeLiveConfig(raw) {
       typeof raw.liveEnabled === 'boolean'
         ? raw.liveEnabled
         : DEFAULT_LIVE_CONFIG.liveEnabled,
+    delayDay: raw.delayDay === 'day2' ? 'day2' : 'day1',
     alDiwanDelayMinutes: toDelay(raw.alDiwanDelayMinutes),
     alDiwanShiftFullSchedule: Boolean(raw.alDiwanShiftFullSchedule),
     princessDelayMinutes: toDelay(raw.princessDelayMinutes),

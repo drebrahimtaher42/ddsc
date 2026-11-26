@@ -50,6 +50,8 @@ export function resolveSessionDateStr(item, conference) {
 
 export function getHallDelayMinutes(item, liveConfig) {
   if (!item || item.type !== 'session' || !liveConfig) return 0;
+  // Delays apply to one conference day only (liveConfig.delayDay).
+  if (item.day !== (liveConfig.delayDay || 'day1')) return 0;
   if (item.hall === 'diwan') {
     const n = Number(liveConfig.alDiwanDelayMinutes);
     return Number.isFinite(n) ? Math.round(n) : 0;

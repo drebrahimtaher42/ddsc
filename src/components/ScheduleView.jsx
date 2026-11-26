@@ -526,7 +526,7 @@ export function ScheduleView({
     if (!shiftDiwan && !shiftPrincess) return schedule;
 
     return schedule.map((item) => {
-      if (item.type !== 'session') return item;
+      if (item.type !== 'session' || item.day !== liveConfig.delayDay) return item;
       if (item.hall === 'diwan' && shiftDiwan) {
         return shiftSessionByMinutes(item, liveConfig.alDiwanDelayMinutes, true);
       }
